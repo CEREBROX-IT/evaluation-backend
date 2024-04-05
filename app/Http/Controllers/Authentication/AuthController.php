@@ -75,12 +75,6 @@ class AuthController extends Controller
 
     public function updateProfile(Request $request, $id)
     {
-        // Validate the incoming request data
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-        ]);
-
         // Find the user by ID
         $user = User::find($id);
 
@@ -96,6 +90,36 @@ class AuthController extends Controller
         ]);
 
         return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
+    }
+
+    // Update user password
+    public function updatePassword(Request $request, $id)
+    {
+        // // Validate the incoming request data
+        // $request->validate([
+        //     'current_password' => 'required',
+        //     'new_password' => 'required|min:6',
+        // ]);
+
+        // Find the user by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Verify the current password
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['error' => 'Current password is incorrect'], 401);
+        }
+
+        // Update the password
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return response()->json(['message' => 'Password updated successfully']);
     }
 
     /**

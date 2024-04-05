@@ -18,6 +18,9 @@ Route::post('/login', [AuthController::class, 'login']);
 // Update Profile (no authentication required)
 Route::post('/updateprofile/{id}', [AuthController::class, 'updateProfile']);
 
+// Update Password (without authentication)
+Route::post('/update-password/{id}', [AuthController::class, 'updatePassword']);
+
 // Logout (protected route, requires authentication)
 // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
