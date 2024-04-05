@@ -73,6 +73,31 @@ class AuthController extends Controller
         return response()->json(['token' => $token]);
     }
 
+    public function updateProfile(Request $request, $id)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
+        // Find the user by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update user's profile information
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+        ]);
+
+        return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
+    }
+
     /**
      * Log the user out (Invalidate the token).
      *

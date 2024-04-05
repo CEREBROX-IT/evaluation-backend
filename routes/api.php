@@ -15,8 +15,11 @@ Route::post('/register', [AuthController::class, 'register']);
 // Login
 Route::post('/login', [AuthController::class, 'login']);
 
+// Update Profile (no authentication required)
+Route::post('/updateprofile/{id}', [AuthController::class, 'updateProfile']);
+
 // Logout (protected route, requires authentication)
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
