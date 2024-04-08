@@ -11,14 +11,13 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Validation\ValidationException;
 
+//for the smtp
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
+
 class AuthController extends Controller
 {
-    /**
-     * Register a new user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // Register New User
 
     public function register(Request $request)
     {
@@ -29,10 +28,14 @@ class AuthController extends Controller
             return response()->json(['message' => 'Username already exists'], 202);
         }
 
+        // If email is empty string or not provided, set it to null
+        $email = $request->filled('email') ? $request->email : null;
+
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'email' => $request->email,
+            'email' => $email,
+            'email_status' => 0,
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => $request->role,
