@@ -16,10 +16,13 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 // Update Profile (no authentication required)
-Route::post('/updateprofile/{id}', [AuthController::class, 'updateProfile']);
+Route::post('/user/updateprofile/{id}', [AuthController::class, 'updateProfile']);
 
 // Update Password (without authentication)
-Route::post('/update-password/{id}', [AuthController::class, 'updatePassword']);
+Route::post('/user/update-password/{id}', [AuthController::class, 'updatePassword']);
+
+//Update User Email Address
+Route::post('/users/update-email/{id}', [AuthController::class, 'updateEmail']);
 
 // Logout (protected route, requires authentication)
 // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

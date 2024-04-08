@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Authentication;
 
+use Illuminate\Support\Facades\Validator; // to validate the email address
 use App\Http\Controllers\Controller; // Add this line to import the Controller class
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -96,12 +97,6 @@ class AuthController extends Controller
     // Update user password
     public function updatePassword(Request $request, $id)
     {
-        // // Validate the incoming request data
-        // $request->validate([
-        //     'current_password' => 'required',
-        //     'new_password' => 'required|min:6',
-        // ]);
-
         // Find the user by ID
         $user = User::find($id);
 
@@ -123,12 +118,36 @@ class AuthController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // Update user email address
+    public function updateEmail(Request $request, $id)
+    {
+        // Find the user by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email,' . $id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 400);
+        }
+
+        // Update user's email
+        $user->update([
+            'email' => $request->email,
+        ]);
+
+        return response()->json(['message' => 'Email updated successfully', 'user' => $user]);
+    }
+
+    // Log the user out (Invalidate the token).
+
     public function logout(Request $request)
     {
         JWTAuth::parseToken()->invalidate(); // Invalidate the JWT token
