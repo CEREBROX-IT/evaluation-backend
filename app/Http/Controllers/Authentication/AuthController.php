@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Validation\ValidationException;
 
 //for the smtp
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
 
@@ -35,7 +36,7 @@ class AuthController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $email,
-            'email_status' => 0,
+            'email_status' => false,
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => $request->role,
@@ -144,7 +145,11 @@ class AuthController extends Controller
         // Update user's email
         $user->update([
             'email' => $request->email,
+            'email_status' => false,
         ]);
+
+        // Send verification email
+        event(new Registered($user));
 
         return response()->json(['message' => 'Email updated successfully', 'user' => $user]);
     }

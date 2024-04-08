@@ -9,6 +9,8 @@ Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
 
+Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Authentication\VerificationController@verify')->name('verification.verify');
+
 // Registration
 Route::post('/register', [AuthController::class, 'register']);
 
