@@ -19,11 +19,11 @@ class VerificationController extends Controller
             $user->email_status = true;
             $user->save();
 
-            // Redirect the user to a success page
-            return Redirect::to('/')->with('success', 'Your email has been verified. Please log in.');
+            // Return the view with a success message
+            return view('layouts.verifiedComplete')->with('success', 'Your email has been verified. Please log in.');
         } else {
-            // Redirect the user to an error page (or handle it differently)
-            return Redirect::to('/')->with('error', 'Invalid verification link.');
+            // Return the view with an error message
+            return view('screen/authentication/login')->with('error', 'Invalid verification link.');
         }
     }
 }
