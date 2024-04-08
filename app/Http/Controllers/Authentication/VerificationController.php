@@ -20,10 +20,10 @@ class VerificationController extends Controller
             $user->save();
 
             // Return the view with a success message
-            return view('layouts.verifiedComplete')->with('success', 'Your email has been verified. Please log in.');
+            return view('layouts.verifiedComplete');
         } else {
             // Return the view with an error message
-            return view('screen/authentication/login')->with('error', 'Invalid verification link.');
+            return view('layouts.verifiedError');
         }
     }
 }
