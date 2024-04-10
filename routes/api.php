@@ -23,8 +23,11 @@ Route::post('/user/updateprofile/{id}', [AuthController::class, 'updateProfile']
 // Update Password (without authentication)
 Route::post('/user/update-password/{id}', [AuthController::class, 'updatePassword']);
 
-//Update User Email Address
+// Update User Email Address
 Route::post('/users/update-email/{id}', [AuthController::class, 'updateEmail']);
+
+// Forgot Password
+Route::post('/user/reset-password', [AuthController::class, 'resetPassword']);
 
 // Logout (protected route, requires authentication)
 // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
