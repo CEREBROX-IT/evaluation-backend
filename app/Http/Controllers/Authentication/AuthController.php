@@ -18,7 +18,7 @@ use App\Mail\VerifyEmail;
 
 class AuthController extends Controller
 {
-    // Register New User
+    // ================= Register New User =================
 
     public function register(Request $request)
     {
@@ -45,12 +45,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
     }
 
-    /**
-     * Authenticate a user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // ================= User login =================
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
@@ -79,8 +74,29 @@ class AuthController extends Controller
         return response()->json(['token' => $token]);
     }
 
+    // ================= Update user profile =================
     public function updateProfile(Request $request, $id)
     {
+        // Check if the request has the Authorization header with JWT token
+        if (!$request->header('Authorization')) {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Retrieve the JWT token from the Authorization header
+        $token = $request->header('Authorization');
+
+        // Extract the token value (remove "Bearer " prefix if present)
+        $jwtToken = str_replace('Bearer ', '', $token);
+
+        // Attempt to authenticate the token
+        try {
+            $user = Auth::setToken($jwtToken)->user();
+        } catch (\Exception $e) {
+            // Token authentication failed
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // If user is authenticated, proceed with updating profile
         // Find the user by ID
         $user = User::find($id);
 
@@ -98,9 +114,28 @@ class AuthController extends Controller
         return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
     }
 
-    // Update user password
+    // ================= Update user password =================
     public function updatePassword(Request $request, $id)
     {
+        // Check if the request has the Authorization header with JWT token
+        if (!$request->header('Authorization')) {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Retrieve the JWT token from the Authorization header
+        $token = $request->header('Authorization');
+
+        // Extract the token value (remove "Bearer " prefix if present)
+        $jwtToken = str_replace('Bearer ', '', $token);
+
+        // Attempt to authenticate the token
+        try {
+            $user = Auth::setToken($jwtToken)->user();
+        } catch (\Exception $e) {
+            // Token authentication failed
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
         // Find the user by ID
         $user = User::find($id);
 
@@ -122,9 +157,28 @@ class AuthController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
-    // Update user email address
+    // ================= Update user email address =================
     public function updateEmail(Request $request, $id)
     {
+        // Check if the request has the Authorization header with JWT token
+        if (!$request->header('Authorization')) {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Retrieve the JWT token from the Authorization header
+        $token = $request->header('Authorization');
+
+        // Extract the token value (remove "Bearer " prefix if present)
+        $jwtToken = str_replace('Bearer ', '', $token);
+
+        // Attempt to authenticate the token
+        try {
+            $user = Auth::setToken($jwtToken)->user();
+        } catch (\Exception $e) {
+            // Token authentication failed
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
         // Find the user by ID
         $user = User::find($id);
 
