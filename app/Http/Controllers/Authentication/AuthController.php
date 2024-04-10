@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 //for the smtp
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Str; // temporary we will optimize it later
+use Illuminate\Support\Str;
 // responsible for constructing the email that will be sent to the user
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
@@ -21,6 +21,25 @@ use App\Mail\ResetPasswordMail;
 
 class AuthController extends Controller
 {
+    // ================= A function to check if the request has valid authorization token =================
+    private function authorizeRequest(Request $request)
+    {
+        if (!$request->header('Authorization')) {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        $token = $request->header('Authorization');
+        $jwtToken = str_replace('Bearer ', '', $token);
+
+        try {
+            $user = Auth::setToken($jwtToken)->user();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        return $user;
+    }
+
     // ================= Register New User =================
 
     public function register(Request $request)
@@ -84,23 +103,10 @@ class AuthController extends Controller
     // ================= Update user profile =================
     public function updateProfile(Request $request, $id)
     {
-        // Check if the request has the Authorization header with JWT token
-        if (!$request->header('Authorization')) {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
-        // Retrieve the JWT token from the Authorization header
-        $token = $request->header('Authorization');
-
-        // Extract the token value (remove "Bearer " prefix if present)
-        $jwtToken = str_replace('Bearer ', '', $token);
-
-        // Attempt to authenticate the token
-        try {
-            $user = Auth::setToken($jwtToken)->user();
-        } catch (\Exception $e) {
-            // Token authentication failed
-            return response()->json(['error' => 'Unauthorized Request'], 401);
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
         }
 
         // If user is authenticated, proceed with updating profile
@@ -124,23 +130,10 @@ class AuthController extends Controller
     // ================= Update user password =================
     public function updatePassword(Request $request, $id)
     {
-        // Check if the request has the Authorization header with JWT token
-        if (!$request->header('Authorization')) {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
-        // Retrieve the JWT token from the Authorization header
-        $token = $request->header('Authorization');
-
-        // Extract the token value (remove "Bearer " prefix if present)
-        $jwtToken = str_replace('Bearer ', '', $token);
-
-        // Attempt to authenticate the token
-        try {
-            $user = Auth::setToken($jwtToken)->user();
-        } catch (\Exception $e) {
-            // Token authentication failed
-            return response()->json(['error' => 'Unauthorized Request'], 401);
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
         }
 
         // Find the user by ID
@@ -167,23 +160,10 @@ class AuthController extends Controller
     // ================= Update user email address =================
     public function updateEmail(Request $request, $id)
     {
-        // Check if the request has the Authorization header with JWT token
-        if (!$request->header('Authorization')) {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
-        // Retrieve the JWT token from the Authorization header
-        $token = $request->header('Authorization');
-
-        // Extract the token value (remove "Bearer " prefix if present)
-        $jwtToken = str_replace('Bearer ', '', $token);
-
-        // Attempt to authenticate the token
-        try {
-            $user = Auth::setToken($jwtToken)->user();
-        } catch (\Exception $e) {
-            // Token authentication failed
-            return response()->json(['error' => 'Unauthorized Request'], 401);
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
         }
 
         // Find the user by ID
