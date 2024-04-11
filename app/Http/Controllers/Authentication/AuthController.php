@@ -211,12 +211,38 @@ class AuthController extends Controller
         $user->update(['password_reset_token' => $token]);
 
         // Define the reset URL
-        $resetUrl = 'http://your-app-url/reset-password?token=' . $token; // Change this URL to your actual reset password page URL
+        $resetUrl = 'http://127.0.0.1:8000/reset-password?token=' . $token;
 
         // Send the password reset email
         Mail::to($user->email)->send(new ResetPasswordMail($user, $resetUrl));
 
         return response()->json(['message' => 'Password reset email sent successfully']);
+    }
+
+    // ================= Set New Password =================
+    public function setNewPassword(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'token' => 'required',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        // Find the user by the token
+        $user = User::where('password_reset_token', $request->token)->first();
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'Invalid token'], 400);
+        }
+
+        // Update the user's password
+        $user->update([
+            'password' => Hash::make($request->password),
+            'password_reset_token' => null, // Clear the reset token
+        ]);
+
+        return response()->json(['message' => 'Password updated successfully']);
     }
 
     // ================= Log the user out (Invalidate the token). =================

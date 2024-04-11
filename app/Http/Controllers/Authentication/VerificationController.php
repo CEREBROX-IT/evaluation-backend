@@ -8,6 +8,7 @@ use App\Models\User;
 
 class VerificationController extends Controller
 {
+    // ================= For Setup verification =================
     public function verify($id, $hash)
     {
         // Find the user by ID
