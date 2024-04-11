@@ -36,6 +36,11 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
+        // Check if $user is null, indicating invalid or expired token
+        if (!$user) {
+            return response()->json(['Invalid token or expired'], 200);
+        }
+
         return $user;
     }
 
@@ -93,7 +98,7 @@ class AuthController extends Controller
             $token = JWTAuth::claims($customClaims)->attempt($credentials);
 
             // Return the token in the response
-            return response()->json(['token' => $token]);
+            return response()->json(['token' => $token], 201);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }
@@ -123,7 +128,7 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
         ]);
 
-        return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
+        return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
     }
 
     // ================= Update user password =================
@@ -153,7 +158,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
-        return response()->json(['message' => 'Password updated successfully']);
+        return response()->json(['message' => 'Password updated successfully'], 201);
     }
 
     // ================= Update user email address =================
@@ -191,7 +196,7 @@ class AuthController extends Controller
         // Send the password reset email
         Mail::to($user->email)->send(new VerfiyEmailAddress($user));
 
-        return response()->json(['message' => 'Email updated successfully', 'user' => $user]);
+        return response()->json(['message' => 'Email updated successfully', 'user' => $user], 201);
     }
     // ================= ForgotPassword =================
 
