@@ -22,6 +22,6 @@ class ResetPasswordMail extends Mailable
 
     public function build()
     {
-        return $this->view('templates.resetpassword')->subject('Reset Your Password');
+        return $this->view('templates.resetpassword')->subject('Did you request to reset your password?');
     }
 }

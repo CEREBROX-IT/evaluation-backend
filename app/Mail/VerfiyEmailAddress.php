@@ -20,6 +20,6 @@ class VerfiyEmailAddress extends Mailable
 
     public function build()
     {
-        return $this->view('templates.verify')->subject('Verify Your Email Address');
+        return $this->view('templates.verify')->subject('Verify your Email Address');
     }
 }
