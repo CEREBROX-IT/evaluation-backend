@@ -12,11 +12,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Validation\ValidationException;
 
 //for the smtp
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 // responsible for constructing the email that will be sent to the user
 use Illuminate\Support\Facades\Mail;
-use App\Mail\VerifyEmail;
+use App\Mail\VerfiyEmailAddress;
 use App\Mail\ResetPasswordMail;
 
 class AuthController extends Controller
@@ -189,8 +188,8 @@ class AuthController extends Controller
             'email_status' => false,
         ]);
 
-        // Send verification email (this thing only use for email verification)
-        event(new Registered($user));
+        // Send the password reset email
+        Mail::to($user->email)->send(new VerfiyEmailAddress($user));
 
         return response()->json(['message' => 'Email updated successfully', 'user' => $user]);
     }
