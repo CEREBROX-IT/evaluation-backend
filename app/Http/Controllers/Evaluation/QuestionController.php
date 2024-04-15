@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Evaluation;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class QuestionController extends Controller
 
         // Check if $user is null, indicating invalid or expired token
         if (!$user) {
-            return response()->json(['Invalid token or expired'], 200);
+            return response()->json(['error' => 'Invalid token or expired'], 401);
         }
 
         return $user;
@@ -37,6 +38,12 @@ class QuestionController extends Controller
 
     public function createQuestion(Request $request)
     {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
         $question = Question::create([
             'evaluation_for' => $request->evaluation_for,
             'evaluation_type' => $request->evaluation_type,
