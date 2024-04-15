@@ -283,7 +283,42 @@ class AuthController extends Controller
         }
 
         // Return the users as a response
-        return response()->json(['users' => $users], 200);
+        return response()->json(['users' => $users], 201);
+    }
+
+    public function getUserList(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        $users = User::where('status', true)->get();
+
+        return response()->json(['users' => $users], 201);
+    }
+
+    public function deleteUser(Request $request, $id)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        $users = User::find($id);
+
+        // Check if the question exists
+        if (!$users) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update the status of the question to false
+        $users->update(['status' => false]);
+
+        // Return success response
+        return response()->json(['message' => 'User deleted successfully'], 201);
     }
 
     // ================= Log the user out (Invalidate the token). =================

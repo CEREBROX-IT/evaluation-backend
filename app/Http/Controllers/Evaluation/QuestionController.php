@@ -46,7 +46,7 @@ class QuestionController extends Controller
         // Fetch questions with status true
         $questions = Question::where('status', $status)->get();
 
-        return response()->json(['questions' => $questions], 200);
+        return response()->json(['questions' => $questions], 201);
     }
 
     // ================= Create Question =================
@@ -115,6 +115,6 @@ class QuestionController extends Controller
         $question->update(['status' => false]);
 
         // Return success response
-        return response()->json(['message' => 'Question deleted successfully'], 200);
+        return response()->json(['message' => 'Question deleted successfully'], 201);
     }
 }

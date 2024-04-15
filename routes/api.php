@@ -46,6 +46,12 @@ Route::post('/user/reset-password', [AuthController::class, 'resetPassword']);
 // To get User Base on the Role
 Route::get('/get-user/role={role}', [AuthController::class, 'getUsersRole']);
 
+// To get list of user where status true
+Route::get('/get-user', [AuthController::class, 'getUserList']);
+
+// To delete User
+Route::delete('/delete-user/id={id}', [AuthController::class, 'deleteUser']);
+
 // Logout (protected route, requires authentication)
 // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
