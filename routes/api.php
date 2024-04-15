@@ -3,12 +3,16 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\AuthController;
+use App\Http\Controllers\Evaluation\QuestionController;
 
 // for API testing if it connected
 Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
 
+// ============== Evaluation Question Endpoints ==============
+Route::post('/question/create', [QuestionController::class, 'createQuestion']);
+// ============== Authentication Endpoints ==============
 Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Authentication\VerificationController@verify')->name('verification.verify');
 
 // Registration
