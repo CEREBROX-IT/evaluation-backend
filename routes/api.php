@@ -11,8 +11,7 @@ Route::get('/testing', function () {
 });
 
 // ============== Evaluation Question Endpoints ==============
-
-Route::get('/question/get/{status}', [QuestionController::class, 'getQuestions']);
+Route::get('/question/get/status={status}', [QuestionController::class, 'getQuestions']);
 
 //create qeustion
 Route::post('/question/create', [QuestionController::class, 'createQuestion']);

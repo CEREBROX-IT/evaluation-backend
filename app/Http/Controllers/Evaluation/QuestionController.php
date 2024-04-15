@@ -44,7 +44,7 @@ class QuestionController extends Controller
         }
 
         // Fetch questions with status true
-        $questions = Question::where('status', true)->get();
+        $questions = Question::where('status', $status)->get();
 
         return response()->json(['questions' => $questions], 200);
     }
