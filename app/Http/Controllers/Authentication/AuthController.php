@@ -259,6 +259,32 @@ class AuthController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
+    // ================= Retreive User base on User Role =================
+    public function getUsersRole(Request $request, $role = null)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // If no role parameter is provided, return a 404 response
+        if ($role === null) {
+            return response()->json(['error' => 'Role parameter is required'], 404);
+        }
+
+        // If the role parameter is "all", fetch all users
+        if ($role === 'all') {
+            $users = User::select('id', 'first_name', 'last_name', 'role')->get();
+        } else {
+            // Fetch users based on the specified role
+            $users = User::where('role', $role)->select('id', 'first_name', 'last_name', 'role')->get();
+        }
+
+        // Return the users as a response
+        return response()->json(['users' => $users], 200);
+    }
+
     // ================= Log the user out (Invalidate the token). =================
 
     public function logout(Request $request)

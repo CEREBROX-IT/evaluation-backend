@@ -29,6 +29,9 @@ Route::post('/users/update-email/{id}', [AuthController::class, 'updateEmail']);
 // Forgot Password
 Route::post('/user/reset-password', [AuthController::class, 'resetPassword']);
 
+// To get User Base on the Role
+Route::get('/get-user/{role}', [AuthController::class, 'getUsersRole']);
+
 // Logout (protected route, requires authentication)
 // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
