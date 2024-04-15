@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('question_type');
             $table->string('question_description');
             $table->string('rating');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

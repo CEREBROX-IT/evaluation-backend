@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('evaluation_for');
             $table->string('evaluation_type');
             $table->string('question_description');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -13,5 +13,5 @@ class Question extends Model
     protected $table = 'question';
 
     // Define the fillable attributes
-    protected $fillable = ['evaluation_for', 'evaluation_type', 'question_description'];
+    protected $fillable = ['evaluation_for', 'evaluation_type', 'question_description', 'status'];
 }

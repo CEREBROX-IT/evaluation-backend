@@ -11,7 +11,18 @@ Route::get('/testing', function () {
 });
 
 // ============== Evaluation Question Endpoints ==============
+
+Route::get('/question/get/{status}', [QuestionController::class, 'getQuestions']);
+
+//create qeustion
 Route::post('/question/create', [QuestionController::class, 'createQuestion']);
+
+//update question
+Route::post('/question/update/{id}', [QuestionController::class, 'updateQuestion']);
+
+// Delete question route
+Route::delete('/question/delete/{id}', [QuestionController::class, 'deleteQuestion']);
+
 // ============== Authentication Endpoints ==============
 Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Authentication\VerificationController@verify')->name('verification.verify');
 

@@ -34,6 +34,21 @@ class QuestionController extends Controller
         return $user;
     }
 
+    // ================= Get Questions with Status True =================
+    public function getQuestions(Request $request, $status)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Fetch questions with status true
+        $questions = Question::where('status', true)->get();
+
+        return response()->json(['questions' => $questions], 200);
+    }
+
     // ================= Create Question =================
 
     public function createQuestion(Request $request)
@@ -48,8 +63,58 @@ class QuestionController extends Controller
             'evaluation_for' => $request->evaluation_for,
             'evaluation_type' => $request->evaluation_type,
             'question_description' => $request->question_description,
+            'status' => true,
         ]);
 
         return response()->json(['message' => 'Question created successfully', 'question' => $question], 201);
+    }
+
+    // ================= Update Question =================
+    public function updateQuestion(Request $request, $id)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        $question = Question::find($id);
+
+        if (!$question) {
+            return response()->json(['error' => 'Question not found'], 404);
+        }
+
+        //update the question
+        $question->update([
+            'evaluation_for' => $request->evaluation_for,
+            'evaluation_type' => $request->evaluation_type,
+            'question_description' => $request->question_description,
+        ]);
+
+        return response()->json(['message' => 'Question updated successfully', 'question' => $question], 201);
+    }
+
+    // ================= Delete Question =================
+    public function deleteQuestion(Request $request, $id)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Find the question
+        $question = Question::find($id);
+
+        // Check if the question exists
+        if (!$question) {
+            return response()->json(['error' => 'Question not found'], 404);
+        }
+
+        // Update the status of the question to false
+        $question->update(['status' => false]);
+
+        // Return success response
+        return response()->json(['message' => 'Question deleted successfully'], 200);
     }
 }
