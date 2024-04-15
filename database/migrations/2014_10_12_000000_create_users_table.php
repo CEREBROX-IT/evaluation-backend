@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->tinyInteger('email_status');
             $table->string('username')->unique();
             $table->string('role');
+            $table->tinyInteger('status');
             $table->string('password');
             $table->timestamps();
         });

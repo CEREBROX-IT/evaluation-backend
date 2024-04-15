@@ -66,6 +66,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'status' => true,
         ]);
 
         return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
