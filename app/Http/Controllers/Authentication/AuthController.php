@@ -202,6 +202,14 @@ class AuthController extends Controller
 
     public function resetPassword(Request $request)
     {
+        // Find the user by email
+        $user = User::where('email', $request->email)->first();
+
+        // If no user found, return error response with status code 404
+        if (!$user) {
+            return response()->json(['error' => 'There is no account associated with that email'], 404);
+        }
+
         // Validate the request data
         $request->validate([
             'email' => 'required|email|exists:users,email',
@@ -210,8 +218,7 @@ class AuthController extends Controller
         // Generate a password reset token
         $token = Str::random(60);
 
-        // Save the token to the user's record in the database
-        $user = User::where('email', $request->email)->first();
+        // Update the user's password reset token
         $user->update(['password_reset_token' => $token]);
 
         // Define the reset URL
@@ -220,7 +227,8 @@ class AuthController extends Controller
         // Send the password reset email
         Mail::to($user->email)->send(new ResetPasswordMail($user, $resetUrl));
 
-        return response()->json(['message' => 'Password reset email sent successfully']);
+        // Return success response
+        return response()->json(['message' => 'Password reset email sent successfully'], 201);
     }
 
     // ================= Set New Password =================
