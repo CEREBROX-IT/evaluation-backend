@@ -197,7 +197,234 @@
 		},
 		{
 			"name": "Evaluation Question",
-			"item": []
+			"item": [
+				{
+					"name": "Create Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTYyODkyLCJleHAiOjE3MTMyNDkyOTIsIm5iZiI6MTcxMzE2Mjg5MiwianRpIjoidUpQNndmcU5mVk5xRThFbSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.D-zCxjBMDwBEfWYS1GVqoBDTeFD-WTbt2iQusrMR7gw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evaluation_for\": \"teacher\",\n    \"evaluation_type\": \"general\",\n    \"question_description\": \"Question 2\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/question/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Question",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMjI5Nzg4LCJleHAiOjE3MTMzMTYxODgsIm5iZiI6MTcxMzIyOTc4OCwianRpIjoiaXZKdU1pRjN6cTE3bVY2NiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6bnVsbCwicm9sZSI6IlN0dWRlbnQifQ.WtLtABUH4v6q6CkdLjmkcIF1eNzQqMs0tJCyEYSaFbw",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/question/get/status=1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTYyODkyLCJleHAiOjE3MTMyNDkyOTIsIm5iZiI6MTcxMzE2Mjg5MiwianRpIjoidUpQNndmcU5mVk5xRThFbSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.D-zCxjBMDwBEfWYS1GVqoBDTeFD-WTbt2iQusrMR7gw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"evaluation_for\": \"teacher\",\n    \"evaluation_type\": \"general\",\n    \"question_description\": \"Question 1\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/question/update/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Question",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTYyODkyLCJleHAiOjE3MTMyNDkyOTIsIm5iZiI6MTcxMzE2Mjg5MiwianRpIjoidUpQNndmcU5mVk5xRThFbSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.D-zCxjBMDwBEfWYS1GVqoBDTeFD-WTbt2iQusrMR7gw",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/question/delete/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get List of User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTQ5NDY2LCJleHAiOjE3MTMyMzU4NjYsIm5iZiI6MTcxMzE0OTQ2NiwianRpIjoiTkhnc0hoSTRGbDJIY09DayIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.yyFSj0w-ccG-TQxjoPJT-GSqpjkpu7zvRITNMCRkqRY",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/get-user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTQ5NDY2LCJleHAiOjE3MTMyMzU4NjYsIm5iZiI6MTcxMzE0OTQ2NiwianRpIjoiTkhnc0hoSTRGbDJIY09DayIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.yyFSj0w-ccG-TQxjoPJT-GSqpjkpu7zvRITNMCRkqRY",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/get-user/role=teacher"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTQ5NDY2LCJleHAiOjE3MTMyMzU4NjYsIm5iZiI6MTcxMzE0OTQ2NiwianRpIjoiTkhnc0hoSTRGbDJIY09DayIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.yyFSj0w-ccG-TQxjoPJT-GSqpjkpu7zvRITNMCRkqRY",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/delete-user/id=2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Evaluation",
+			"item": [
+				{
+					"name": "Create Evaluation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMjM0NDI3LCJleHAiOjE3MTMzMjA4MjcsIm5iZiI6MTcxMzIzNDQyNywianRpIjoiaE1vY3BFRWp3bDlkZFBtZyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6bnVsbCwicm9sZSI6IlN0dWRlbnQifQ.QsWyruhN9ojN-e5EwGbNrpot7mwhTS56mk31jmGAc1E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_first_name\": \"Juan\",\n    \"evaluated_last_name\": \"Dela Cruz\",\n    \"subject_name\": \"Math\",\n    \"semester\": \"Spring\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"question_id\": 1,\n    \"evaluation_for\": \"Teacher\",\n    \"question_type\": \"general\",\n    \"question_description\": \"How helpful was the teacher?\",\n    \"rating\": 5\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/evaluation-result/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment/Suggestion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMjM0NDI3LCJleHAiOjE3MTMzMjA4MjcsIm5iZiI6MTcxMzIzNDQyNywianRpIjoiaE1vY3BFRWp3bDlkZFBtZyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6bnVsbCwicm9sZSI6IlN0dWRlbnQifQ.QsWyruhN9ojN-e5EwGbNrpot7mwhTS56mk31jmGAc1E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_first_name\": \"Juan\",\n    \"evaluated_last_name\": \"Dela Cruz\",\n    \"subject_name\": \"Math\",\n    \"semester\": \"Spring\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"question_id\": 1,\n    \"evaluation_for\": \"Teacher\",\n    \"question_type\": \"general\",\n    \"question_description\": \"How helpful was the teacher?\",\n    \"rating\": 5\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/evaluation-result/create"
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
