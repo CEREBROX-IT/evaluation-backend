@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('subject_name');
             $table->string('semester');
             $table->string('comment');
+            $table->string('suggestion');
             $table->string('strand');
             $table->string('year_level');
             $table->tinyInteger('status')->default(true);

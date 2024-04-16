@@ -5,13 +5,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Evaluation\QuestionController;
 use App\Http\Controllers\Evaluation\ResultController;
+use App\Http\Controllers\Evaluation\EvaluationController;
 // for API testing if it connected
 Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
-// ============== Evaluation Result Endpoints ==============
-
+// ============== Evaluation and Evaluation Result Endpoints ==============
+// Create Evaluation result
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
+
+// Update Comments and Suggestion
+Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/status={status}', [QuestionController::class, 'getQuestions']);
