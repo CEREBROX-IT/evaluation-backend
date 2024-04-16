@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('comment');
             $table->string('strand');
             $table->string('year_level');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(true);
             $table->timestamps();
         });
     }

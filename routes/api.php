@@ -4,11 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\AuthController;
 use App\Http\Controllers\Evaluation\QuestionController;
-
+use App\Http\Controllers\Evaluation\ResultController;
 // for API testing if it connected
 Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
+// ============== Evaluation Result Endpoints ==============
+
+Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/status={status}', [QuestionController::class, 'getQuestions']);
