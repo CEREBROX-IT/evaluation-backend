@@ -59,6 +59,11 @@ class QuestionController extends Controller
             return $user; // Return the response if authorization fails
         }
 
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
         $question = Question::create([
             'evaluation_for' => $request->evaluation_for,
             'evaluation_type' => $request->evaluation_type,
@@ -76,6 +81,11 @@ class QuestionController extends Controller
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
         $question = Question::find($id);
@@ -101,6 +111,11 @@ class QuestionController extends Controller
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
         // Find the question
