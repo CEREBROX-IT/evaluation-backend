@@ -12,6 +12,9 @@ Route::get('/testing', function () {
 });
 // ============== Evaluation and Evaluation Result Endpoints ==============
 // Create Evaluation result
+
+Route::get('/users/not-evaluated/status={status}', [EvaluationController::class, 'getUsersNotEvaluated']);
+
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 
 Route::get('/rating-total/type={type}', [ResultController::class, 'getRatingTotal']);
@@ -19,6 +22,8 @@ Route::get('/rating-total/type={type}', [ResultController::class, 'getRatingTota
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
 
 // Update Comments and Suggestion
+Route::get('evaluation-form/comment-suggestion/status={status}', [EvaluationController::class, 'getComments']);
+
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 
 Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
