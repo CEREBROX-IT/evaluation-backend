@@ -14,6 +14,8 @@ Route::get('/testing', function () {
 // Create Evaluation result
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 
+Route::get('/rating-total/type={type}', [ResultController::class, 'getRatingTotal']);
+
 // Update Comments and Suggestion
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 
@@ -60,8 +62,14 @@ Route::get('/get-user', [AuthController::class, 'getUserList']);
 Route::delete('/delete-user/id={id}', [AuthController::class, 'deleteUser']);
 
 // Logout (protected route, requires authentication)
-// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// // Fetch the total count of ratings where rating is 5
+// $ratingTotal = EvaluationResult::where('rating', 5)
+//     ->groupBy('rating')
+//     ->selectRaw('rating, count(*) as total')
+//     ->pluck('total', 'rating');

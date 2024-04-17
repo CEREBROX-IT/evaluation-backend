@@ -116,4 +116,19 @@ class ResultController extends Controller
 
         return response()->json(['message' => ' Evaluation result deleted successfully', 'result' => $result], 201);
     }
+
+    // ================= Get per Rating Total =================
+
+    public function getRatingTotal(Request $request, $type)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        $ratingTotal = EvaluationResult::where('evaluation_for', $type)->groupBy('rating')->selectRaw('rating, count(*) as total')->pluck('total', 'rating');
+
+        return response()->json($ratingTotal, 201);
+    }
 }
