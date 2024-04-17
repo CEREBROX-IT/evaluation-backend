@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -37,9 +36,13 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'jwt',
             'provider' => 'users',
         ],
+        // 'api' => [
+        //     'driver' => 'jwt', // Set the driver to 'jwt' for JWT token-based authentication
+        //     'provider' => 'users',
+        // ],
     ],
 
     /*
@@ -111,5 +114,4 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
-
 ];
