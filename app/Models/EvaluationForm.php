@@ -13,7 +13,7 @@ class EvaluationForm extends Model
     protected $table = 'evaluation';
 
     // Define the fillable attributes
-    protected $fillable = ['user_id', 'evaluated_id', 'evaluated_result_id', 'evaluated_first_name', 'evaluated_last_name', 'subject_name', 'semester', 'comment', 'suggestion', 'strand', 'year_level'];
+    protected $fillable = ['user_id', 'evaluated_id', 'evaluated_result_id', 'evaluated_first_name', 'evaluated_last_name', 'subject_name', 'semester', 'comment', 'suggestion', 'strand', 'year_level', 'approve_status', 'status'];
 
     // Define the relationships
     public function user()

@@ -21,6 +21,8 @@ Route::get('question-description/rating-total/', [ResultController::class, 'getQ
 // Update Comments and Suggestion
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 
+Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
+
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/status={status}', [QuestionController::class, 'getQuestions']);
 
