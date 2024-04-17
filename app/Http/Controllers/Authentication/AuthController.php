@@ -66,6 +66,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'status' => true,
         ]);
 
         return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
@@ -88,6 +89,7 @@ class AuthController extends Controller
 
             // Define the claims to be included in the token
             $customClaims = [
+                'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'username' => $user->username,
@@ -259,12 +261,83 @@ class AuthController extends Controller
         return response()->json(['message' => 'Password updated successfully']);
     }
 
+    // ================= Retreive User base on User Role =================
+    public function getUsersRole(Request $request, $role = null)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // If no role parameter is provided, return a 404 response
+        if ($role === null) {
+            return response()->json(['error' => 'Role parameter is required'], 404);
+        }
+
+        // If the role parameter is "all", fetch all users
+        if ($role === 'all') {
+            $users = User::select('id', 'first_name', 'last_name', 'role')->get();
+        } else {
+            // Fetch users based on the specified role
+            $users = User::where('role', $role)->select('id', 'first_name', 'last_name', 'role')->get();
+        }
+
+        // Return the users as a response
+        return response()->json(['users' => $users], 201);
+    }
+
+    public function getUserList(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        $users = User::where('status', true)->get();
+
+        return response()->json(['users' => $users], 201);
+    }
+
+    public function deleteUser(Request $request, $id)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        $users = User::find($id);
+
+        // Check if the question exists
+        if (!$users) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update the status of the question to false
+        $users->update(['status' => false]);
+
+        // Return success response
+        return response()->json(['message' => 'User deleted successfully'], 201);
+    }
+
     // ================= Log the user out (Invalidate the token). =================
 
     public function logout(Request $request)
     {
-        JWTAuth::parseToken()->invalidate(); // Invalidate the JWT token
+        try {
+            $token = JWTAuth::parseToken(); // Attempt to parse the token
 
-        return response()->json(['message' => 'Successfully logged out']);
+            if (!$token->authenticate()) {
+                return response()->json(['error' => 'Unauthorized'], 401); // Token authentication failed
+            }
+
+            $token->invalidate(); // Invalidate the JWT token
+
+            return response()->json(['message' => 'Successfully logged out']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to logout'], 500); // Internal server error
+        }
     }
 }

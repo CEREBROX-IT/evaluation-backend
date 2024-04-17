@@ -3,12 +3,39 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\AuthController;
-
+use App\Http\Controllers\Evaluation\QuestionController;
+use App\Http\Controllers\Evaluation\ResultController;
+use App\Http\Controllers\Evaluation\EvaluationController;
 // for API testing if it connected
 Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
+// ============== Evaluation and Evaluation Result Endpoints ==============
+// Create Evaluation result
+Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 
+Route::get('/rating-total/type={type}', [ResultController::class, 'getRatingTotal']);
+
+Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
+
+// Update Comments and Suggestion
+Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
+
+Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
+
+// ============== Evaluation Question Endpoints ==============
+Route::get('/question/get/status={status}', [QuestionController::class, 'getQuestions']);
+
+//create qeustion
+Route::post('/question/create', [QuestionController::class, 'createQuestion']);
+
+//update question
+Route::post('/question/update/{id}', [QuestionController::class, 'updateQuestion']);
+
+// Delete question route
+Route::delete('/question/delete/{id}', [QuestionController::class, 'deleteQuestion']);
+
+// ============== Authentication Endpoints ==============
 Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Authentication\VerificationController@verify')->name('verification.verify');
 
 // Registration
@@ -29,9 +56,24 @@ Route::post('/users/update-email/{id}', [AuthController::class, 'updateEmail']);
 // Forgot Password
 Route::post('/user/reset-password', [AuthController::class, 'resetPassword']);
 
+// To get User Base on the Role
+Route::get('/get-user/role={role}', [AuthController::class, 'getUsersRole']);
+
+// To get list of user where status true
+Route::get('/get-user', [AuthController::class, 'getUserList']);
+
+// To delete User
+Route::delete('/delete-user/id={id}', [AuthController::class, 'deleteUser']);
+
 // Logout (protected route, requires authentication)
-// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// // Fetch the total count of ratings where rating is 5
+// $ratingTotal = EvaluationResult::where('rating', 5)
+//     ->groupBy('rating')
+//     ->selectRaw('rating, count(*) as total')
+//     ->pluck('total', 'rating');
