@@ -118,7 +118,6 @@ class ResultController extends Controller
     }
 
     // ================= Get per Rating Total =================
-
     public function getRatingTotal(Request $request, $type)
     {
         // Check if the request has valid authorization token
@@ -127,8 +126,41 @@ class ResultController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        $ratingTotal = EvaluationResult::where('evaluation_for', $type)->groupBy('rating')->selectRaw('rating, count(*) as total')->pluck('total', 'rating');
+        // Fetch the total count of ratings for the specified type
+        $ratingTotal = EvaluationResult::where('evaluation_for', $type)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(*) as total')->pluck('total', 'rating');
 
         return response()->json($ratingTotal, 201);
+    }
+
+    // ================= Get Result rating total per questin =================
+
+    public function getQuestionRating(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Query the database to get the count of each rating for each question
+        $questionRatings = EvaluationResult::groupBy('question_description', 'rating')->selectRaw('question_description, rating, count(*) as total')->get();
+
+        // Organize the results into the desired format
+        $formattedResults = [];
+        foreach ($questionRatings as $result) {
+            $question = $result->question_description;
+            $rating = $result->rating;
+            $count = $result->total;
+
+            // If the question is not yet added to the formatted results array, create an entry for it
+            if (!isset($formattedResults[$question])) {
+                $formattedResults[$question] = [];
+            }
+
+            // Add the rating count to the corresponding question entry
+            $formattedResults[$question][$rating] = $count;
+        }
+
+        return response()->json($formattedResults, 201);
     }
 }
