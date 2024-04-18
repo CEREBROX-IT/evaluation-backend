@@ -6,33 +6,37 @@
 
 @section('content')
 
-    <div class="demo-container">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 mx-auto shadow-lg  p-md-4 p-5">
-                    <div class="row align-items-center">
-                        <div class="col-6 d-none d-md-inline-block"> <img
-                                src="https://images.pexels.com/photos/3987011/pexels-photo-3987011.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                                class="img-fluid"> </div>
-                        <div class="col-md-6 col-12">
-                            <h1 class="mb-4">Evaluation Form: Admin Panel</h1>
-                            <p>No worries, I've created a free checklist of everything you need to do & when to do it.</p>
-
-                            <form>
-                                <input class="form-control form-control-lg mb-3" id="username" name="username"
-                                    placeholder="Username">
-                                <input class="form-control form-control-lg mb-3" id="password" name="password"
-                                    placeholder="Password">
-                                <button class="btn btn-dark btn-lg w-100">SIGN IN</button>
-                            </form>
-                            <p class="small text-muted m-0 pt-3">Copyright © Evaluation Admin Panel 2024</p>
+    <div style="background-color: #6d2932;">
+        <div class="main-container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-11 mx-auto shadow-lg  p-md-4 p-5 bg-white">
+                        <div class="row align-items-center bg-white">
+                            <div class="col-12">
+                                <h3 class="text-center mb-4">Evaluation Form Admin</h3>
+                                <form action="{{ route('user-login') }}" method="POST">
+                                    @csrf
+                                    <input class="form-control form-control-lg mb-3 display-4" id="username"
+                                        name="username" placeholder="Username">
+                                    <input class="form-control form-control-lg mb-3" id="password" name="password"
+                                        placeholder="Password" type="password">
+                                    <button type="submit" class="btn btn-dark btn-lg w-100 mt-4">SIGN IN</button>
+                                </form>
+                                @if ($errors->any())
+                                    <li class="list-group-item list-group-item-danger text-center">{{ $errors->first() }}
+                                    </li>
+                                    <div class="d-flex flex-column  w-90 border-2 border-danger ">
+                                    </div>
+                                @endif
+                                <p class="small text-muted m-0 pt-3 text-center">Copyright © Evaluation Admin Panel 2024
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 
 
@@ -67,13 +71,7 @@
         border-radius: 0;
     }
 
-    .bg-image {
-        background: linear-gradient(rgba(64, 57, 86, 0.5), rgba(64, 57, 86, 0.9)), url(https://images.pexels.com/photos/3021601/pexels-photo-3021601.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=640&w=960);
-        background-size: cover;
-        background-position: center;
-    }
-
-    .demo-container {
+    .main-container {
         height: 100%;
         display: flex;
         justify-content: center;

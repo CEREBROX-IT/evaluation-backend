@@ -34,6 +34,44 @@ class EvaluationController extends Controller
         return $user;
     }
 
+    // Function to get user that does not have evaluated
+    public function getUsersNotEvaluated(Request $request, $status)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Retrieve users who have not yet do evaluation
+        $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('first_name', 'last_name')->get();
+
+        return response()->json(['users not Evaluated yet' => $usersNotEvaluated], 200);
+    }
+
+    public function getComments(Request $request, $status)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Retrieve comments and suggestions for all evaluation forms with status true
+        $evaluationForms = EvaluationForm::where('status', $status)->get(['id', 'comment', 'suggestion']);
+        return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
+    }
+
     public function updateEvaluation(Request $request, $id)
     {
         // Check if the request has valid authorization token
