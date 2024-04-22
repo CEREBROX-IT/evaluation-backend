@@ -18,9 +18,9 @@ Route::get('total/teachers-evaluated', [EvaluationController::class, 'getTeacher
 Route::get('total/students-evaluated', [EvaluationController::class, 'getStudentEvaluated']);
 // ============== Create Session School Year ==============
 
-// Create Session school year
+// Create Session school year (Tempoary)
 Route::post('school-year/create', [SessionController::class, 'createSessionSchoolYear']);
-
+Route::get('school-year/list', [SessionController::class, 'getSessionList']);
 // ============== Evaluation and Evaluation Result Endpoints ==============
 // Create Evaluation result
 Route::get('/users/not-evaluated/status={status}', [EvaluationController::class, 'getUsersNotEvaluated']);
