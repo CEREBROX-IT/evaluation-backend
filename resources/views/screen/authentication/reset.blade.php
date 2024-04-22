@@ -4,7 +4,6 @@
 
 @section('content')
 
-
     <div class="d-flex justify-content-center align-items-center vh-100 w-100 px-4 px-lg-0" style="background-color: #f7f7f7">
         <div class="container col-lg-4 w-100 bg-white p-4 d-flex flex-column justify-content-center align-items-center shadow-md"
             style="border-radius: 10px;">
@@ -32,6 +31,7 @@
                 <button type="submit" class="btn btn-dark btn-lg w-100" style="margin-top: 25px;">Reset
                     Password</button>
             </form>
+
 
             <p class="medium text-center mt-3">Click here to proceed to login <a href="{{ env('BASE_URL') }}">Click
                     Here</a></p>

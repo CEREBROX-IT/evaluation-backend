@@ -302,9 +302,10 @@ class AuthController extends Controller
         // Find the user by the token
         $user = User::where('password_reset_token', $request->token)->first();
 
-        // Check if the user exists
-        if (!$user) {
-            return response()->json(['error' => 'Invalid token'], 400);
+        // Check if the user exists and if the token matches
+        if (!$user || $user->password_reset_token !== $request->token) {
+            // Token is invalid or has already been used, return invalid_token view
+            return view('screen/authentication/invalidReset');
         }
 
         // Update the user's password
@@ -313,7 +314,8 @@ class AuthController extends Controller
             'password_reset_token' => null, // Clear the reset token
         ]);
 
-        return response()->json(['message' => 'Password updated successfully']);
+        // Redirect the user to the client URL
+        return redirect(env('CLIENT_URL'));
     }
 
     // ================= Retreive User base on User Role =================
