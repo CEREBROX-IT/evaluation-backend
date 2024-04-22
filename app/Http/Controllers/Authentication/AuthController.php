@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Authentication;
 use Illuminate\Support\Facades\Validator; // to validate the email address
 use App\Http\Controllers\Controller; // Add this line to import the Controller class
 use App\Models\User;
+use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -87,6 +88,16 @@ class AuthController extends Controller
             // Retrieve the authenticated user
             $user = Auth::user();
 
+            // Define the session school year
+            $sessionSchoolYear = null;
+
+            // Retrieve the session school year if status is true
+            // Adjust the logic as per your application's requirements
+            $session = Session::where('session_status', true)->first();
+            if ($session) {
+                $sessionSchoolYear = $session->school_year;
+            }
+
             // Define the claims to be included in the token
             $customClaims = [
                 'id' => $user->id,
@@ -94,6 +105,7 @@ class AuthController extends Controller
                 'last_name' => $user->last_name,
                 'username' => $user->username,
                 'email' => $user->email,
+                'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
                 'exp' => now()->addDay()->timestamp, // Set expiration to 1 day from now
             ];

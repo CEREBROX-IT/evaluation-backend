@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('evaluation', function (Blueprint $table) {
             $table->id();
             $table->foreignId('session_id')->constrained('session');
+            $table->string('school_year');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('evaluated_id')->constrained('users')->where('role', 'Teacher');
             $table->string('evaluated_first_name');
