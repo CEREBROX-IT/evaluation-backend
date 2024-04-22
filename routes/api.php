@@ -11,7 +11,11 @@ use App\Http\Controllers\Evaluation\EvaluationController;
 Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
-
+// ============== Statistic ==============
+Route::get('total/students', [AuthController::class, 'studentTotal']);
+Route::get('total/teachers', [AuthController::class, 'teacherTotal']);
+Route::get('total/teachers-evaluated', [EvaluationController::class, 'getTeacherEvaluated']);
+Route::get('total/students-evaluated', [EvaluationController::class, 'getStudentEvaluated']);
 // ============== Create Session School Year ==============
 
 // Create Session school year
@@ -19,13 +23,9 @@ Route::post('school-year/create', [SessionController::class, 'createSessionSchoo
 
 // ============== Evaluation and Evaluation Result Endpoints ==============
 // Create Evaluation result
-
 Route::get('/users/not-evaluated/status={status}', [EvaluationController::class, 'getUsersNotEvaluated']);
-
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
-
 Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
-
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
 
 // Update Comments and Suggestion
@@ -83,9 +83,3 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-// // Fetch the total count of ratings where rating is 5
-// $ratingTotal = EvaluationResult::where('rating', 5)
-//     ->groupBy('rating')
-//     ->selectRaw('rating, count(*) as total')
-//     ->pluck('total', 'rating');

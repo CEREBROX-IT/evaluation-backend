@@ -377,6 +377,44 @@ class AuthController extends Controller
         return response()->json(['message' => 'User deleted successfully'], 201);
     }
 
+    public function studentTotal(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Count the total number of active students
+        $totalStudents = User::where('role', 'Student')->where('status', true)->count();
+
+        return response()->json(['message' => 'Total students', 'data' => $totalStudents], 201);
+    }
+
+    public function teacherTotal(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Count the total number of active students
+        $totalTeacher = User::where('role', 'Teacher')->where('status', true)->count();
+
+        return response()->json(['message' => 'Total teachers', 'data' => $totalTeacher], 201);
+    }
+
     // ================= Log the user out (Invalidate the token). =================
 
     public function logout(Request $request)
