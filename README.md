@@ -1,66 +1,50 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Evaluation REST API
+![php](https://img.shields.io/badge/php-%fcc803.svg?style=for-the-badge&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/laravel10-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+[![mysql](https://img.shields.io/badge/mysql-2d97d2?style=for-the-badge&logo=mysql&logoColor=orange)](https://www.mysql.com/)
+## Basic setup on your local device by following the step.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Clone the Repository:
+- Open your terminal or command prompt and navigate to the directory where you want to store your Laravel project. Then, use the git clone command to clone the repository from GitHub. 
 
-## About Laravel
+```bash
+# clone the repositoy
+https://github.com/CEREBROX-IT/evaluation-backend.git
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# navigate to the backend directory
+cd evaluation-backend
+```
+## 2. Tools and others:
+- Make sure to have <strong>Mysql</strong> installed on your device and tool to have access to database like <strong>phpmyadmin</strong>.
+- Make sure <strong>composer</strong> is installed.
+<a href="https://getcomposer.org/">https://getcomposer.org</a>
+- Create Database name <strong>"evaluation-db"</strong> manually. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 3. Install Composer Dependencies:
+- Laravel uses Composer to manage its dependencies. Run the following command to install all the required dependencies specified in the composer.json file:
+```bash
+composer install
+```
+## 4. Create a Copy of the Environment File:
+- Laravel requires an <strong>.env</strong> file for configuration. Make a copy of the .env.example file and rename it to .env. You can do this with the following command:
+```bash
+cp .env.example .env
+```
+## 5. Generate Application Key:
+- Run the following command to generate a unique application key for your Laravel application. (Add this on your .env file)
+```bash
+# generate application key
+php artisan key:generate
+```
+## 6. Set Up Environment Configuration:
+- Open the <strong>.env</strong> file in a text editor and configure your environment variables, such as database connection settings, mail settings, etc.
+## 7. Run Database Migrations:
+- Run the database migrations to create the necessary tables:
+```bash
+php artisan migrate
+```
+## 8. Serve the Application:
+- Finally, you can serve your Laravel application using the built-in PHP development server or any other web server you prefer. To use the PHP development server, run the following command:
+```bash
+php artisan serve
+```
