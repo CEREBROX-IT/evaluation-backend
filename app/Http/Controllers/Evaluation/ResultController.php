@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Evaluation;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Session;
 use App\Models\EvaluationResult;
 use App\Models\EvaluationForm;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +61,7 @@ class ResultController extends Controller
             return $user; // Return the response if authorization fails
         }
 
+        $userEvaluation = User::where('id', $request->user_id)->update(['last_evaluated' => $request->school_year]);
         // Create an Evaluation instance
         $evaluation = EvaluationForm::create($request->all());
 

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator; // to validate the email address
 use App\Http\Controllers\Controller; // Add this line to import the Controller class
 use App\Models\User;
 use App\Models\Session;
+use App\Models\EvaluationForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -92,10 +93,22 @@ class AuthController extends Controller
             $sessionSchoolYear = null;
 
             // Retrieve the session school year if status is true
-            // Adjust the logic as per your application's requirements
             $session = Session::where('session_status', true)->first();
             if ($session) {
                 $sessionSchoolYear = $session->school_year;
+            }
+
+            $evaluatedStatus = null;
+
+            $evaluation = EvaluationForm::where('user_id', $user->id)
+                ->where('approve_status', 'pending')
+                ->first();
+            if ($evaluation && $user->role === 'Teacher') {
+                $evaluatedStatus = 'completed';
+            } elseif ($user->role === 'Student') {
+                $evaluatedStatus = null;
+            } else {
+                $evaluatedStatus = 'not evaluated';
             }
 
             // Define the claims to be included in the token
@@ -107,6 +120,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
+                'teacher_evaluated' => $evaluatedStatus,
                 'exp' => now()->addDay()->timestamp, // Set expiration to 1 day from now
             ];
 
