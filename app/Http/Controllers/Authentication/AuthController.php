@@ -30,7 +30,7 @@ class AuthController extends Controller
         }
 
         $token = $request->header('Authorization');
-        $jwtToken = str_replace('Bearer ', '', $token);
+        $jwtToken = str_replace('Bearer', '', $token);
 
         try {
             $user = Auth::setToken($jwtToken)->user();
