@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\AuthController;
+use App\Http\Controllers\Authentication\SessionController;
 use App\Http\Controllers\Evaluation\QuestionController;
 use App\Http\Controllers\Evaluation\ResultController;
 use App\Http\Controllers\Evaluation\EvaluationController;
@@ -10,6 +11,12 @@ use App\Http\Controllers\Evaluation\EvaluationController;
 Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
+
+// ============== Create Session School Year ==============
+
+// Create Session school year
+Route::post('school-year/create', [SessionController::class, 'createSessionSchoolYear']);
+
 // ============== Evaluation and Evaluation Result Endpoints ==============
 // Create Evaluation result
 
@@ -17,7 +24,7 @@ Route::get('/users/not-evaluated/status={status}', [EvaluationController::class,
 
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 
-Route::get('/rating-total/type={type}', [ResultController::class, 'getRatingTotal']);
+Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
 
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
 

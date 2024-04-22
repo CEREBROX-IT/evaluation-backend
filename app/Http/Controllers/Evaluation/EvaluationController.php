@@ -49,7 +49,7 @@ class EvaluationController extends Controller
         }
 
         // Retrieve users who have not yet do evaluation
-        $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('first_name', 'last_name')->get();
+        $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('id', 'first_name', 'last_name')->get();
 
         return response()->json(['users not Evaluated yet' => $usersNotEvaluated], 200);
     }
