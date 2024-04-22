@@ -101,9 +101,12 @@ class AuthController extends Controller
             $evaluatedStatus = null;
 
             $evaluation = EvaluationForm::where('user_id', $user->id)
-                ->where('approve_status', 'pending')
+                ->where(function ($query) {
+                    $query->where('approve_status', 'Pending')->orWhere('approve_status', 'Approved');
+                })
                 ->first();
-            if ($evaluation && $user->role === 'Teacher') {
+
+            if ($evaluation && $user->role === 'Teacher' && $user->last_evaluated === $sessionSchoolYear) {
                 $evaluatedStatus = 'completed';
             } elseif ($user->role === 'Student') {
                 $evaluatedStatus = null;
@@ -121,6 +124,7 @@ class AuthController extends Controller
                 'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
                 'teacher_evaluated' => $evaluatedStatus,
+                'last_evaluated' => $user->last_evaluated,
                 'exp' => now()->addDay()->timestamp, // Set expiration to 1 day from now
             ];
 
