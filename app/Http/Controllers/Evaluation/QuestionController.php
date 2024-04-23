@@ -60,7 +60,7 @@ class QuestionController extends Controller
         }
 
         // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' || $user->role !== 'SuperAdmin') {
+        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
@@ -84,7 +84,7 @@ class QuestionController extends Controller
         }
 
         // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' || $user->role !== 'SuperAdmin') {
+        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
@@ -114,7 +114,7 @@ class QuestionController extends Controller
         }
 
         // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' || $user->role !== 'SuperAdmin') {
+        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
