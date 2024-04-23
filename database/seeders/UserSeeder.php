@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@example.com',
             'email_status' => 1,
             'username' => 'admin',
-            'password' => "qwerty", 
+            'password' => Hash::make('qwerty'), // You may want to change this
             'role' => 'Admin',
             'status' => 1,
         ]);
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'email' => 'teacher@example.com',
             'email_status' => 1,
             'username' => 'teacher',
-            'password' => "qwerty", 
+            'password' => Hash::make('qwerty'), // You may want to change this
             'role' => 'Teacher',
             'status' => 1,
         ]);
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
             'email' => 'student@example.com',
             'email_status' => 1,
             'username' => 'student',
-            'password' => "qwerty", 
+            'password' => Hash::make('qwerty'), // You may want to change this
             'role' => 'Student',
             'status' => 1,
         ]);
