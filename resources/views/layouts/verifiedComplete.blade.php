@@ -15,7 +15,7 @@
             <h2 class="font-weight-bold" style="color: #3d4653">Email Verified!</h2>
             <p class="text-muted text-center">You have successfully verified your email address.</p>
 
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+            <a href="{{ env('CLIENT_URL') }}">
                 <button class="btn btn-dark btn-lg mt-5 " style="width: 200px;">CONTINUE</button>
             </a>
 

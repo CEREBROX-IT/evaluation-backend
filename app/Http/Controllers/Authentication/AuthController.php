@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Authentication;
 use Illuminate\Support\Facades\Validator; // to validate the email address
 use App\Http\Controllers\Controller; // Add this line to import the Controller class
 use App\Models\User;
+use App\Models\Session;
+use App\Models\EvaluationForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +30,7 @@ class AuthController extends Controller
         }
 
         $token = $request->header('Authorization');
-        $jwtToken = str_replace('Bearer ', '', $token);
+        $jwtToken = str_replace('Bearer', '', $token);
 
         try {
             $user = Auth::setToken($jwtToken)->user();
@@ -87,6 +89,31 @@ class AuthController extends Controller
             // Retrieve the authenticated user
             $user = Auth::user();
 
+            // Define the session school year
+            $sessionSchoolYear = null;
+
+            // Retrieve the session school year if status is true
+            $session = Session::where('session_status', true)->first();
+            if ($session) {
+                $sessionSchoolYear = $session->school_year;
+            }
+
+            $evaluatedStatus = null;
+
+            $evaluation = EvaluationForm::where('user_id', $user->id)
+                ->where(function ($query) {
+                    $query->where('approve_status', 'Pending')->orWhere('approve_status', 'Approved');
+                })
+                ->first();
+
+            if ($evaluation && $user->role === 'Teacher' && $user->last_evaluated === $sessionSchoolYear) {
+                $evaluatedStatus = 'completed';
+            } elseif ($user->role === 'Student') {
+                $evaluatedStatus = null;
+            } else {
+                $evaluatedStatus = 'not evaluated';
+            }
+
             // Define the claims to be included in the token
             $customClaims = [
                 'id' => $user->id,
@@ -94,7 +121,10 @@ class AuthController extends Controller
                 'last_name' => $user->last_name,
                 'username' => $user->username,
                 'email' => $user->email,
+                'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
+                'teacher_evaluated' => $evaluatedStatus,
+                'last_evaluated' => $user->last_evaluated,
                 'exp' => now()->addDay()->timestamp, // Set expiration to 1 day from now
             ];
 
@@ -272,9 +302,10 @@ class AuthController extends Controller
         // Find the user by the token
         $user = User::where('password_reset_token', $request->token)->first();
 
-        // Check if the user exists
-        if (!$user) {
-            return response()->json(['error' => 'Invalid token'], 400);
+        // Check if the user exists and if the token matches
+        if (!$user || $user->password_reset_token !== $request->token) {
+            // Token is invalid or has already been used, return invalid_token view
+            return view('screen/authentication/invalidReset');
         }
 
         // Update the user's password
@@ -283,7 +314,8 @@ class AuthController extends Controller
             'password_reset_token' => null, // Clear the reset token
         ]);
 
-        return response()->json(['message' => 'Password updated successfully']);
+        // Redirect the user to the client URL
+        return redirect(env('CLIENT_URL'));
     }
 
     // ================= Retreive User base on User Role =================
@@ -345,6 +377,44 @@ class AuthController extends Controller
 
         // Return success response
         return response()->json(['message' => 'User deleted successfully'], 201);
+    }
+
+    public function studentTotal(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Count the total number of active students
+        $totalStudents = User::where('role', 'Student')->where('status', true)->count();
+
+        return response()->json(['message' => 'Total students', 'data' => $totalStudents], 201);
+    }
+
+    public function teacherTotal(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Check if the authenticated user is an admin
+        if ($user->role !== 'Admin') {
+            return response()->json(['error' => 'Unauthorized Request'], 401);
+        }
+
+        // Count the total number of active students
+        $totalTeacher = User::where('role', 'Teacher')->where('status', true)->count();
+
+        return response()->json(['message' => 'Total teachers', 'data' => $totalTeacher], 201);
     }
 
     // ================= Log the user out (Invalidate the token). =================
