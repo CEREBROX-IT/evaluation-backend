@@ -121,6 +121,7 @@ class AuthController extends Controller
                 'last_name' => $user->last_name,
                 'username' => $user->username,
                 'email' => $user->email,
+                'session_id' => $session->id,
                 'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
                 'teacher_evaluated' => $evaluatedStatus,
@@ -147,9 +148,9 @@ class AuthController extends Controller
             // Check if the user's email is verified
             if (auth()->user()->role == 'Admin') {
                 // Authentication successful
-                return redirect('/dashboard')->with('success', 'Login successful!');
+                return redirect('/home')->with('success', 'Login successful!');
             } else {
-                // User's tolr not admin
+                // User's role not admin
                 auth()->logout(); // Log out the user
                 return redirect()
                     ->back()
@@ -419,20 +420,9 @@ class AuthController extends Controller
 
     // ================= Log the user out (Invalidate the token). =================
 
-    public function logout(Request $request)
+    public function logout()
     {
-        try {
-            $token = JWTAuth::parseToken(); // Attempt to parse the token
-
-            if (!$token->authenticate()) {
-                return response()->json(['error' => 'Unauthorized'], 401); // Token authentication failed
-            }
-
-            $token->invalidate(); // Invalidate the JWT token
-
-            return response()->json(['message' => 'Successfully logged out']);
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to logout'], 500); // Internal server error
-        }
+        Auth::logout();
+        return redirect('/');
     }
 }
