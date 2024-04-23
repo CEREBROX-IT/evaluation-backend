@@ -121,6 +121,7 @@ class AuthController extends Controller
                 'last_name' => $user->last_name,
                 'username' => $user->username,
                 'email' => $user->email,
+                'session_id' => $session->id,
                 'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
                 'teacher_evaluated' => $evaluatedStatus,
@@ -147,7 +148,7 @@ class AuthController extends Controller
             // Check if the user's email is verified
             if (auth()->user()->role == 'Admin') {
                 // Authentication successful
-                return redirect('/dashboard')->with('success', 'Login successful!');
+                return redirect('/home')->with('success', 'Login successful!');
             } else {
                 // User's role not admin
                 auth()->logout(); // Log out the user
