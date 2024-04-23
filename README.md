@@ -41,6 +41,7 @@ php artisan key:generate
 ## 7. Run Database Migrations:
 - Run the database migrations to create the necessary tables:
 ```bash
+php artisan migrate --path=database/migrations/2024_04_19_061114_create_session_table.php
 php artisan migrate
 ```
 ## 8. Serve the Application:

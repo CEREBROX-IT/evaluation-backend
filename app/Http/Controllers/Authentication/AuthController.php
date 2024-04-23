@@ -91,11 +91,12 @@ class AuthController extends Controller
 
             // Define the session school year
             $sessionSchoolYear = null;
-
+            $sessionId = null;
             // Retrieve the session school year if status is true
             $session = Session::where('session_status', true)->first();
             if ($session) {
                 $sessionSchoolYear = $session->school_year;
+                $sessionId = $session->id;
             }
 
             $evaluatedStatus = null;
@@ -121,7 +122,7 @@ class AuthController extends Controller
                 'last_name' => $user->last_name,
                 'username' => $user->username,
                 'email' => $user->email,
-                'session_id' => $session->id,
+                'session_id' => $sessionId,
                 'school_year' => $sessionSchoolYear,
                 'role' => $user->role,
                 'teacher_evaluated' => $evaluatedStatus,
