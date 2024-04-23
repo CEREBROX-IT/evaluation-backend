@@ -13,8 +13,7 @@ return new class extends Migration {
             $table->string('school_year');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('evaluated_id')->constrained('users')->where('role', 'Teacher');
-            $table->string('evaluated_first_name');
-            $table->string('evaluated_last_name');
+            $table->string('evaluated_full_name');
             $table->string('subject_name');
             $table->string('semester');
             $table->string('comment');

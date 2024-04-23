@@ -339,13 +339,19 @@ class AuthController extends Controller
             return response()->json(['error' => 'Role parameter is required'], 404);
         }
 
-        // If the role parameter is "all", fetch all users
+        // Fetch users based on the specified role
         if ($role === 'all') {
             $users = User::select('id', 'first_name', 'last_name', 'role')->get();
         } else {
-            // Fetch users based on the specified role
             $users = User::where('role', $role)->select('id', 'first_name', 'last_name', 'role')->get();
         }
+
+        // Transform each user object to include a "full name" field
+        $users->transform(function ($user) {
+            $user['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
+            unset($user['first_name'], $user['last_name']); // Remove individual name fields
+            return $user;
+        });
 
         // Return the users as a response
         return response()->json(['users' => $users], 201);
@@ -361,6 +367,13 @@ class AuthController extends Controller
 
         $users = User::where('status', true)->get();
 
+        $users->transform(function ($user) {
+            $user['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
+            unset($user['first_name'], $user['last_name']);
+            return $user;
+        });
+
+        // Return the users as a response
         return response()->json(['users' => $users], 201);
     }
 
