@@ -52,7 +52,6 @@ class ResultController extends Controller
     }
 
     // ================= Create Evaluation Result =================
-    // Controller Method
     public function createEvaluationResult(Request $request)
     {
         // Check if the request has valid authorization token
@@ -61,9 +60,14 @@ class ResultController extends Controller
             return $user; // Return the response if authorization fails
         }
 
+        // Update the user's last evaluated school year
         $userEvaluation = User::where('id', $request->user_id)->update(['last_evaluated' => $request->school_year]);
-        // Create an Evaluation instance
-        $evaluation = EvaluationForm::create($request->all());
+
+        // Merge first_name and last_name into full_name
+        $evaluatedFullName = $request->evaluated_first_name . ' ' . $request->evaluated_last_name;
+
+        // Create an Evaluation instance with the merged full_name
+        $evaluation = EvaluationForm::create(array_merge($request->except(['evaluated_first_name', 'evaluated_last_name']), ['evaluated_full_name' => $evaluatedFullName]));
 
         // Iterate over each question in the request
         foreach ($request->questions as $question) {
