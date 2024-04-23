@@ -46,6 +46,11 @@ class AuthController extends Controller
         return $user;
     }
 
+    public function index()
+    {
+        return view('screen/authentication/login');
+    }
+
     // ================= Register New User =================
 
     public function register(Request $request)
@@ -144,8 +149,8 @@ class AuthController extends Controller
     {
         $credentials = $request->only('username', 'password');
 
-        // Attempt to authenticate the user
-        if (auth()->attempt($credentials)) {
+        // Attempt to authenticate the user using the 'web' guard
+        if (Auth::guard('web')->attempt($credentials)) {
             // Check if the user's email is verified
             if (auth()->user()->role == 'Admin') {
                 // Authentication successful
@@ -424,6 +429,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('/welcome');
     }
 }
