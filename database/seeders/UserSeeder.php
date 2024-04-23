@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             'email_status' => 1,
             'username' => 'admin',
             'password' => "qwerty", 
-            'role' => 'admin',
+            'role' => 'Admin',
             'status' => 1,
         ]);
 
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'email_status' => 1,
             'username' => 'teacher',
             'password' => "qwerty", 
-            'role' => 'teacher',
+            'role' => 'Teacher',
             'status' => 1,
         ]);
 
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             'email_status' => 1,
             'username' => 'student',
             'password' => "qwerty", 
-            'role' => 'student',
+            'role' => 'Student',
             'status' => 1,
         ]);
     }
