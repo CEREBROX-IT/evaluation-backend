@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\EvaluationForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EvaluationController extends Controller
 {
@@ -88,8 +89,9 @@ class EvaluationController extends Controller
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
-        // Retrieve comments and suggestions for all evaluation forms with status true
-        $evaluationForms = EvaluationForm::where('status', $status)->get(['id', 'comment', 'suggestion']);
+        // Retrieve comments, suggestions, and user details for all evaluation forms with the specified status
+        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name')->where('evaluation.status', $status)->get();
+
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }
 
