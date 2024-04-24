@@ -12,10 +12,8 @@ Route::get('/testing', function () {
     return 'REST API is connected Successfully';
 });
 // ============== Statistic ==============
-Route::get('total/students', [AuthController::class, 'studentTotal']);
-Route::get('total/teachers', [AuthController::class, 'teacherTotal']);
-Route::get('total/teachers-evaluated', [EvaluationController::class, 'getTeacherEvaluated']);
-Route::get('total/students-evaluated', [EvaluationController::class, 'getStudentEvaluated']);
+Route::get('total/user-count', [AuthController::class, 'userTotal']);
+Route::get('total/users-evaluated', [EvaluationController::class, 'getUserEvaluated']);
 // ============== Create Session School Year ==============
 
 // Create Session school year (Tempoary)
