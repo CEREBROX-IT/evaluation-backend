@@ -18,7 +18,7 @@ class EvaluationController extends Controller
         }
 
         $token = $request->header('Authorization');
-        $jwtToken = str_replace('Bearer ', $token);
+        $jwtToken = str_replace('Bearer ', '', $token);
 
         try {
             $user = Auth::setToken($jwtToken)->user();
@@ -28,33 +28,14 @@ class EvaluationController extends Controller
 
         // Check if $user is null, indicating invalid or expired token
         if (!$user) {
-            return response()->json(['error' => 'Invalid token or expired'], 401);
+            return response()->json(['error' => 'Invalid token or expired'], 200);
         }
 
         return $user;
     }
-    // Function to get Teachers who have already been Evaluated
-    public function getTeacherEvaluated(Request $request)
-    {
-        // Check if the request has valid authorization token
-        $user = $this->authorizeRequest($request);
-        if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
-        }
-
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
-        // Retrieve teachers who have already been evaluated
-        $teachersEvaluated = User::where('role', 'Teacher')->whereHas('evaluationForms')->count();
-
-        return response()->json(['message' => 'Total teachers Evaluated', 'data' => $teachersEvaluated], 201);
-    }
 
     // Function to get Student who have already been Evaluated
-    public function getStudentEvaluated(Request $request)
+    public function getUserEvaluated(Request $request)
     {
         // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
@@ -69,8 +50,9 @@ class EvaluationController extends Controller
 
         // Retrieve teachers who have already been evaluated
         $studentsEvaluated = User::where('role', 'Student')->whereHas('evaluationForms')->count();
-
-        return response()->json(['message' => 'Total students Evaluated', 'data' => $studentsEvaluated], 201);
+        // Retrieve teachers who have already been evaluated
+        $teachersEvaluated = User::where('role', 'Teacher')->whereHas('evaluationForms')->count();
+        return response()->json(['message' => 'Total User Evaluated', 'students' => $studentsEvaluated, 'teacher' => $teachersEvaluated], 201);
     }
 
     // Function to get user that does not have evaluated

@@ -30,7 +30,7 @@ class AuthController extends Controller
         }
 
         $token = $request->header('Authorization');
-        $jwtToken = str_replace('Bearer', '', $token);
+        $jwtToken = str_replace('Bearer ', '', $token);
 
         try {
             $user = Auth::setToken($jwtToken)->user();
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         // Check if $user is null, indicating invalid or expired token
         if (!$user) {
-            return response()->json(['Invalid token or expired'], 200);
+            return response()->json(['error' => 'Invalid token or expired'], 200);
         }
 
         return $user;
@@ -399,7 +399,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'User deleted successfully'], 201);
     }
 
-    public function studentTotal(Request $request)
+    public function userTotal(Request $request)
     {
         // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
@@ -414,27 +414,10 @@ class AuthController extends Controller
 
         // Count the total number of active students
         $totalStudents = User::where('role', 'Student')->where('status', true)->count();
-
-        return response()->json(['message' => 'Total students', 'data' => $totalStudents], 201);
-    }
-
-    public function teacherTotal(Request $request)
-    {
-        // Check if the request has valid authorization token
-        $user = $this->authorizeRequest($request);
-        if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
-        }
-
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
         // Count the total number of active students
         $totalTeacher = User::where('role', 'Teacher')->where('status', true)->count();
 
-        return response()->json(['message' => 'Total teachers', 'data' => $totalTeacher], 201);
+        return response()->json(['message' => 'Total result', 'student' => $totalStudents, 'teacher' => $totalTeacher], 201);
     }
 
     // ================= Log the user out (Invalidate the token). =================
