@@ -114,7 +114,7 @@ class EvaluationController extends Controller
         // Add a condition to filter by user role if evaluated_id matches user ID and user role is "teacher" or "student"
         $evaluationForms->where(function ($query) use ($userRole) {
             $query->whereExists(function ($subQuery) use ($userRole) {
-                $subQuery->select(DB::raw(1))->from('users')->whereColumn('users.id', 'evaluation.evaluated_id')->where('users.role', $userRole)->where('evaluation.approve_status', 'Pending');
+                $subQuery->select(DB::raw(1))->from('users')->whereColumn('users.id', 'evaluation.evaluated_id')->where('users.role', $userRole)->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true);
             });
         });
 

@@ -338,13 +338,27 @@ class AuthController extends Controller
         if ($role === null) {
             return response()->json(['error' => 'Role parameter is required'], 404);
         }
-
-        // Fetch users based on the specified role
+        // Fetch users based on the specified role and sort by created_at
         if ($role === 'all') {
-            $users = User::select('id', 'first_name', 'last_name', 'role')->get();
+            $users = User::select('id', 'first_name', 'last_name', 'role')
+                ->orderBy('updated_at', 'desc') // Sort by created_at in descending order
+                ->get();
         } else {
-            $users = User::where('role', $role)->select('id', 'first_name', 'last_name', 'role')->get();
+            $users = User::where('role', $role)
+                ->select('id', 'first_name', 'last_name', 'role')
+                ->orderBy('updated_at', 'desc') // Sort by created_at in descending order
+                ->get();
         }
+
+        // Transform each user object to include a "full name" field
+        $users->transform(function ($user) {
+            $user['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
+            unset($user['first_name'], $user['last_name']); // Remove individual name fields
+            return $user;
+        });
+
+        // Return the users as a response
+        return response()->json(['users' => $users], 201);
 
         // Transform each user object to include a "full name" field
         $users->transform(function ($user) {

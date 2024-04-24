@@ -44,7 +44,7 @@ class QuestionController extends Controller
         }
 
         // Fetch questions with status true
-        $questions = Question::where('status', $status)->get();
+        $questions = Question::where('status', $status)->orderBy('updated_at', 'desc')->get();
 
         return response()->json(['questions' => $questions], 201);
     }

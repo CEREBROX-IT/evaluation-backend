@@ -28,6 +28,7 @@ Route::get('question-description/rating-total/', [ResultController::class, 'getQ
 
 // get Comments and Suggestion
 Route::get('evaluation-form/comment-suggestion/role={userRole}', [EvaluationController::class, 'getComments']);
+Route::get('list-approved/type={type}/userid={userid}', [ResultController::class, 'getApproveComments']);
 
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 
