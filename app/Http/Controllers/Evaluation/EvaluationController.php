@@ -18,7 +18,7 @@ class EvaluationController extends Controller
         }
 
         $token = $request->header('Authorization');
-        $jwtToken = str_replace('Bearer ', $token);
+        $jwtToken = str_replace('Bearer ', '', $token);
 
         try {
             $user = Auth::setToken($jwtToken)->user();
@@ -28,11 +28,12 @@ class EvaluationController extends Controller
 
         // Check if $user is null, indicating invalid or expired token
         if (!$user) {
-            return response()->json(['error' => 'Invalid token or expired'], 401);
+            return response()->json(['error' => 'Invalid token or expired'], 200);
         }
 
         return $user;
     }
+
     // Function to get Teachers who have already been Evaluated
     public function getTeacherEvaluated(Request $request)
     {

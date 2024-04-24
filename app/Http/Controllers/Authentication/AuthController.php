@@ -30,7 +30,7 @@ class AuthController extends Controller
         }
 
         $token = $request->header('Authorization');
-        $jwtToken = str_replace('Bearer', '', $token);
+        $jwtToken = str_replace('Bearer ', '', $token);
 
         try {
             $user = Auth::setToken($jwtToken)->user();
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         // Check if $user is null, indicating invalid or expired token
         if (!$user) {
-            return response()->json(['Invalid token or expired'], 200);
+            return response()->json(['error' => 'Invalid token or expired'], 200);
         }
 
         return $user;
