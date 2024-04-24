@@ -28,14 +28,14 @@ class UserSeeder extends Seeder
         ]);
 
         // Create a teacher user
-        for ($i = 1; $i <= 3; $i++) {
+       for ($i = 1; $i <= 3; $i++) {
             User::create([
                 'first_name' => 'Teacher' . $i,
                 'last_name' => 'User',
                 'email' => 'teacher' . $i . '@example.com',
                 'email_status' => 1,
                 'username' => 'teacher' . $i,
-                'password' => Hash::make('qwerty'), // You may want to change this
+                'password' => Hash::make('qwerty'), 
                 'role' => 'Teacher',
                 'status' => 1,
             ]);
