@@ -64,10 +64,10 @@ class ResultController extends Controller
         $userEvaluation = User::where('id', $request->user_id)->update(['last_evaluated' => $request->school_year]);
 
         // Merge first_name and last_name into full_name
-        $evaluatedFullName = $request->evaluated_first_name . ' ' . $request->evaluated_last_name;
+        $evaluatedFullName = $request->evaluated_full_name;
 
         // Create an Evaluation instance with the merged full_name
-        $evaluation = EvaluationForm::create(array_merge($request->except(['evaluated_first_name', 'evaluated_last_name']), ['evaluated_full_name' => $evaluatedFullName]));
+        $evaluation = EvaluationForm::create(array_merge($request->except(['evaluated_full_name']), ['evaluated_full_name' => $evaluatedFullName]));
 
         // Iterate over each question in the request
         foreach ($request->questions as $question) {
