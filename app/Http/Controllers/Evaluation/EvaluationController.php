@@ -76,7 +76,26 @@ class EvaluationController extends Controller
         return response()->json(['users not Evaluated yet' => $usersNotEvaluated], 200);
     }
 
-    public function getComments(Request $request, $status)
+    // public function getComments(Request $request)
+    // {
+    //     // Check if the request has valid authorization token
+    //     $user = $this->authorizeRequest($request);
+    //     if (!$user instanceof User) {
+    //         return $user; // Return the response if authorization fails
+    //     }
+
+    //     // Check if the authenticated user is an admin
+    //     if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
+    //         return response()->json(['error' => 'Unauthorized Request'], 401);
+    //     }
+
+    //     // Retrieve comments, suggestions, and user details for all evaluation forms with the specified status
+    //     $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name')->get();
+
+    //     return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
+    // }
+
+    public function getComments(Request $request, $userRole)
     {
         // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
@@ -89,8 +108,18 @@ class EvaluationController extends Controller
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
-        // Retrieve comments, suggestions, and user details for all evaluation forms with the specified status
-        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name')->where('evaluation.status', $status)->get();
+        // Retrieve comments, suggestions, and user details for all evaluation forms
+        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name');
+
+        // Add a condition to filter by user role if evaluated_id matches user ID and user role is "teacher" or "student"
+        $evaluationForms->where(function ($query) use ($userRole) {
+            $query->whereExists(function ($subQuery) use ($userRole) {
+                $subQuery->select(DB::raw(1))->from('users')->whereColumn('users.id', 'evaluation.evaluated_id')->where('users.role', $userRole)->where('evaluation.approve_status', 'Pending');
+            });
+        });
+
+        // Get the result
+        $evaluationForms = $evaluationForms->get();
 
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }

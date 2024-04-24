@@ -26,8 +26,8 @@ Route::post('evaluation-result/create', [ResultController::class, 'createEvaluat
 Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
 
-// Update Comments and Suggestion
-Route::get('evaluation-form/comment-suggestion/status={status}', [EvaluationController::class, 'getComments']);
+// get Comments and Suggestion
+Route::get('evaluation-form/comment-suggestion/role={userRole}', [EvaluationController::class, 'getComments']);
 
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 
