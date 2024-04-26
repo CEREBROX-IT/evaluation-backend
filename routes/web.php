@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication\AuthController;
 
-Route::get('/', [AuthController::class, 'index'])->name('welcome');
-
 // Reset Password
 Route::get('/reset-password', function () {
     // Retrieve the token from the query parameters

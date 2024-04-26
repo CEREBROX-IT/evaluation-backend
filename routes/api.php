@@ -7,20 +7,19 @@ use App\Http\Controllers\Authentication\SessionController;
 use App\Http\Controllers\Evaluation\QuestionController;
 use App\Http\Controllers\Evaluation\ResultController;
 use App\Http\Controllers\Evaluation\EvaluationController;
-// for API testing if it connected
-Route::get('/testing', function () {
-    return 'REST API is connected Successfully';
+
+Route::get('/', function () {
+    return view('screen/test');
 });
 // ============== Statistic ==============
 Route::get('total/user-count', [AuthController::class, 'userTotal']);
 Route::get('total/users-evaluated', [EvaluationController::class, 'getUserEvaluated']);
 // ============== Create Session School Year ==============
-
-// Create Session school year (Tempoary)
 Route::post('school-year/create', [SessionController::class, 'createSessionSchoolYear']);
 Route::get('school-year/list', [SessionController::class, 'getSessionList']);
+
 // ============== Evaluation and Evaluation Result Endpoints ==============
-// Create Evaluation result
+
 Route::get('/users/not-evaluated/status={status}', [EvaluationController::class, 'getUsersNotEvaluated']);
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
