@@ -145,31 +145,6 @@ class AuthController extends Controller
         }
     }
 
-    public function adminLogin(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
-
-        // Attempt to authenticate the user using the 'web' guard
-        if (Auth::guard('web')->attempt($credentials)) {
-            // Check if the user's email is verified
-            if (auth()->user()->role == 'Admin') {
-                // Authentication successful
-                return redirect('/home')->with('success', 'Login successful!');
-            } else {
-                // User's role not admin
-                auth()->logout(); // Log out the user
-                return redirect()
-                    ->back()
-                    ->withErrors(['adminLogin' => 'Authorized such as Admin only']);
-            }
-        } else {
-            // Authentication failed
-            return redirect()
-                ->back()
-                ->withErrors(['adminLogin' => 'Invalid username or password']);
-        }
-    }
-
     // ================= Update user profile =================
     public function updateProfile(Request $request, $id)
     {
