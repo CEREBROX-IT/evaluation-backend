@@ -49,3 +49,6 @@ php artisan migrate
 ```bash
 php artisan serve
 ```
+- Visit the endpoint below to check if laravel is Online
+<a href="http://127.0.0.1:8000/api/">http://127.0.0.1:8000/api/</a>
+
