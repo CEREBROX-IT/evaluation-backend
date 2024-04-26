@@ -57,7 +57,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Update Profile (no authentication required)
 Route::post('/user/updateprofile/{id}', [AuthController::class, 'updateProfile']);
-
+Route::post('/super-admin/update-details/userid={id}', [AuthController::class, 'updateUserDetails']);
 // Update Password (without authentication)
 Route::post('/user/update-password/{id}', [AuthController::class, 'updatePassword']);
 
