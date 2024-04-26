@@ -145,31 +145,6 @@ class AuthController extends Controller
         }
     }
 
-    public function adminLogin(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
-
-        // Attempt to authenticate the user using the 'web' guard
-        if (Auth::guard('web')->attempt($credentials)) {
-            // Check if the user's email is verified
-            if (auth()->user()->role == 'Admin') {
-                // Authentication successful
-                return redirect('/home')->with('success', 'Login successful!');
-            } else {
-                // User's role not admin
-                auth()->logout(); // Log out the user
-                return redirect()
-                    ->back()
-                    ->withErrors(['adminLogin' => 'Authorized such as Admin only']);
-            }
-        } else {
-            // Authentication failed
-            return redirect()
-                ->back()
-                ->withErrors(['adminLogin' => 'Invalid username or password']);
-        }
-    }
-
     // ================= Update user profile =================
     public function updateProfile(Request $request, $id)
     {
@@ -195,6 +170,43 @@ class AuthController extends Controller
         ]);
 
         return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
+    }
+
+    // ================= Update user profile =================
+    public function updateUserDetails(Request $request, $id)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // If user is authenticated, proceed with updating profile
+        // Find the user by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Validate unique username and email
+        $request->validate([
+            'username' => 'unique:users,username,' . $id,
+            'email' => 'nullable|unique:users,email,' . $id,
+        ]);
+
+        // Update user's profile information
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'email_status' => $request->email_status,
+            'role' => $request->role,
+        ]);
+
+        return response()->json(['message' => 'User details updated successfully', 'user' => $user], 201);
     }
 
     // ================= Update user password =================
@@ -381,14 +393,8 @@ class AuthController extends Controller
 
         $users = User::where('status', true)->get();
 
-        $users->transform(function ($user) {
-            $user['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
-            unset($user['first_name'], $user['last_name']);
-            return $user;
-        });
-
         // Return the users as a response
-        return response()->json(['users' => $users], 201);
+        return response()->json(['data' => $users], 201);
     }
 
     public function deleteUser(Request $request, $id)
