@@ -206,11 +206,11 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzOTI2NDExLCJleHAiOjE3MTQwMTI4MTEsIm5iZiI6MTcxMzkyNjQxMSwianRpIjoiaWVEcUk1WTZ6TUxwdTVTMyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.fLVHCsuigH4mjYv1cHDSH0bi0Q9E9Ab1bV-lA3mKVjM",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDE1MDY1LCJleHAiOjE3MTQxMDE0NjUsIm5iZiI6MTcxNDAxNTA2NSwianRpIjoiUUZTN2tuSnp0RWZwbG45bSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.GjP0gY3uTKaw_VB9A7gfu0n9QcCwBUE26lI8oBnuhQE",
 								"type": "text"
 							}
 						],
-						"url": "http://127.0.0.1:8000/api/get-user/role=all"
+						"url": "http://127.0.0.1:8000/api/get-user"
 					},
 					"response": []
 				},
@@ -542,13 +542,13 @@
 									},
 									{
 										"key": "Authorization",
-										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzNzY2MTMyLCJleHAiOjE3MTM4NTI1MzIsIm5iZiI6MTcxMzc2NjEzMiwianRpIjoia25aNDNicnFpZ09yc2lmOCIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjMsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJzYW50b3MiLCJlbWFpbCI6bnVsbCwic2Nob29sX3llYXIiOiIyMDI1IC0gMjAyNiIsInJvbGUiOiJUZWFjaGVyIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIn0.3TWTCFvihBaOtHPv94m_C6KpvAm5U2GQ4j6EtWCMpZY",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDkzNjU3LCJleHAiOjE3MTQxODAwNTYsIm5iZiI6MTcxNDA5MzY1NywianRpIjoiQmluamNCemJReFRnYW5VUiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6MSwic2Nob29sX3llYXIiOiIyMDIyLTIwMjMiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.oTQxjj5PZt8MjT4-jZTyRlxZnEUX0W6JEoopCkeWEOo",
 										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"school_year\" : \"2022-2023\"\n}",
+									"raw": "{\n    \"school_year\" : \"2024-2025\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -560,7 +560,7 @@
 							"response": []
 						},
 						{
-							"name": "Create Session",
+							"name": "Get Session",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -574,7 +574,7 @@
 									},
 									{
 										"key": "Authorization",
-										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzNzk0MDE2LCJleHAiOjE3MTM4ODA0MTUsIm5iZiI6MTcxMzc5NDAxNiwianRpIjoicklOeUM1VFpzZzZrd2UzQSIsInN1YiI6IjQiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjQsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjpudWxsLCJzY2hvb2xfeWVhciI6IjIwMjItMjAyMyIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjpudWxsfQ.0G1gwC0hTx53_-GQkfpV0EiM08dU_bx8E6jP8cl_ffA",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDkzNjU3LCJleHAiOjE3MTQxODAwNTYsIm5iZiI6MTcxNDA5MzY1NywianRpIjoiQmluamNCemJReFRnYW5VUiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6MSwic2Nob29sX3llYXIiOiIyMDIyLTIwMjMiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.oTQxjj5PZt8MjT4-jZTyRlxZnEUX0W6JEoopCkeWEOo",
 										"type": "text"
 									}
 								],
@@ -610,6 +610,30 @@
 							}
 						],
 						"url": "http://127.0.0.1:8000/api/evaluation-form/approve/all"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User (SuperAdmin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDE1MDY1LCJleHAiOjE3MTQxMDE0NjUsIm5iZiI6MTcxNDAxNTA2NSwianRpIjoiUUZTN2tuSnp0RWZwbG45bSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.GjP0gY3uTKaw_VB9A7gfu0n9QcCwBUE26lI8oBnuhQE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"username\" : \"second\",\n    \"email\": \"second@email.com\",\n    \"email_status\": \"1\",\n    \"role\": \"SuperAdmin\"\n}\n"
+						},
+						"url": "http://127.0.0.1:8000/api/super-admin/update-details/userid=2"
 					},
 					"response": []
 				},
