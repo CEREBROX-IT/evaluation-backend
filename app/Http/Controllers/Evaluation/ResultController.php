@@ -9,6 +9,7 @@ use App\Models\EvaluationResult;
 use App\Models\EvaluationForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
@@ -49,6 +50,28 @@ class ResultController extends Controller
         $result = EvaluationResult::where('status', true && 'evaluation_for', $evaluation_for)->get();
 
         return response()->json(['result' => $result], 201);
+    }
+
+    public function getApproveComments(Request $request, $type, $userid)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Retrieve comments and suggestions with approve_status = "Approved" where user.id equals to evaluation.evaluated_id
+        $evaluationApprove = DB::table('evaluation')
+            ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
+            ->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion')
+            ->where('users.id', $userid)
+            ->where('users.role', $type)
+            ->where('evaluation.status', true)
+            ->where('evaluation.approve_status', 'Approved')
+            ->orderBy('evaluation.id', 'desc') // Sort by evaluation.id in descending order
+            ->get();
+
+        return response()->json(['Comments & Suggestion Approved' => $evaluationApprove], 201);
     }
 
     // ================= Create Evaluation Result =================
