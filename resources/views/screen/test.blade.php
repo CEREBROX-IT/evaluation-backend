@@ -2,7 +2,7 @@
 
 @extends('layouts.app')
 
-@section('title', '- Login')
+@section('title', '- API ONLINE')
 
 @section('content')
 

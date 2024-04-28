@@ -46,11 +46,6 @@ class AuthController extends Controller
         return $user;
     }
 
-    public function index()
-    {
-        return view('screen/authentication/login');
-    }
-
     // ================= Register New User =================
 
     public function register(Request $request)
