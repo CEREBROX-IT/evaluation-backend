@@ -23,8 +23,8 @@ Route::get('/users/not-evaluated/status={status}', [EvaluationController::class,
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
-Route::get('evaluation-form/comment-suggestion/role={userRole}', [EvaluationController::class, 'getComments']);
-Route::get('list-approved/type={type}/userid={userid}', [ResultController::class, 'getApproveComments']);
+Route::get('evaluation-form/comment-suggestion', [EvaluationController::class, 'getComments']);
+Route::get('list-approved/userid={userid}', [ResultController::class, 'getApproveComments']);
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
 
