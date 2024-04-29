@@ -181,7 +181,6 @@ class ResultController extends Controller
     }
 
     // ================= Get Result rating total per question =================
-
     public function getQuestionRating(Request $request)
     {
         // Get the type and userid from the request query parameters
@@ -200,30 +199,27 @@ class ResultController extends Controller
             return response()->json(['error' => 'No one has evaluated this user yet'], 404);
         }
 
-        $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')
-            ->where('evaluation_result.evaluation_for', $type)
-            ->where('evaluation.evaluated_id', $userid)
-            ->orderBy('rating')
-            ->groupBy('question_description', 'rating') // Include question_description in GROUP BY
-            ->selectRaw('question_description, rating, count(*) as total')
-            ->get();
+        $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation_result.evaluation_for', $type)->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->groupBy('question_id', 'question_description')->select('question_id', 'question_description')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
 
         // Organize the results into the desired format
         $formattedResults = [];
         foreach ($questionRatings as $result) {
-            $question = $result->question_description;
-            $rating = $result->rating;
-            $count = $result->total;
+            $formattedResult = [
+                'id' => $result->question_id,
+                'question_description' => $result->question_description,
+            ];
 
-            // If the question is not yet added to the formatted results array, create an entry for it
-            if (!isset($formattedResults[$question])) {
-                $formattedResults[$question] = [];
+            // Add ratings and their counts to the formatted result
+            for ($i = 1; $i <= 5; $i++) {
+                if ($result->{$i}) {
+                    $formattedResult[$i] = $result->{$i};
+                }
             }
 
-            // Add the rating count to the corresponding question entry
-            $formattedResults[$question][$rating] = $count;
+            // Add the formatted result to the final array
+            $formattedResults[] = $formattedResult;
         }
 
-        return response()->json(['message' => 'Question rating found', 'data' => $formattedResults], 201);
+        return response()->json(['data' => $formattedResults], 200);
     }
 }
