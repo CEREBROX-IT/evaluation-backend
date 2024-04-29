@@ -52,20 +52,17 @@ class ResultController extends Controller
         return response()->json(['result' => $result], 201);
     }
 
-    public function getApproveComments(Request $request, $type, $userid)
+    public function getApproveComments(Request $request, $userid)
     {
         // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
         }
-
-        // Retrieve comments and suggestions with approve_status = "Approved" where user.id equals to evaluation.evaluated_id
         $evaluationApprove = DB::table('evaluation')
             ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
             ->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion')
             ->where('users.id', $userid)
-            ->where('users.role', $type)
             ->where('evaluation.status', true)
             ->where('evaluation.approve_status', 'Approved')
             ->orderBy('evaluation.id', 'desc') // Sort by evaluation.id in descending order
@@ -149,11 +146,11 @@ class ResultController extends Controller
 
         return response()->json(['message' => ' Evaluation result deleted successfully', 'data' => $result], 201);
     }
-    // ================= Get per Rating Total =================
+
     public function getRatingTotal(Request $request)
     {
         // Get the type and userid from the request query parameters
-        $type = $request->query('type');
+        // $type = $request->query('type');
         $userid = $request->query('userid');
 
         // Check if the request has valid authorization token
@@ -172,14 +169,13 @@ class ResultController extends Controller
 
         if ($evaluationExists) {
             // Fetch the total count of ratings for the specified type and user
-            $ratingTotal = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation_result.evaluation_for', $type)->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(*) as total')->pluck('total', 'rating');
+            $ratingTotal = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(*) as total')->pluck('total', 'rating');
         } else {
             return response()->json(['message' => 'No evaluations available'], 200);
         }
 
         return response()->json(['message' => 'User Evaluation found', 'data' => $ratingTotal], 201);
     }
-
     // ================= Get Result rating total per question =================
     public function getQuestionRating(Request $request)
     {
