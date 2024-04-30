@@ -20,7 +20,7 @@ class SessionSeeder extends Seeder
         // Create sessions
             Session::create([
                 'school_year' => '2024-2025', // Example school year
-                'session_status' => 'Active', // Example session status
+                'session_status' => 1, // Example session status
             ]);
         
     }

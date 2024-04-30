@@ -87,7 +87,7 @@ class QuestionSeeder extends Seeder
         foreach ($questions as $description) {
             Question::create([
                 'evaluation_for' => 'Student',
-                'evaluation_type' => 'general',
+                'evaluation_type' => 'General',
                 'question_description' => $description,
                 'status' => 1,
             ]);
@@ -107,7 +107,7 @@ class QuestionSeeder extends Seeder
         foreach ($teacherQuestions2 as $teacherDescription2) {
             Question::create([
                 'evaluation_for' => 'Teacher',
-                'evaluation_type' => 'Organizational Effeectiveness',
+                'evaluation_type' => 'Organizational Effectiveness',
                 'question_description' => $teacherDescription2,
                 'status' => 1,
             ]);
