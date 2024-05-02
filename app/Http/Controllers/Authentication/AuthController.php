@@ -332,7 +332,6 @@ class AuthController extends Controller
         return redirect(env('CLIENT_URL'));
     }
 
-    // ================= Retreive User base on User Role =================
     public function getUsersRole(Request $request, $role = null)
     {
         // Check if the request has valid authorization token
@@ -345,27 +344,20 @@ class AuthController extends Controller
         if ($role === null) {
             return response()->json(['error' => 'Role parameter is required'], 404);
         }
-        // Fetch users based on the specified role and sort by created_at
+
+        // Retrieve the list of users based on the specified role
         if ($role === 'all') {
-            $users = User::select('id', 'first_name', 'last_name', 'role')
-                ->orderBy('updated_at', 'desc') // Sort by created_at in descending order
-                ->get();
+            $usersQuery = User::select('id', 'first_name', 'last_name', 'role');
         } else {
-            $users = User::where('role', $role)
-                ->select('id', 'first_name', 'last_name', 'role')
-                ->orderBy('updated_at', 'desc') // Sort by created_at in descending order
-                ->get();
+            $usersQuery = User::where('role', $role)->select('id', 'first_name', 'last_name', 'role');
         }
 
-        // Transform each user object to include a "full name" field
-        $users->transform(function ($user) {
-            $user['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
-            unset($user['first_name'], $user['last_name']); // Remove individual name fields
-            return $user;
-        });
+        // Exclude users who have already been evaluated by the authenticated user
+        $evaluatedIds = EvaluationForm::where('user_id', $user->id)->pluck('evaluated_id');
+        $usersQuery->whereNotIn('id', $evaluatedIds);
 
-        // Return the users as a response
-        return response()->json(['users' => $users], 201);
+        // Sort users by created_at in descending order
+        $users = $usersQuery->orderBy('updated_at', 'desc')->get();
 
         // Transform each user object to include a "full name" field
         $users->transform(function ($user) {
@@ -374,7 +366,7 @@ class AuthController extends Controller
             return $user;
         });
 
-        // Return the users as a response
+        // Return the filtered users as a response
         return response()->json(['users' => $users], 201);
     }
 
