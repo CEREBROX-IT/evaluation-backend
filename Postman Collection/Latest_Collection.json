@@ -87,35 +87,6 @@
 					"response": []
 				},
 				{
-					"name": "Update User Profile",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEyNzYzMTM4LCJleHAiOjE3MTI4NDk1MzcsIm5iZiI6MTcxMjc2MzEzOCwianRpIjoiU1JNUGM4b3pwSlZmaFBqRyIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UifQ.t6quPPDQAIpnwZFOW62JKnQg1TnoHQgWY6V7-Wa0HqM",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://127.0.0.1:8000/api/user/updateprofile/1"
-					},
-					"response": []
-				},
-				{
 					"name": "Change Password",
 					"request": {
 						"method": "POST",
@@ -194,6 +165,35 @@
 			"name": "User",
 			"item": [
 				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"gender\": \"male\", \n    \"category\": \"teaching\",\n    \"length_of_service\": \"10 years\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/user/updateprofile/1"
+					},
+					"response": []
+				},
+				{
 					"name": "Get List of User",
 					"request": {
 						"method": "GET",
@@ -252,6 +252,46 @@
 						"url": "http://127.0.0.1:8000/api/delete-user/id=2"
 					},
 					"response": []
+				},
+				{
+					"name": "User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/user/profile/userId=2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/user/profile/userId=1"
+					},
+					"response": []
 				}
 			]
 		},
@@ -276,7 +316,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2022-2023\",\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_full_name\": \"John Calix\",\n    \"subject_name\": \"Math\",\n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 1,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n             \"rating\": \"2\"\n        },\n\n        {\n            \"question_id\": 2,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n            \"rating\": \"4\"\n        },\n        {\n            \"question_id\": 3,\n            \"type\": \"STUDENT EVALUATION OF TEACHING\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"General\",\n            \"question_description\": \"Has an interesting style of delivery.\",\n             \"rating\": \"4\"\n        }\n    ]\n}\n",
+							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2022-2023\",\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_full_name\": \"John Calix\",\n    \"class_size\": 26,\n    \"no_of_student_present\": 15,\n    \"no_of_student_late\": 11,\n    \"subject_name\": \"Math\",\n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 1,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n             \"rating\": \"2\"\n        },\n\n        {\n            \"question_id\": 2,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n            \"rating\": \"4\"\n        },\n        {\n            \"question_id\": 3,\n            \"type\": \"STUDENT EVALUATION OF TEACHING\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"General\",\n            \"question_description\": \"Has an interesting style of delivery.\",\n             \"rating\": \"4\"\n        }\n    ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -511,7 +551,7 @@
 										"type": "text"
 									}
 								],
-								"url": "http://127.0.0.1:8000/api/question/get/status=1"
+								"url": "http://127.0.0.1:8000/api/question/get/type=STUDENT EVALUATION OF TEACHING"
 							},
 							"response": []
 						},
@@ -795,26 +835,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "User Profile",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
-						"type": "text"
-					}
-				],
-				"url": "http://127.0.0.1:8000/api/user/profile/userId=1"
-			},
-			"response": []
 		}
 	]
 }

@@ -444,10 +444,28 @@ class AuthController extends Controller
             return response()->json(['error' => 'User not found.'], 404);
         }
 
-        return response()->json(['message' => 'User Profile', 'data' => $userProfile], 201);
+        // Extract userInformation fields
+        $userInformation = $userProfile->userInformation ?? null;
+        $gender = $userInformation ? $userInformation->gender : null;
+        $category = $userInformation ? $userInformation->category : null;
+        $lengthOfService = $userInformation ? $userInformation->length_of_service : null;
+
+        // Flatten the structure
+        $userData = $userProfile->toArray();
+        unset($userData['userInformation']); // Remove nested userInformation
+        unset($userData['created_at']);
+        unset($userData['updated_at']);
+        unset($userData['password_reset_token']);
+        $userData['gender'] = $gender;
+        $userData['category'] = $category;
+        $userData['length_of_service'] = $lengthOfService;
+
+        // Remove the 'user_information' key
+        unset($userData['user_information']);
+
+        return response()->json(['message' => 'User Profile', 'data' => $userData], 201);
     }
 
-    // ================= Update user profile =================
     // ================= Update user profile =================
     public function updateProfile(Request $request, $id)
     {
