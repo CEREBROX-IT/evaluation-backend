@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller; // Add this line to import the Controller c
 use App\Models\User;
 use App\Models\Session;
 use App\Models\EvaluationForm;
+use App\Model\UserInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -141,31 +142,31 @@ class AuthController extends Controller
     }
 
     // ================= Update user profile =================
-    public function updateProfile(Request $request, $id)
-    {
-        // Check if the request has valid authorization token
-        $user = $this->authorizeRequest($request);
-        if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
-        }
+    // public function updateProfile(Request $request, $id)
+    // {
+    //     // Check if the request has valid authorization token
+    //     $user = $this->authorizeRequest($request);
+    //     if (!$user instanceof User) {
+    //         return $user; // Return the response if authorization fails
+    //     }
 
-        // If user is authenticated, proceed with updating profile
-        // Find the user by ID
-        $user = User::find($id);
+    //     // If user is authenticated, proceed with updating profile
+    //     // Find the user by ID
+    //     $user = User::find($id);
 
-        // Check if the user exists
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+    //     // Check if the user exists
+    //     if (!$user) {
+    //         return response()->json(['error' => 'User not found'], 404);
+    //     }
 
-        // Update user's profile information
-        $user->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-        ]);
+    //     // Update user's profile information
+    //     $user->update([
+    //         'first_name' => $request->first_name,
+    //         'last_name' => $request->last_name,
+    //     ]);
 
-        return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
-    }
+    //     return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
+    // }
 
     // ================= Update user profile =================
     public function updateUserDetails(Request $request, $id)
@@ -435,15 +436,60 @@ class AuthController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Retrieve user information
-        $userprofile = User::select('id', 'first_name', 'last_name', 'email', 'role')->where('id', $userId)->where('status', true)->first();
+        // Retrieve user information with associated UserInformation
+        $userProfile = User::with('userInformation')->where('id', $userId)->where('status', true)->first();
 
         // Check if user exists
-        if (!$userprofile) {
+        if (!$userProfile) {
             return response()->json(['error' => 'User not found.'], 404);
         }
 
-        return response()->json(['message' => 'User Profile', 'data' => $userprofile], 201);
+        return response()->json(['message' => 'User Profile', 'data' => $userProfile], 201);
+    }
+
+    // ================= Update user profile =================
+    // ================= Update user profile =================
+    public function updateProfile(Request $request, $id)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // If user is authenticated, proceed with updating profile
+        // Find the user by ID
+        $user = User::with('userInformation')->find($id); // Eager load userInformation relationship
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update user's profile information
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+        ]);
+
+        // Update user's extended information (UserInformation)
+        if ($user->userInformation) {
+            // If userInformation exists, update it
+            $user->userInformation->update([
+                'gender' => $request->gender,
+                'category' => $request->category,
+                'length_of_service' => $request->length_of_service,
+            ]);
+        } else {
+            // If userInformation does not exist, create it
+            $user->userInformation()->create([
+                'gender' => $request->gender,
+                'category' => $request->category,
+                'length_of_service' => $request->length_of_service,
+            ]);
+        }
+
+        return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
     }
 
     // ================= Log the user out (Invalidate the token). =================
