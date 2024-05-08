@@ -13,7 +13,7 @@ class EvaluationResult extends Model
     protected $table = 'evaluation_result';
 
     // Define the fillable attributes
-    protected $fillable = ['evaluation_id', 'question_id', 'evaluation_for', 'question_type', 'question_description', 'rating', 'status'];
+    protected $fillable = ['evaluation_id', 'question_id', 'type', 'question_group', 'evaluation_type', 'question_description', 'rating', 'status'];
 
     // Define relationships
     public function evaluation()

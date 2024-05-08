@@ -65,7 +65,8 @@ class QuestionController extends Controller
         }
 
         $question = Question::create([
-            'evaluation_for' => $request->evaluation_for,
+            'type' => $request->type,
+            'question_group' => $request->question_group,
             'evaluation_type' => $request->evaluation_type,
             'question_description' => $request->question_description,
             'status' => true,
@@ -96,7 +97,8 @@ class QuestionController extends Controller
 
         //update the question
         $question->update([
-            'evaluation_for' => $request->evaluation_for,
+            'type' => $request->type,
+            'question_group' => $request->question_group,
             'evaluation_type' => $request->evaluation_type,
             'question_description' => $request->question_description,
         ]);

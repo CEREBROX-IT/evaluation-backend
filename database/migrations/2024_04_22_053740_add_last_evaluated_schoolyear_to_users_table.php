@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('last_evaluated')->nullable();
+            $table->string('last_evaluated', 30)->nullable();
         });
     }
 

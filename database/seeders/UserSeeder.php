@@ -27,7 +27,6 @@ class UserSeeder extends Seeder
             'status' => 1,
         ]);
 
-
         User::create([
             'first_name' => 'Admin',
             'last_name' => 'User',
@@ -38,19 +37,6 @@ class UserSeeder extends Seeder
             'role' => 'SuperAdmin',
             'status' => 1,
         ]);
-        // Create a teacher user
-    //    for ($i = 1; $i <= 3; $i++) {
-    //         User::create([
-    //             'first_name' => 'Teacher' . $i,
-    //             'last_name' => 'User',
-    //             'email' => 'teacher' . $i . '@example.com',
-    //             'email_status' => 1,
-    //             'username' => 'teacher' . $i,
-    //             'password' => Hash::make('qwerty'), 
-    //             'role' => 'Teacher',
-    //             'status' => 1,
-    //         ]);
-    //     }
 
         // Create a student user
         User::create([
@@ -63,5 +49,74 @@ class UserSeeder extends Seeder
             'role' => 'Student',
             'status' => 1,
         ]);
+
+        // Create a principal user
+        User::create([
+            'first_name' => 'Principal',
+            'last_name' => 'User',
+            'email' => 'principal@example.com',
+            'email_status' => 1,
+            'username' => 'principal',
+            'password' => Hash::make('qwerty'), // You may want to change this
+            'role' => 'Principal',
+            'status' => 1,
+        ]);
+
+        // Create a treasurer user
+        User::create([
+            'first_name' => 'Treasurer',
+            'last_name' => 'User',
+            'email' => 'treasurer@example.com',
+            'email_status' => 1,
+            'username' => 'treasurer',
+            'password' => Hash::make('qwerty'), // You may want to change this
+            'role' => 'Treasurer',
+            'status' => 1,
+        ]);
+
+        // Create a registrar user
+        User::create([
+            'first_name' => 'Registrar',
+            'last_name' => 'User',
+            'email' => 'registrar@example.com',
+            'email_status' => 1,
+            'username' => 'registrar',
+            'password' => Hash::make('qwerty'), // You may want to change this
+            'role' => 'Registrar',
+            'status' => 1,
+        ]);
+
+        // Create a coordinator user
+        User::create([
+            'first_name' => 'Coordinator',
+            'last_name' => 'User',
+            'email' => 'coordinator@example.com',
+            'email_status' => 1,
+            'username' => 'coordinator',
+            'password' => Hash::make('qwerty'), // You may want to change this
+            'role' => 'Coordinator',
+            'status' => 1,
+        ]);
+
+        // Create a teacher user
+        User::create([
+            'first_name' => 'Teacher',
+            'last_name' => 'User',
+            'email' => 'teacher@example.com',
+            'email_status' => 1,
+            'username' => 'teacher',
+            'password' => Hash::make('qwerty'), // You may want to change this
+            'role' => 'Teacher',
+            'status' => 1,
+        ]);
     }
 }
+
+// Princial
+// Treasurer
+// Registrar
+// Coordinator
+// Student
+// Teacher
+// Admin
+// SuperAdmin

@@ -10,17 +10,17 @@ return new class extends Migration {
         Schema::create('evaluation', function (Blueprint $table) {
             $table->id();
             $table->foreignId('session_id')->constrained('session');
-            $table->string('school_year');
+            $table->string('school_year', 30);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('evaluated_id')->constrained('users')->where('role', 'Teacher');
-            $table->string('evaluated_full_name');
-            $table->string('subject_name');
-            $table->string('semester');
-            $table->string('comment');
-            $table->string('suggestion');
-            $table->string('strand');
-            $table->string('year_level');
-            $table->string('approve_status')->default('Pending');
+            $table->string('evaluated_full_name', 80);
+            $table->string('subject_name', 50);
+            $table->string('semester', 50);
+            $table->string('comment', 275);
+            $table->string('suggestion', 275);
+            $table->string('strand', 50);
+            $table->string('year_level', 10);
+            $table->string('approve_status')->default('Pending', 10);
             $table->tinyInteger('status')->default(true);
             $table->timestamps();
         });

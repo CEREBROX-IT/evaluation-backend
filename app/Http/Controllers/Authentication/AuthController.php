@@ -427,6 +427,25 @@ class AuthController extends Controller
         return response()->json(['message' => 'Total result', 'student' => $totalStudents, 'teacher' => $totalTeacher], 201);
     }
 
+    public function getUserInformation(Request $request, $userId)
+    {
+        // Check if the request has a valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Retrieve user information
+        $userprofile = User::select('id', 'first_name', 'last_name', 'email', 'role')->where('id', $userId)->where('status', true)->first();
+
+        // Check if user exists
+        if (!$userprofile) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        return response()->json(['message' => 'User Profile', 'data' => $userprofile], 201);
+    }
+
     // ================= Log the user out (Invalidate the token). =================
 
     public function logout()

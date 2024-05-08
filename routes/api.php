@@ -27,6 +27,7 @@ Route::get('evaluation-form/comment-suggestion', [EvaluationController::class, '
 Route::get('list-approved/userid={userid}', [ResultController::class, 'getApproveComments']);
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
+Route::get('/list-evaluated-category/userId={userId}', [ResultController::class, 'checkEvaluation']);
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/status={status}', [QuestionController::class, 'getQuestions']);
@@ -38,6 +39,7 @@ Route::delete('/question/delete/{id}', [QuestionController::class, 'deleteQuesti
 Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Authentication\VerificationController@verify')->name('verification.verify');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/user/profile/userId={userId}', [AuthController::class, 'getUserInformation']);
 Route::post('/user/updateprofile/{id}', [AuthController::class, 'updateProfile']);
 Route::post('/super-admin/update-details/userid={id}', [AuthController::class, 'updateUserDetails']);
 Route::post('/user/update-password/{id}', [AuthController::class, 'updatePassword']);
@@ -51,3 +53,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// ============== Testing Endpoints ==============
+Route::get('/temporary/evaluation-result/resultid={id}', [ResultController::class, 'getEvaluationResult']);
+Route::get('/temporary/evaluation-form/resultid={id}', [EvaluationController::class, 'getEvaluation']);
