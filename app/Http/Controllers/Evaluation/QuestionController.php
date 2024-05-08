@@ -35,7 +35,7 @@ class QuestionController extends Controller
     }
 
     // ================= Get Questions with Status True =================
-    public function getQuestions(Request $request, $status)
+    public function getQuestions(Request $request, $type)
     {
         // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
@@ -43,8 +43,11 @@ class QuestionController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Fetch questions with status true
-        $questions = Question::where('status', $status)->orderBy('updated_at', 'desc')->get();
+        // Fetch questions with status true and the specified type
+        $questions = Question::where('status', true)
+            ->where('type', $type) // Changed '$type' to $type
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
         return response()->json(['questions' => $questions], 201);
     }
