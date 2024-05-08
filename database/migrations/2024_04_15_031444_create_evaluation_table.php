@@ -14,6 +14,9 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('evaluated_id')->constrained('users')->where('role', 'Teacher');
             $table->string('evaluated_full_name', 80);
+            $table->string('class_size', 15);
+            $table->string('no_of_student_present', 15);
+            $table->string('no_of_student_late', 15);
             $table->string('subject_name', 50);
             $table->string('semester', 50);
             $table->string('comment', 275);
