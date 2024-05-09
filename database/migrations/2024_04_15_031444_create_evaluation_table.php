@@ -17,6 +17,9 @@ return new class extends Migration {
             $table->string('class_size', 15);
             $table->string('no_of_student_present', 15);
             $table->string('no_of_student_late', 15);
+            $table->string('gender', 10);
+            $table->string('category', 20);
+            $table->string('length_of_service', 50);
             $table->string('subject_name', 50);
             $table->string('semester', 50);
             $table->string('comment', 275);

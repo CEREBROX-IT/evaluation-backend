@@ -367,16 +367,14 @@ class AuthController extends Controller
             return $user;
         });
 
-        // Return the filtered users as a response
         return response()->json(['users' => $users], 201);
     }
 
     public function getUserList(Request $request)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         $users = User::where('status', true)->get();
@@ -387,10 +385,9 @@ class AuthController extends Controller
 
     public function deleteUser(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         $users = User::find($id);
@@ -420,50 +417,60 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
-        // Count the total number of active students
-        $totalStudents = User::where('role', 'Student')->where('status', true)->count();
-        // Count the total number of active students
+        $totalPrincipal = User::where('role', 'Principal')->where('status', true)->count();
+        $totalTreasurer = User::where('role', 'Treasurer')->where('status', true)->count();
+        $totalRegistrar = User::where('role', 'Registrar')->where('status', true)->count();
+        $totalCoordinator = User::where('role', 'Coordinator')->where('status', true)->count();
+        $totalStudent = User::where('role', 'Student')->where('status', true)->count();
         $totalTeacher = User::where('role', 'Teacher')->where('status', true)->count();
+        $totalAdmin = User::where('role', 'Admin')->where('status', true)->count();
+        $totalSuperAdmin = User::where('role', 'SuperAdmin')->where('status', true)->count();
+        $totalNonTeaching = User::where('role', 'Non-Teaching')->where('status', true)->count();
 
-        return response()->json(['message' => 'Total result', 'student' => $totalStudents, 'teacher' => $totalTeacher], 201);
+        return response()->json(
+            [
+                'message' => 'Total result',
+                'student' => $totalStudent,
+                'teacher' => $totalTeacher,
+                'principal' => $totalPrincipal,
+                'treasurer' => $totalTreasurer,
+                'registrar' => $totalRegistrar,
+                'coordinator' => $totalCoordinator,
+                'admin' => $totalAdmin,
+                'super_admin' => $totalSuperAdmin,
+                'non_teaching' => $totalNonTeaching,
+            ],
+            201,
+        );
     }
 
-    public function getUserInformation(Request $request, $userId)
+    public function getUserProfile(Request $request, $id)
     {
         // Check if the request has a valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
-        // Retrieve user information with associated UserInformation
-        $userProfile = User::with('userInformation')->where('id', $userId)->where('status', true)->first();
+        $user = User::find($id);
 
-        // Check if user exists
-        if (!$userProfile) {
-            return response()->json(['error' => 'User not found.'], 404);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
         }
 
-        // Extract userInformation fields
-        $userInformation = $userProfile->userInformation ?? null;
-        $gender = $userInformation ? $userInformation->gender : null;
-        $category = $userInformation ? $userInformation->category : null;
-        $lengthOfService = $userInformation ? $userInformation->length_of_service : null;
-
-        // Flatten the structure
-        $userData = $userProfile->toArray();
-        unset($userData['userInformation']); // Remove nested userInformation
-        unset($userData['created_at']);
-        unset($userData['updated_at']);
-        unset($userData['password_reset_token']);
-        $userData['gender'] = $gender;
-        $userData['category'] = $category;
-        $userData['length_of_service'] = $lengthOfService;
-
-        // Remove the 'user_information' key
-        unset($userData['user_information']);
-
-        return response()->json(['message' => 'User Profile', 'data' => $userData], 201);
+        // Return user's profile information with only desired fields
+        return response()->json(
+            [
+                'message' => 'User Profile',
+                'data' => [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                ],
+            ],
+            201,
+        );
     }
 
     // ================= Update user profile =================
@@ -472,12 +479,10 @@ class AuthController extends Controller
         // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
-        // If user is authenticated, proceed with updating profile
-        // Find the user by ID
-        $user = User::with('userInformation')->find($id); // Eager load userInformation relationship
+        $user = User::find($id);
 
         // Check if the user exists
         if (!$user) {
@@ -489,23 +494,6 @@ class AuthController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
         ]);
-
-        // Update user's extended information (UserInformation)
-        if ($user->userInformation) {
-            // If userInformation exists, update it
-            $user->userInformation->update([
-                'gender' => $request->gender,
-                'category' => $request->category,
-                'length_of_service' => $request->length_of_service,
-            ]);
-        } else {
-            // If userInformation does not exist, create it
-            $user->userInformation()->create([
-                'gender' => $request->gender,
-                'category' => $request->category,
-                'length_of_service' => $request->length_of_service,
-            ]);
-        }
 
         return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
     }
