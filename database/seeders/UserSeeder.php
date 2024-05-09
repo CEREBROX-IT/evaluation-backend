@@ -118,6 +118,4 @@ class UserSeeder extends Seeder
 // Coordinator
 // Student
 // Teacher
-// Admin
-// SuperAdmin
 // Non-Teaching
