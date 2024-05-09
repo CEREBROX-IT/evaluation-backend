@@ -14,6 +14,7 @@ Route::get('/', function () {
 // ============== Statistic ==============
 Route::get('total/user-count', [AuthController::class, 'userTotal']);
 Route::get('total/users-evaluated', [EvaluationController::class, 'getUserEvaluated']);
+Route::get('evaluation/masterlist', [ResultController::class, 'getEvaluationMasterList']);
 // ============== Create Session School Year ==============
 Route::post('school-year/create', [SessionController::class, 'createSessionSchoolYear']);
 Route::get('school-year/list', [SessionController::class, 'getSessionList']);

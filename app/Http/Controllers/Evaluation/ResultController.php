@@ -218,4 +218,57 @@ class ResultController extends Controller
     }
 
     // =================== Temporary yooo! =================
+
+    public function getEvaluationMasterList(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Retrieve evaluation results grouped by evaluated user and question
+        $results = DB::table('evaluation')
+            ->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+            ->where('evaluation.user_id', $user->id) // Filter by authenticated user as evaluator
+            ->select('evaluation.evaluated_full_name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.rating')
+            ->get();
+
+        // Group results by evaluated user and calculate total rating for each question
+        $evaluationResults = [];
+        $maxQuestionId = 0;
+
+        foreach ($results as $result) {
+            $evaluatedName = $result->evaluated_name;
+            $questionId = $result->question_id;
+            $rating = (int) $result->rating;
+
+            // Update max question ID
+            if ($questionId > $maxQuestionId) {
+                $maxQuestionId = $questionId;
+            }
+
+            // Initialize evaluated user if not present in the array
+            if (!isset($evaluationResults[$evaluatedName])) {
+                $evaluationResults[$evaluatedName] = ['evaluated_name' => $evaluatedName];
+            }
+
+            // Add or increment the rating for the question
+            $evaluationResults[$evaluatedName]["Q$questionId"] = isset($evaluationResults[$evaluatedName]["Q$questionId"]) ? $evaluationResults[$evaluatedName]["Q$questionId"] + $rating : $rating;
+        }
+
+        // Fill missing questions with "N/a"
+        foreach ($evaluationResults as &$result) {
+            for ($i = 1; $i <= $maxQuestionId; $i++) {
+                if (!isset($result["Q$i"])) {
+                    $result["Q$i"] = 'N/a';
+                }
+            }
+        }
+
+        // Format the response
+        $response = ['message' => 'Evaluation Result Master list', 'data' => array_values($evaluationResults)];
+
+        return response()->json($response, 201);
+    }
 }

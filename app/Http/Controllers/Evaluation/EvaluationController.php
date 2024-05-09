@@ -44,11 +44,6 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
         // Retrieve teachers who have already been evaluated
         $studentsEvaluated = User::where('role', 'Student')->whereHas('evaluationForms')->count();
         // Retrieve teachers who have already been evaluated
@@ -65,11 +60,6 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
         // Retrieve users who have not yet do evaluation
         $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('id', 'first_name', 'last_name')->get();
 
@@ -84,11 +74,6 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
         // Retrieve all comments, suggestions, and user details for all evaluation forms
         $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
 
@@ -101,11 +86,6 @@ class EvaluationController extends Controller
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
-        }
-
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
         $evaluation = EvaluationForm::find($id);
@@ -128,11 +108,6 @@ class EvaluationController extends Controller
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
-        }
-
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
         // If the ID parameter is "all", approve all evaluations
