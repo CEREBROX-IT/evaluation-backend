@@ -36,21 +36,6 @@ class ResultController extends Controller
 
         return $user;
     }
-    // ================= Get Evaluation Result =================
-
-    // public function getQuestions(Request $request, $type)
-    // {
-    //     // Check if the request has valid authorization token
-    //     $user = $this->authorizeRequest($request);
-    //     if (!$user instanceof User) {
-    //         return $user; // Return the response if authorization fails
-    //     }
-
-    //     // Fetch questions with status true
-    //     $result = EvaluationResult::where('status', true && 'type', $type)->get();
-
-    //     return response()->json(['result' => $result], 201);
-    // }
 
     public function getApproveComments(Request $request, $userid)
     {
