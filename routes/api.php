@@ -39,7 +39,7 @@ Route::delete('/question/delete/{id}', [QuestionController::class, 'deleteQuesti
 Route::get('/email/verify/{id}/{hash}', 'App\Http\Controllers\Authentication\VerificationController@verify')->name('verification.verify');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/user/profile/userId={userId}', [AuthController::class, 'getUserInformation']);
+Route::get('/user/profile/userId={userId}', [AuthController::class, 'getUserProfile']);
 Route::post('/user/updateprofile/{id}', [AuthController::class, 'updateProfile']);
 Route::post('/super-admin/update-details/userid={id}', [AuthController::class, 'updateUserDetails']);
 Route::post('/user/update-password/{id}', [AuthController::class, 'updatePassword']);

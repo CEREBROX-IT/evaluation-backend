@@ -176,13 +176,13 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"gender\": \"male\", \n    \"category\": \"teaching\",\n    \"length_of_service\": \"10 years\"\n}\n",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -205,11 +205,11 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDE1MDY1LCJleHAiOjE3MTQxMDE0NjUsIm5iZiI6MTcxNDAxNTA2NSwianRpIjoiUUZTN2tuSnp0RWZwbG45bSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.GjP0gY3uTKaw_VB9A7gfu0n9QcCwBUE26lI8oBnuhQE",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTgxMTIzLCJleHAiOjE3MTUyNjc1MjMsIm5iZiI6MTcxNTE4MTEyMywianRpIjoibzc3TG1jaHFpQ1lYN01JaSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.bCq-KVOzosWuLNPwOCuG32mfdB5ZWZiR2-3GgNjrVYc",
 								"type": "text"
 							}
 						],
-						"url": "http://127.0.0.1:8000/api/get-user"
+						"url": "http://127.0.0.1:8000/api/get-user/role=Teacher"
 					},
 					"response": []
 				},
@@ -265,27 +265,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
-								"type": "text"
-							}
-						],
-						"url": "http://127.0.0.1:8000/api/user/profile/userId=2"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Profile",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTIzMTM4LCJleHAiOjE3MTUyMDk1MzgsIm5iZiI6MTcxNTEyMzEzOCwianRpIjoieVBEcGF3NVVod2FnaUlObyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.nOX975rNKahVz0feqzmPUcliSobmyvqeiLVKbAASb9Q",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTgxMTIzLCJleHAiOjE3MTUyNjc1MjMsIm5iZiI6MTcxNTE4MTEyMywianRpIjoibzc3TG1jaHFpQ1lYN01JaSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.bCq-KVOzosWuLNPwOCuG32mfdB5ZWZiR2-3GgNjrVYc",
 								"type": "text"
 							}
 						],
@@ -310,13 +290,13 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MDkxNjA2LCJleHAiOjE3MTUxNzgwMDYsIm5iZiI6MTcxNTA5MTYwNiwianRpIjoiVFljN29Gb1RERWNlQTJLQyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.DozZx0e84oDS-zddweosv3r6zI8AFIfe9r8awUoJ6wA",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2022-2023\",\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_full_name\": \"John Calix\",\n    \"class_size\": 26,\n    \"no_of_student_present\": 15,\n    \"no_of_student_late\": 11,\n    \"subject_name\": \"Math\",\n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 1,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n             \"rating\": \"2\"\n        },\n\n        {\n            \"question_id\": 2,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n            \"rating\": \"4\"\n        },\n        {\n            \"question_id\": 3,\n            \"type\": \"STUDENT EVALUATION OF TEACHING\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"General\",\n            \"question_description\": \"Has an interesting style of delivery.\",\n             \"rating\": \"4\"\n        }\n    ]\n}\n",
+							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2022-2023\",\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_full_name\": \"John Calix\",\n    \"class_size\": 26,\n    \"no_of_student_present\": 15,\n    \"no_of_student_late\": 11,\n    \"gender\": \"Male\",\n    \"category\":\"Non-Teachhing\",\n    \"length_of_service\": \"10 years or less\",\n    \"subject_name\": \"Math\",\n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 1,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n             \"rating\": \"2\"\n        },\n\n        {\n            \"question_id\": 2,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n            \"rating\": \"4\"\n        },\n        {\n            \"question_id\": 3,\n            \"type\": \"STUDENT EVALUATION OF TEACHING\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"General\",\n            \"question_description\": \"Has an interesting style of delivery.\",\n             \"rating\": \"4\"\n        }\n    ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -424,7 +404,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzOTI1MDAwLCJleHAiOjE3MTQwMTE0MDAsIm5iZiI6MTcxMzkyNTAwMCwianRpIjoiaVdvZjdJMHZ0Skh2UzhNMSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.kzZZkpVcmgq1i9XdQsCes6PaFuznC3GGFMsDm6EfuDI",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTcwMTIwLCJleHAiOjE3MTUyNTY1MjAsIm5iZiI6MTcxNTE3MDEyMCwianRpIjoiZDVyZm5aUFVmZHRTeld5bCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.GC9JJPSpc1Hhla4FM9DXx3Ib9J1x742ZX0CXfFp3KzY",
 								"type": "text"
 							}
 						],
@@ -444,7 +424,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzOTI2NDExLCJleHAiOjE3MTQwMTI4MTEsIm5iZiI6MTcxMzkyNjQxMSwianRpIjoiaWVEcUk1WTZ6TUxwdTVTMyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.fLVHCsuigH4mjYv1cHDSH0bi0Q9E9Ab1bV-lA3mKVjM",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTcwMTIwLCJleHAiOjE3MTUyNTY1MjAsIm5iZiI6MTcxNTE3MDEyMCwianRpIjoiZDVyZm5aUFVmZHRTeld5bCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.GC9JJPSpc1Hhla4FM9DXx3Ib9J1x742ZX0CXfFp3KzY",
 								"type": "text"
 							}
 						],
@@ -607,7 +587,7 @@
 					]
 				},
 				{
-					"name": "School Year Session (Laravel Only)",
+					"name": "School Year Session",
 					"item": [
 						{
 							"name": "Create Session",
