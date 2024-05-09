@@ -53,6 +53,8 @@ class QuestionSeeder extends Seeder
 
         $classroomQuestion4 = ['Conditions for application of concepts taught', 'Monitoring of students’ understandings through formative assessment', 'Evaluation whether objectives set are attained or not', 'Interface (connecting areas that contribute to classroom climate)', 'Grooming of the teacher', 'Grooming of the students', 'Observance of classroom policies', 'The teacher’s calmness in interacting with students', 'The teacher’s warmth in dealing with students', 'The teacher’s proximity to students', 'The teacher’s care in interacting with erring students', 'The teacher’s sincerity about the learning of students', 'Freedom of students to interact in the classroom', 'Respect of students to the teacher', 'Order in classroom management'];
 
+      
+        
         $AdminQuestion2 = ['Decides quickly without conscious thought since he/she bases his/her decision on years of experience and practices', 'Discusses problems openly with colleagues who hold different ideas and opinions', 'Concentrates on listening to what the faculty express about themselves', 'Shows strong confidence in the correctness of his decisions based on his long years of experience as an administrator', 'Enjoys developing strategies that have a lasting impact on the institution', 'Shows innovative activities which are worthy of consideration in relation to school improvement', 'Has an overall view of the condition of the organization in an instant flash', 'Sets high standards of performance of faculty for greater results', 'Allows the faculty the freedom to develop their own projects because of trust', 'Personally acquaints himself/herself with the problems of each department under him.'];
 
         $AdminQuestion3 = ['Recognizes his/her own strengths as assets', 'Fully recognizes his/her own weaknesses and compensates', 'Projects a strong image before the faculty', 'Shows intellectual maturity in providing a well-balanced judgment or decision', 'Demonstrates a healthy personal relationship with others', 'Does not blame others for his wrong acts', 'Does not make alibis for any wrong act done by himself', 'Accepts criticism by weighing them gratefully as an opportunity to improve', 'Admits his/her mistakes', 'Acknowledges his fears instead of denying them', 'Deals with emergencies with clear thinking', 'Maintains that self-examination is a good starting point towards self-understanding'];
@@ -157,6 +159,16 @@ class QuestionSeeder extends Seeder
                 'question_group' => 'N/a',
                 'evaluation_type' => 'Assessment',
                 'question_description' => $classroomDescription4,
+                'status' => 1,
+            ]);
+        }
+
+        foreach ($adminQuestion1 as $adminDescription1) {
+            Question::create([
+                'type' => 'ADMINISTRATORS EVALUATION',
+                'question_group' => '2',
+                'evaluation_type' => 'Empowerment Skills',
+                'question_description' => $adminDescription1,
                 'status' => 1,
             ]);
         }
