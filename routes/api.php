@@ -14,7 +14,10 @@ Route::get('/', function () {
 // ============== Statistic ==============
 Route::get('total/user-count', [AuthController::class, 'userTotal']);
 Route::get('total/users-evaluated', [EvaluationController::class, 'getUserEvaluated']);
+Route::get('total-evaluator/average-rating', [ResultController::class, 'getAverageRatingPerQuestion']);
+Route::get('total-question/average-rating', [ResultController::class, 'getSummationRatingPerQuestion']);
 Route::get('evaluation/masterlist', [ResultController::class, 'getEvaluationMasterList']);
+
 // ============== Create Session School Year ==============
 Route::post('school-year/create', [SessionController::class, 'createSessionSchoolYear']);
 Route::get('school-year/list', [SessionController::class, 'getSessionList']);
@@ -24,7 +27,7 @@ Route::get('/users/not-evaluated/status={status}', [EvaluationController::class,
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
-Route::get('evaluation-form/comment-suggestion', [EvaluationController::class, 'getComments']);
+Route::get('evaluation-form/pending/comment-suggestion', [EvaluationController::class, 'getComments']);
 Route::get('list-approved/userid={userid}', [ResultController::class, 'getApproveComments']);
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);

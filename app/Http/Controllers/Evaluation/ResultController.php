@@ -219,6 +219,59 @@ class ResultController extends Controller
 
     // =================== Temporary yooo! =================
 
+    // public function getEvaluationMasterList(Request $request)
+    // {
+    //     // Check if the request has valid authorization token
+    //     $user = $this->authorizeRequest($request);
+    //     if (!$user instanceof User) {
+    //         return $user; // Return the response if authorization fails
+    //     }
+
+    //     // Retrieve evaluation results grouped by evaluated user and question
+    //     $results = DB::table('evaluation')
+    //         ->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+    //         ->where('evaluation.user_id', $user->id) // Filter by authenticated user as evaluator
+    //         ->select('evaluation.evaluated_full_name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.rating')
+    //         ->get();
+
+    //     // Group results by evaluated user and calculate total rating for each question
+    //     $evaluationResults = [];
+    //     $maxQuestionId = 0;
+
+    //     foreach ($results as $result) {
+    //         $evaluatedName = $result->evaluated_name;
+    //         $questionId = $result->question_id;
+    //         $rating = (int) $result->rating;
+
+    //         // Update max question ID
+    //         if ($questionId > $maxQuestionId) {
+    //             $maxQuestionId = $questionId;
+    //         }
+
+    //         // Initialize evaluated user if not present in the array
+    //         if (!isset($evaluationResults[$evaluatedName])) {
+    //             $evaluationResults[$evaluatedName] = ['evaluated_name' => $evaluatedName];
+    //         }
+
+    //         // Add or increment the rating for the question
+    //         $evaluationResults[$evaluatedName]["Q$questionId"] = isset($evaluationResults[$evaluatedName]["Q$questionId"]) ? $evaluationResults[$evaluatedName]["Q$questionId"] + $rating : $rating;
+    //     }
+
+    //     // Fill missing questions with "N/a"
+    //     foreach ($evaluationResults as &$result) {
+    //         for ($i = 1; $i <= $maxQuestionId; $i++) {
+    //             if (!isset($result["Q$i"])) {
+    //                 $result["Q$i"] = 'N/a';
+    //             }
+    //         }
+    //     }
+
+    //     // Format the response
+    //     $response = ['message' => 'Evaluation Result Master list', 'data' => array_values($evaluationResults)];
+
+    //     return response()->json($response, 201);
+    // }
+
     public function getEvaluationMasterList(Request $request)
     {
         // Check if the request has valid authorization token
@@ -241,7 +294,7 @@ class ResultController extends Controller
         foreach ($results as $result) {
             $evaluatedName = $result->evaluated_name;
             $questionId = $result->question_id;
-            $rating = (int) $result->rating;
+            $rating = (float) $result->rating;
 
             // Update max question ID
             if ($questionId > $maxQuestionId) {
@@ -266,9 +319,125 @@ class ResultController extends Controller
             }
         }
 
+        // Calculate overall rating per evaluated user and add it as the last column
+        foreach ($evaluationResults as &$result) {
+            $overallRating = 0;
+            $totalCount = 0;
+            foreach ($result as $key => $value) {
+                if (strpos($key, 'Q') === 0 && $value !== 'N/a') {
+                    $overallRating += $value;
+                    $totalCount++;
+                }
+            }
+            $overallRating = $totalCount > 0 ? number_format($overallRating / $totalCount, 3) : 'N/a';
+            $result['Overall_Rating'] = $overallRating;
+        }
+
         // Format the response
         $response = ['message' => 'Evaluation Result Master list', 'data' => array_values($evaluationResults)];
 
         return response()->json($response, 201);
+    }
+
+    public function getAverageRatingPerQuestion(Request $request)
+    {
+        // Retrieve all evaluation results
+        $evaluationResults = DB::table('evaluation_result')->select('question_id', 'rating')->get();
+
+        // Initialize an array to store the total rating and evaluator count for each question
+        $questionRatings = [];
+
+        // Calculate the total rating and evaluator count for each question
+        foreach ($evaluationResults as $result) {
+            $questionId = $result->question_id;
+            $rating = (float) $result->rating;
+
+            // Initialize the question in the array if not already present
+            if (!isset($questionRatings[$questionId])) {
+                $questionRatings[$questionId] = ['total_rating' => 0, 'evaluator_count' => 0];
+            }
+
+            // Increment the total rating and evaluator count for the question
+            $questionRatings[$questionId]['total_rating'] += $rating;
+            $questionRatings[$questionId]['evaluator_count']++;
+        }
+
+        // Calculate the average rating for each question and store total evaluators
+        $averageRatings = [];
+        $totalEvaluators = 0;
+        foreach ($questionRatings as $questionId => $data) {
+            $totalRating = $data['total_rating'];
+            $evaluatorCount = $data['evaluator_count'];
+
+            // Calculate the average rating, considering division by zero
+            $averageRating = $evaluatorCount > 0 ? ($totalRating / $evaluatorCount) * 100 : 0;
+
+            // Store the average rating for the question and update total evaluators
+            $averageRatings["Q$questionId"] = number_format($averageRating, 3);
+            $totalEvaluators += $evaluatorCount;
+        }
+
+        // Format the response
+        $response = [
+            'message' => 'Average Rating per Question (Percentage)',
+            'data' => $averageRatings,
+            'total_evaluators' => $totalEvaluators,
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    public function getSummationRatingPerQuestion(Request $request)
+    {
+        // Retrieve all questions with status true
+        $questions = DB::table('question')->where('status', true)->select('id')->get();
+
+        // Get the IDs of questions with status true
+        $questionIds = $questions->pluck('id')->toArray();
+
+        // Retrieve all evaluation results for questions with status true
+        $evaluationResults = DB::table('evaluation_result')
+            ->whereIn('question_id', $questionIds)
+            ->where('status', true) // Check if question rating status is true
+            ->select('question_id', 'rating')
+            ->get();
+
+        // Initialize an array to store the total rating for each question
+        $questionRatings = [];
+
+        // Calculate the total rating for each question
+        foreach ($evaluationResults as $result) {
+            $questionId = $result->question_id;
+            $rating = (float) $result->rating;
+
+            // Initialize the question in the array if not already present
+            if (!isset($questionRatings[$questionId])) {
+                $questionRatings[$questionId] = ['total_rating' => 0];
+            }
+
+            // Add the rating to the total rating for the question
+            $questionRatings[$questionId]['total_rating'] += $rating;
+        }
+
+        // Calculate the summation of ratings divided by the total number of questions
+        $totalQuestions = count($questionIds);
+        $summationRatings = [];
+        foreach ($questionRatings as $questionId => $data) {
+            $totalRating = $data['total_rating'];
+
+            // Calculate the summation of ratings divided by the total number of questions
+            $summationRating = $totalRating / $totalQuestions;
+
+            // Format the summation rating to three decimal places
+            $summationRating = number_format($summationRating, 3);
+
+            // Store the summation rating for the question
+            $summationRatings["Q$questionId"] = $summationRating;
+        }
+
+        // Format the response
+        $response = ['message' => 'Summation of question total of question', 'data' => $summationRatings];
+
+        return response()->json($response, 200);
     }
 }

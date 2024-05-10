@@ -8,6 +8,7 @@ use App\Models\EvaluationForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EvaluationController extends Controller
 {
@@ -35,7 +36,7 @@ class EvaluationController extends Controller
         return $user;
     }
 
-    // Function to get Student who have already been Evaluated
+    // Function to get Users who have already been Evaluated
     public function getUserEvaluated(Request $request)
     {
         // Check if the request has valid authorization token
@@ -44,11 +45,19 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Retrieve teachers who have already been evaluated
+        // Retrieve the total count of users who have already been evaluated
+        $adminsEvaluated = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])
+            ->whereHas('evaluationForms')
+            ->count();
         $studentsEvaluated = User::where('role', 'Student')->whereHas('evaluationForms')->count();
-        // Retrieve teachers who have already been evaluated
         $teachersEvaluated = User::where('role', 'Teacher')->whereHas('evaluationForms')->count();
-        return response()->json(['message' => 'Total User Evaluated', 'students' => $studentsEvaluated, 'teacher' => $teachersEvaluated], 201);
+        $nonTeachingEvaluated = User::where('role', 'Non-Teaching')->whereHas('evaluationForms')->count();
+
+        // Combine the count of admin roles into a single category called "Admins"
+        $totalAdmins = $adminsEvaluated;
+
+        // Return the response
+        return response()->json(['message' => 'Total Users Evaluated', 'admins' => $totalAdmins, 'students' => $studentsEvaluated, 'teachers' => $teachersEvaluated, 'non_teaching' => $nonTeachingEvaluated], 201);
     }
 
     // Function to get user that does not have evaluated
@@ -75,7 +84,22 @@ class EvaluationController extends Controller
         }
 
         // Retrieve all comments, suggestions, and user details for all evaluation forms
-        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
+        $evaluationForms = DB::table('evaluation')
+            ->join('users', 'evaluation.user_id', '=', 'users.id')
+            ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at', 'users.first_name', 'users.last_name')
+            ->whereIn('evaluation.approve_status', ['Pending', 'Approved']) // Include both pending and approved comments
+            ->where('evaluation.status', true)
+            ->get();
+
+        // Filter comments and suggestions approved more than 3 days ago
+        $evaluationForms = $evaluationForms->filter(function ($form) {
+            if ($form->approve_status === 'Approved') {
+                $approvalDate = Carbon::parse($form->updated_at);
+                $now = Carbon::now();
+                return $approvalDate->diffInDays($now) <= 2; // Include only if approved within last 3 days
+            }
+            return true; // Include pending comments
+        });
 
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }

@@ -142,33 +142,6 @@ class AuthController extends Controller
     }
 
     // ================= Update user profile =================
-    // public function updateProfile(Request $request, $id)
-    // {
-    //     // Check if the request has valid authorization token
-    //     $user = $this->authorizeRequest($request);
-    //     if (!$user instanceof User) {
-    //         return $user; // Return the response if authorization fails
-    //     }
-
-    //     // If user is authenticated, proceed with updating profile
-    //     // Find the user by ID
-    //     $user = User::find($id);
-
-    //     // Check if the user exists
-    //     if (!$user) {
-    //         return response()->json(['error' => 'User not found'], 404);
-    //     }
-
-    //     // Update user's profile information
-    //     $user->update([
-    //         'first_name' => $request->first_name,
-    //         'last_name' => $request->last_name,
-    //     ]);
-
-    //     return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 201);
-    // }
-
-    // ================= Update user profile =================
     public function updateUserDetails(Request $request, $id)
     {
         // Check if the request has valid authorization token
