@@ -221,6 +221,64 @@ class ResultController extends Controller
         return response()->json(['message' => 'Pie chart per Question', 'data' => $formattedResults], 201);
     }
 
+    public function officeServiceQuestionRating(Request $request)
+    {
+        // Get the user ID from the request query parameters
+        $userid = $request->query('userid');
+
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Retrieve question ratings for the user
+        $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->where('evaluation.office_services', '!=', 'N/a')->groupBy('question_id', 'question_description', 'type')->select('question_id', 'question_description', 'type')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
+
+        $ratingRange = [];
+
+        foreach ($questionRatings as $result) {
+            $ratings = [$result->{'1'}, $result->{'2'}, $result->{'3'}, $result->{'4'}, $result->{'5'}];
+            $overallRatingScore = array_sum($ratings) / count($ratings); // Calculate the overall rating score
+            $result->overall_rating_score = $overallRatingScore;
+
+            // Find the maximum rating number that has a non-zero count
+            $highestNonZeroRating = 0;
+            foreach ($ratings as $index => $count) {
+                if ($count > 0) {
+                    $highestNonZeroRating = $index + 1;
+                }
+            }
+
+            // Update the rating range based on the highest non-zero rating
+            for ($i = 1; $i <= $highestNonZeroRating; $i++) {
+                $ratingRange[] = (string) $i;
+            }
+        }
+
+        // Organize the results into the desired format
+        $formattedResults = [];
+        foreach ($questionRatings as $result) {
+            $formattedResult = [
+                'id' => $result->question_id,
+                'type' => $result->type,
+                'question_description' => $result->question_description,
+            ];
+
+            // Iterate over the possible rating values
+            foreach ($ratingRange as $rating) {
+                // Check if the rating exists in the result, if not, set its count to 0
+                $formattedResult[$rating] = isset($result->{$rating}) ? $result->{$rating} : 0;
+            }
+
+            $formattedResult['overall_rating_score'] = $result->overall_rating_score;
+            // Add the formatted result to the final array
+            $formattedResults[] = $formattedResult;
+        }
+
+        return response()->json(['message' => 'Pie chart per Question Office Services', 'data' => $formattedResults], 201);
+    }
+
     // =================== Temporary yooo! =================
 
     // public function getEvaluationMasterList(Request $request)
@@ -393,20 +451,16 @@ class ResultController extends Controller
 
     public function getSummationRatingPerQuestion(Request $request)
     {
-        // Retrieve all questions with status true
         $questions = DB::table('question')->where('status', true)->select('id')->get();
 
         // Get the IDs of questions with status true
         $questionIds = $questions->pluck('id')->toArray();
-
-        // Retrieve all evaluation results for questions with status true
         $evaluationResults = DB::table('evaluation_result')
             ->whereIn('question_id', $questionIds)
             ->where('status', true) // Check if question rating status is true
             ->select('question_id', 'rating')
             ->get();
 
-        // Initialize an array to store the total rating for each question
         $questionRatings = [];
 
         // Calculate the total rating for each question
@@ -423,19 +477,13 @@ class ResultController extends Controller
             $questionRatings[$questionId]['total_rating'] += $rating;
         }
 
-        // Calculate the summation of ratings divided by the total number of questions
         $totalQuestions = count($questionIds);
         $summationRatings = [];
         foreach ($questionRatings as $questionId => $data) {
             $totalRating = $data['total_rating'];
 
-            // Calculate the summation of ratings divided by the total number of questions
             $summationRating = $totalRating / $totalQuestions;
-
-            // Format the summation rating to three decimal places
             $summationRating = number_format($summationRating, 3);
-
-            // Store the summation rating for the question
             $summationRatings["Q$questionId"] = $summationRating;
         }
 

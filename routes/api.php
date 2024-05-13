@@ -27,6 +27,7 @@ Route::get('/users/not-evaluated/status={status}', [EvaluationController::class,
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
+Route::get('question-description/rating-total/office-services', [ResultController::class, 'officeServiceQuestionRating']);
 Route::get('evaluation-form/recent-approved/comment-suggestion', [EvaluationController::class, 'recentApproveComment']);
 Route::get('evaluation-form/pending/comment-suggestion', [EvaluationController::class, 'getComments']);
 Route::get('list-approved/userid={userid}', [ResultController::class, 'getApproveComments']);
