@@ -46,7 +46,7 @@ class ResultController extends Controller
         }
         $evaluationApprove = DB::table('evaluation')
             ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
-            ->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion')
+            ->select('evaluation.id', 'users.role', 'evaluation.comment', 'evaluation.suggestion')
             ->where('users.id', $userid)
             ->where('evaluation.status', true)
             ->where('evaluation.approve_status', 'Approved')
