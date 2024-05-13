@@ -490,14 +490,17 @@ class AuthController extends Controller
         // Define the list of office services
         $office_services = ['Business Office', 'Receiving Cashier', 'Store', 'Cafeteria', 'School Nurse', 'Home Deans', 'Security Guard', 'Guidance Counselor', 'Librarian', 'Registrar'];
 
-        // Retrieve the IDs of the evaluated office services by the user
-        $evaluatedIds = EvaluationForm::where('user_id', $user->id)
+        // Retrieve the office services evaluated by the user
+        $evaluatedServices = EvaluationForm::where('user_id', $user->id)
             ->pluck('office_services')
             ->toArray();
 
-        // Filter out the evaluated office services from the list of office services
-        $office_services = array_diff($office_services, $evaluatedIds);
+        // Filter out the evaluated office services
+        $office_services = array_diff($office_services, $evaluatedServices);
 
-        return response()->json(['List Of Office Services' => $office_services], 201);
+        // Re-index the array numerically
+        $office_services = array_values($office_services);
+
+        return response()->json(['message' => 'List Of Office Services', 'data' => $office_services], 201);
     }
 }
