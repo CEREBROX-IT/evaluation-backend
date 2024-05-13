@@ -87,7 +87,7 @@ class EvaluationController extends Controller
         $evaluationForms = DB::table('evaluation')
             ->join('users', 'evaluation.user_id', '=', 'users.id')
             ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at', 'users.first_name', 'users.last_name')
-            ->whereIn('evaluation.approve_status', ['Pending', 'Approved']) // Include both pending and approved comments
+            ->whereIn('evaluation.approve_status', ['Pending'])
             ->where('evaluation.status', true)
             ->get();
 
@@ -102,6 +102,34 @@ class EvaluationController extends Controller
         });
 
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
+    }
+
+    public function recentApproveComment(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Retrieve all comments, suggestions, and user details for all evaluation forms
+        $evaluationForms = DB::table('evaluation')
+            ->join('users', 'evaluation.user_id', '=', 'users.id')
+            ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at', 'users.first_name', 'users.last_name')
+            ->whereIn('evaluation.approve_status', ['Approved'])
+            ->where('evaluation.status', true)
+            ->get();
+
+        $evaluationForms = $evaluationForms->filter(function ($form) {
+            if ($form->approve_status === 'Approved') {
+                $approvalDate = Carbon::parse($form->updated_at);
+                $now = Carbon::now();
+                return $approvalDate->diffInDays($now) <= 24 * 60 * 60;
+            }
+            return true;
+        });
+
+        return response()->json(['Redent Approve Comments & Suggestion' => $evaluationForms], 201);
     }
 
     public function updateEvaluation(Request $request, $id)
