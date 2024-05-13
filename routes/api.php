@@ -33,6 +33,7 @@ Route::get('list-approved/userid={userid}', [ResultController::class, 'getApprov
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
 Route::get('/list-evaluated-category/userId={userId}', [ResultController::class, 'checkEvaluation']);
+Route::get('/get/office-services/comment-suggestion', [EvaluationController::class, 'officeServiceComments']);
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/All', [QuestionController::class, 'getAllQuestions']);

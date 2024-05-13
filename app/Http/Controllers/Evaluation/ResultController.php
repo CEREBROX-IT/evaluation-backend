@@ -163,11 +163,9 @@ class ResultController extends Controller
         return response()->json(['message' => 'User Evaluation found', 'data' => $ratingTotal], 201);
     }
 
-    // ================= Get Result rating total per question =================
     public function getQuestionRating(Request $request)
     {
-        // Get the type and userid from the request query parameters
-        // $type = $request->query('type');
+        // Get the user ID from the request query parameters
         $userid = $request->query('userid');
 
         // Check if the request has valid authorization token
@@ -176,13 +174,29 @@ class ResultController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if anyone has evaluated the user yet
-        $evaluated = EvaluationForm::where('evaluated_id', $userid)->exists();
-        if (!$evaluated) {
-            return response()->json(['error' => 'No one has evaluated this user yet'], 404);
-        }
-
+        // Retrieve question ratings for the user
         $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->groupBy('question_id', 'question_description')->select('question_id', 'question_description')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
+
+        $ratingRange = [];
+
+        foreach ($questionRatings as $result) {
+            $ratings = [$result->{'1'}, $result->{'2'}, $result->{'3'}, $result->{'4'}, $result->{'5'}];
+            $overallRatingScore = array_sum($ratings) / count($ratings); // Calculate the overall rating score
+            $result->overall_rating_score = $overallRatingScore;
+
+            // Find the maximum rating number that has a non-zero count
+            $highestNonZeroRating = 0;
+            foreach ($ratings as $index => $count) {
+                if ($count > 0) {
+                    $highestNonZeroRating = $index + 1;
+                }
+            }
+
+            // Update the rating range based on the highest non-zero rating
+            for ($i = 1; $i <= $highestNonZeroRating; $i++) {
+                $ratingRange[] = (string) $i;
+            }
+        }
 
         // Organize the results into the desired format
         $formattedResults = [];
@@ -192,29 +206,18 @@ class ResultController extends Controller
                 'question_description' => $result->question_description,
             ];
 
-            // Add ratings and their counts to the formatted result
-            for ($i = 1; $i <= 5; $i++) {
-                if ($result->{$i}) {
-                    $formattedResult[$i] = $result->{$i};
-                }
+            // Iterate over the possible rating values
+            foreach ($ratingRange as $rating) {
+                // Check if the rating exists in the result, if not, set its count to 0
+                $formattedResult[$rating] = isset($result->{$rating}) ? $result->{$rating} : 0;
             }
 
+            $formattedResult['overall_rating_score'] = $result->overall_rating_score;
             // Add the formatted result to the final array
             $formattedResults[] = $formattedResult;
         }
 
-        return response()->json(['data' => $formattedResults], 200);
-    }
-
-    public function checkEvaluation(Request $request, $userId)
-    {
-        // Retrieve the evaluations related to the provided user ID
-        $evaluations = EvaluationForm::where('user_id', $userId)->get();
-
-        // Retrieve all the unique types of questions that the user has already evaluated
-        $evaluatedTypes = EvaluationResult::whereIn('evaluation_id', $evaluations->pluck('id'))->pluck('type')->unique();
-
-        return response()->json(['message' => 'List of User Already Evaluated Category', 'data' => $evaluatedTypes->values()], 201);
+        return response()->json(['message' => 'Pie chart per Question', 'data' => $formattedResults], 201);
     }
 
     // =================== Temporary yooo! =================

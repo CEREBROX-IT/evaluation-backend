@@ -132,34 +132,19 @@ class EvaluationController extends Controller
         return response()->json(['Redent Approve Comments & Suggestion' => $evaluationForms], 201);
     }
 
-    // public function officeServiceComments(Request $request)
-    // {
-    //     // Check if the request has valid authorization token
-    //     $user = $this->authorizeRequest($request);
-    //     if (!$user instanceof User) {
-    //         return $user; // Return the response if authorization fails
-    //     }
+    public function officeServiceComments(Request $request)
+    {
+        // Check if the request has valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
 
-    //     // Retrieve all comments, suggestions, and user details for all evaluation forms
-    //     $evaluationForms = DB::table('evaluation')
-    //         ->join('users', 'evaluation.user_id', '=', 'users.id')
-    //         ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at')
-    //         ->whereIn('evaluation.approve_status', ['Approve'])
-    //         ->where('evaluation.status', true)
-    //         ->get();
+        // Retrieve comments, suggestions, and user details for approved evaluation forms
+        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'users.first_name', 'users.last_name', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.status', true)->where('evaluation.approve_status', 'Approved')->where('evaluation.office_services', '!=', 'N/a')->get();
 
-    //     // Filter comments and suggestions approved more than 3 days ago
-    //     $evaluationForms = $evaluationForms->filter(function ($form) {
-    //         if ($form->approve_status === 'Approved') {
-    //             $approvalDate = Carbon::parse($form->updated_at);
-    //             $now = Carbon::now();
-    //             return $approvalDate->diffInDays($now) <= 2; // Include only if approved within last 3 days
-    //         }
-    //         return true; // Include pending comments
-    //     });
-
-    //     return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
-    // }
+        return response()->json(['message' => 'Office Service Comments & Suggestions', 'data' => $evaluationForms], 201);
+    }
 
     public function updateEvaluation(Request $request, $id)
     {
