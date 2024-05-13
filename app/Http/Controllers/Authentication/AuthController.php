@@ -476,4 +476,28 @@ class AuthController extends Controller
         Auth::logout();
         return redirect('/welcome');
     }
+
+    // ================= Testing only yooo!!! =======================
+
+    public function getOfficeService(Request $request)
+    {
+        // Check if the request has a valid authorization token
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user; // Return the response if authorization fails
+        }
+
+        // Define the list of office services
+        $office_services = ['Business Office', 'Receiving Cashier', 'Store', 'Cafeteria', 'School Nurse', 'Home Deans', 'Security Guard', 'Guidance Counselor', 'Librarian', 'Registrar'];
+
+        // Retrieve the IDs of the evaluated office services by the user
+        $evaluatedIds = EvaluationForm::where('user_id', $user->id)
+            ->pluck('office_services')
+            ->toArray();
+
+        // Filter out the evaluated office services from the list of office services
+        $office_services = array_diff($office_services, $evaluatedIds);
+
+        return response()->json(['List Of Office Services' => $office_services], 201);
+    }
 }

@@ -12,8 +12,8 @@ return new class extends Migration {
             $table->foreignId('session_id')->constrained('session');
             $table->string('school_year', 30);
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('evaluated_id')->constrained('users')->where('role', 'Teacher');
-            $table->string('evaluated_full_name', 80);
+            $table->foreignId('evaluated_id')->nullable()->constrained('users');
+            $table->string('evaluated_full_name', 80)->nullable();
             $table->string('class_size', 15);
             $table->string('no_of_student_present', 15);
             $table->string('no_of_student_late', 15);

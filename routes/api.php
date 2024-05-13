@@ -51,6 +51,7 @@ Route::post('/user/update-password/{id}', [AuthController::class, 'updatePasswor
 Route::post('/users/update-email/{id}', [AuthController::class, 'updateEmail']);
 Route::post('/user/reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/get-user/role={role}', [AuthController::class, 'getUsersRole']);
+Route::get('/get/office-services', [AuthController::class, 'getOfficeService']);
 Route::get('/get-user', [AuthController::class, 'getUserList']);
 Route::delete('/delete-user/id={id}', [AuthController::class, 'deleteUser']);
 Route::post('/logout', [AuthController::class, 'logout']);
