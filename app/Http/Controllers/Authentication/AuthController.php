@@ -388,11 +388,6 @@ class AuthController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
         $totalPrincipal = User::where('role', 'Principal')->where('status', true)->count();
         $totalTreasurer = User::where('role', 'Treasurer')->where('status', true)->count();
         $totalRegistrar = User::where('role', 'Registrar')->where('status', true)->count();

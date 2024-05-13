@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"john\",\n    \"email\": null,\n    \"last_name\": \"Caltix\",\n    \"username\": \"caltix\",\n    \"password\": \"sample123\",\n    \"role\": \"Student\"\n}\n",
+							"raw": "{\n    \"first_name\": \"ddddd\",\n    \"email\": null,\n    \"last_name\": \"ddddd\",\n    \"username\": \"ddddd\",\n    \"password\": \"sample123\",\n    \"role\": \"Teacher\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -205,11 +205,11 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTgxMTIzLCJleHAiOjE3MTUyNjc1MjMsIm5iZiI6MTcxNTE4MTEyMywianRpIjoibzc3TG1jaHFpQ1lYN01JaSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.bCq-KVOzosWuLNPwOCuG32mfdB5ZWZiR2-3GgNjrVYc",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 								"type": "text"
 							}
 						],
-						"url": "http://127.0.0.1:8000/api/get-user/role=Teacher"
+						"url": "http://127.0.0.1:8000/api/get-user/role=Admin"
 					},
 					"response": []
 				},
@@ -296,7 +296,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2022-2023\",\n    \"user_id\": 1,\n    \"evaluated_id\": 2,\n    \"evaluated_full_name\": \"John Calix\",\n    \"class_size\": 26,\n    \"no_of_student_present\": 15,\n    \"no_of_student_late\": 11,\n    \"gender\": \"Male\",\n    \"category\":\"Non-Teachhing\",\n    \"length_of_service\": \"10 years or less\",\n    \"subject_name\": \"Math\",\n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 1,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n             \"rating\": \"2\"\n        },\n\n        {\n            \"question_id\": 2,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n            \"rating\": \"4\"\n        },\n        {\n            \"question_id\": 3,\n            \"type\": \"STUDENT EVALUATION OF TEACHING\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"General\",\n            \"question_description\": \"Has an interesting style of delivery.\",\n             \"rating\": \"4\"\n        }\n    ]\n}\n",
+							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2022-2023\",\n    \"user_id\": 1,\n    \"evaluated_id\": 8,\n    \"evaluated_full_name\": \"Teacher User\",\n    \"class_size\": 26,\n    \"no_of_student_present\": 15,\n    \"no_of_student_late\": 11,\n    \"gender\": \"Male\",\n    \"category\":\"Non-Teachhing\",\n    \"office_services\": \"N/a\",\n    \"length_of_service\": \"10 years or less\",\n    \"subject_name\": \"Math\",\n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 1,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n             \"rating\": \"2\"\n        },\n        {\n            \"question_id\": 2,\n            \"type\": \"ADMINISTRATORS EVALUATION\",\n            \"question_group\": \"2\",\n            \"evaluation_type\": \"Self-Understanding Skill\",\n            \"question_description\": \"Projects a strong image before the faculty\",\n            \"rating\": \"4\"\n        },\n        {\n            \"question_id\": 3,\n            \"type\": \"STUDENT EVALUATION OF TEACHING\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"General\",\n            \"question_description\": \"Has an interesting style of delivery.\",\n             \"rating\": \"4\"\n        }\n    ]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -319,7 +319,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MzYxMzEzLCJleHAiOjE3MTQ0NDc3MTMsIm5iZiI6MTcxNDM2MTMxMywianRpIjoiQ2xaNGxyeU5MSHpYNEtsdSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6OSwic2Nob29sX3llYXIiOiIyMDI0LTIwMjUiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.1FpD5XWwRT2-VWZSbkx0SHXlBs3FpFi4UVbQE2b7D10",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 								"type": "text"
 							}
 						],
@@ -339,7 +339,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMzMxMzg5LCJleHAiOjE3MTM0MTc3ODksIm5iZiI6MTcxMzMzMTM4OSwianRpIjoiR0U2RUFrZ1lEN09vTjB1eSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6bnVsbCwicm9sZSI6IlN0dWRlbnQifQ.UYRCDZzFEM2pGhS5NNYxrEks3FKe8myGN7Yl-1whuT4",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NTYzNjk3LCJleHAiOjE3MTU2NTAwOTYsIm5iZiI6MTcxNTU2MzY5NywianRpIjoieThUbGl6QWhQVmpORldIRSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJDb29yZGluYXRvciIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.ATW8G3srFmYbN74CW_yE92FHhxy1xGPBKTe82gRBzZ0",
 								"type": "text"
 							}
 						],
@@ -424,7 +424,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTcwMTIwLCJleHAiOjE3MTUyNTY1MjAsIm5iZiI6MTcxNTE3MDEyMCwianRpIjoiZDVyZm5aUFVmZHRTeld5bCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.GC9JJPSpc1Hhla4FM9DXx3Ib9J1x742ZX0CXfFp3KzY",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 								"type": "text"
 							}
 						],
@@ -444,12 +444,12 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MzUyMjcyLCJleHAiOjE3MTQ0Mzg2NzIsIm5iZiI6MTcxNDM1MjI3MiwianRpIjoiY0hWSmdUcGJqRmZPV3JsbiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6OSwic2Nob29sX3llYXIiOiIyMDI0LTIwMjUiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.ULPdbO3PrILMA2QMGpFagVodJdZAut80eG_NopZLMSw",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MzA5Mjg4LCJleHAiOjE3MTUzOTU2ODgsIm5iZiI6MTcxNTMwOTI4OCwianRpIjoiNlNRY01IR2NtZTFQRE9kaSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJDb29yZGluYXRvciIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.7U_Otzp0-lbD1qnf9C7Pfyu5PkFILPY5Pkq1-AKSaQY",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/question-description/rating-total/?type=Teacher&userid=3",
+							"raw": "http://127.0.0.1:8000/api/question-description/rating-total/?userid=12",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -467,11 +467,12 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "Teacher"
+									"value": "Teacher",
+									"disabled": true
 								},
 								{
 									"key": "userid",
-									"value": "3"
+									"value": "12"
 								}
 							]
 						}
@@ -527,7 +528,7 @@
 									},
 									{
 										"key": "Authorization",
-										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MDkxNjA2LCJleHAiOjE3MTUxNzgwMDYsIm5iZiI6MTcxNTA5MTYwNiwianRpIjoiVFljN29Gb1RERWNlQTJLQyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.DozZx0e84oDS-zddweosv3r6zI8AFIfe9r8awUoJ6wA",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 										"type": "text"
 									}
 								],
@@ -726,7 +727,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Comment & Suggestion",
+					"name": "Pending Comment & Suggestion",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -737,11 +738,71 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MzYxMzEzLCJleHAiOjE3MTQ0NDc3MTMsIm5iZiI6MTcxNDM2MTMxMywianRpIjoiQ2xaNGxyeU5MSHpYNEtsdSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6OSwic2Nob29sX3llYXIiOiIyMDI0LTIwMjUiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.1FpD5XWwRT2-VWZSbkx0SHXlBs3FpFi4UVbQE2b7D10",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
 								"type": "text"
 							}
 						],
-						"url": "http://127.0.0.1:8000/api/evaluation-form/comment-suggestion"
+						"url": "http://127.0.0.1:8000/api/evaluation-form/pending/comment-suggestion"
+					},
+					"response": []
+				},
+				{
+					"name": "Total of Evaluators rating",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/total-evaluator/average-rating"
+					},
+					"response": []
+				},
+				{
+					"name": "Total of Question rating",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/total-question/average-rating"
+					},
+					"response": []
+				},
+				{
+					"name": "Evaluated Masterlist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/evaluation/masterlist"
 					},
 					"response": []
 				}
