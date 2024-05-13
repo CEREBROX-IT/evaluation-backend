@@ -65,15 +65,12 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
+     
 
         // Retrieve users who have not yet do evaluation
-        $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('id', 'first_name', 'last_name')->get();
+        $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('id', 'first_name', 'last_name', 'role')->get();
 
-        return response()->json(['users not Evaluated yet' => $usersNotEvaluated], 200);
+        return response()->json(['usersNotEvaluated' => $usersNotEvaluated], 200);
     }
 
     public function getComments(Request $request)
