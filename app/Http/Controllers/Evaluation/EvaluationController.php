@@ -84,15 +84,15 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
+        // // Check if the authenticated user is an admin
+        // if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
+        //     return response()->json(['error' => 'Unauthorized Request'], 401);
+        // }
 
         // Retrieve all comments, suggestions, and user details for all evaluation forms
         $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.first_name', 'users.last_name')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
 
-        return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
+        return response()->json(['Comments' => $evaluationForms], 201);
     }
 
     public function updateEvaluation(Request $request, $id)
@@ -103,10 +103,6 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
 
         $evaluation = EvaluationForm::find($id);
 
@@ -130,10 +126,7 @@ class EvaluationController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
+      
 
         // If the ID parameter is "all", approve all evaluations
         if ($id === 'all') {

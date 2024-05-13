@@ -52,6 +52,21 @@ class QuestionController extends Controller
         return response()->json(['questions' => $questions], 201);
     }
 
+
+    public function getAllQuestions(Request $request)
+{
+    $user = $this->authorizeRequest($request);
+    if (!$user instanceof User) {
+        return $user; 
+    }
+
+    $questions = Question::where('status', true)
+        ->orderBy('updated_at', 'desc')
+        ->get();
+
+    return response()->json(['questions' => $questions], 200);
+}
+
     // ================= Create Question =================
 
     public function createQuestion(Request $request)

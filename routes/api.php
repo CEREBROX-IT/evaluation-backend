@@ -31,6 +31,8 @@ Route::get('/list-evaluated-category/userId={userId}', [ResultController::class,
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/type={type}', [QuestionController::class, 'getQuestions']);
+Route::get('/question/get/All', [QuestionController::class, 'getAllQuestions']);
+
 Route::post('/question/create', [QuestionController::class, 'createQuestion']);
 Route::post('/question/update/{id}', [QuestionController::class, 'updateQuestion']);
 Route::delete('/question/delete/{id}', [QuestionController::class, 'deleteQuestion']);
