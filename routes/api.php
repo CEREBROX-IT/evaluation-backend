@@ -34,6 +34,7 @@ Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'appro
 Route::get('/list-evaluated-category/userId={userId}', [ResultController::class, 'checkEvaluation']);
 
 // ============== Evaluation Question Endpoints ==============
+Route::get('/question/get/All', [QuestionController::class, 'getAllQuestions']);
 Route::get('/question/get/type={type}', [QuestionController::class, 'getQuestions']);
 Route::post('/question/create', [QuestionController::class, 'createQuestion']);
 Route::post('/question/update/{id}', [QuestionController::class, 'updateQuestion']);

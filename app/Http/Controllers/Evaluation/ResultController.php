@@ -167,7 +167,7 @@ class ResultController extends Controller
     public function getQuestionRating(Request $request)
     {
         // Get the type and userid from the request query parameters
-        $type = $request->query('type');
+        // $type = $request->query('type');
         $userid = $request->query('userid');
 
         // Check if the request has valid authorization token
@@ -182,7 +182,7 @@ class ResultController extends Controller
             return response()->json(['error' => 'No one has evaluated this user yet'], 404);
         }
 
-        $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation_result.type', $type)->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->groupBy('question_id', 'question_description')->select('question_id', 'question_description')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
+        $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->groupBy('question_id', 'question_description')->select('question_id', 'question_description')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
 
         // Organize the results into the desired format
         $formattedResults = [];
