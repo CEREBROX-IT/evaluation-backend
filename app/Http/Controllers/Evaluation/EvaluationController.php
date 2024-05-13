@@ -86,7 +86,7 @@ class EvaluationController extends Controller
         // Retrieve all comments, suggestions, and user details for all evaluation forms
         $evaluationForms = DB::table('evaluation')
             ->join('users', 'evaluation.user_id', '=', 'users.id')
-            ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at', 'users.first_name', 'users.last_name')
+            ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.role', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"), 'evaluation.evaluated_full_name', 'evaluation.approve_status', 'evaluation.updated_at')
             ->whereIn('evaluation.approve_status', ['Pending'])
             ->where('evaluation.status', true)
             ->get();
@@ -115,7 +115,7 @@ class EvaluationController extends Controller
         // Retrieve all comments, suggestions, and user details for all evaluation forms
         $evaluationForms = DB::table('evaluation')
             ->join('users', 'evaluation.user_id', '=', 'users.id')
-            ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at', 'users.first_name', 'users.last_name')
+            ->select('evaluation.id', 'evaluation.user_id', 'evaluation.comment', 'evaluation.suggestion', 'users.role', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"), 'evaluation.evaluated_full_name', 'evaluation.approve_status', 'evaluation.updated_at')
             ->whereIn('evaluation.approve_status', ['Approved'])
             ->where('evaluation.status', true)
             ->get();
@@ -129,7 +129,7 @@ class EvaluationController extends Controller
             return true;
         });
 
-        return response()->json(['Redent Approve Comments & Suggestion' => $evaluationForms], 201);
+        return response()->json(['Recent Approve Comments & Suggestion' => $evaluationForms], 201);
     }
 
     public function officeServiceComments(Request $request)
