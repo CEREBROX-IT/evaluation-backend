@@ -135,17 +135,13 @@ class ResultController extends Controller
 
     public function getRatingTotal(Request $request)
     {
-        // Get the type and userid from the request query parameters
-        // $type = $request->query('type');
         $userid = $request->query('userid');
 
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
         }
 
-        // Check if anyone has evaluated the user yet
         $evaluated = EvaluationForm::where('evaluated_id', $userid)->exists();
         if (!$evaluated) {
             return response()->json(['error' => 'No one has evaluated this user yet'], 404);
@@ -155,12 +151,20 @@ class ResultController extends Controller
 
         if ($evaluationExists) {
             // Fetch the total count of ratings for the specified type and user
-            $ratingTotal = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(*) as total')->pluck('total', 'rating');
+            $ratingTotal = EvaluationResult::rightJoin('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(evaluation_result.rating) as total')->pluck('total', 'rating');
+
+            $ratingTotal = [
+                '1' => $ratingTotal->get(1, 0),
+                '2' => $ratingTotal->get(2, 0),
+                '3' => $ratingTotal->get(3, 0),
+                '4' => $ratingTotal->get(4, 0),
+                '5' => $ratingTotal->get(5, 0),
+            ];
         } else {
             return response()->json(['message' => 'No evaluations available'], 200);
         }
 
-        return response()->json(['message' => 'User Evaluation found', 'data' => $ratingTotal], 201);
+        return response()->json(['message' => 'Overall Question Result (Bar Chart)', 'data' => $ratingTotal], 201);
     }
 
     public function getQuestionRating(Request $request)
@@ -174,7 +178,6 @@ class ResultController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Retrieve question ratings for the user
         $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->groupBy('question_id', 'question_description', 'type')->select('question_id', 'question_description', 'type')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
 
         $ratingRange = [];
