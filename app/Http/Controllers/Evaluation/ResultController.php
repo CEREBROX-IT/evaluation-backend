@@ -210,10 +210,15 @@ class ResultController extends Controller
                 'question_description' => $result->question_description,
             ];
 
-            // Iterate over the possible rating values
-            foreach ($ratingRange as $rating) {
-                // Check if the rating exists in the result, if not, set its count to 0
-                $formattedResult[$rating] = isset($result->{$rating}) ? $result->{$rating} : 0;
+            // Check if the highest rating in the range is greater than or equal to 4
+            if (max($ratingRange) >= 4) {
+                for ($rating = 1; $rating <= 5; $rating++) {
+                    $formattedResult[$rating] = isset($result->{$rating}) ? $result->{$rating} : 0;
+                }
+            } else {
+                for ($rating = 1; $rating <= 4; $rating++) {
+                    $formattedResult[$rating] = isset($result->{$rating}) ? $result->{$rating} : 0;
+                }
             }
 
             $formattedResult['overall_rating_score'] = $result->overall_rating_score;
@@ -345,39 +350,46 @@ class ResultController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Retrieve evaluation results grouped by evaluated user and question
         $results = DB::table('evaluation')
+            ->whereNotNull('evaluation.evaluated_id') // Exclude rows where evaluated_id is null
+            ->where('evaluation.status', true)
+            ->where('evaluation.office_services', 'N/a')
             ->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
-            ->where('evaluation.user_id', $user->id) // Filter by authenticated user as evaluator
+            ->where('evaluation.user_id', $user->id)
             ->select('evaluation.evaluated_full_name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.rating')
             ->get();
 
-        // Group results by evaluated user and calculate total rating for each question
+        // Group results by evaluated user
         $evaluationResults = [];
         $maxQuestionId = 0;
 
         foreach ($results as $result) {
-            $evaluatedName = $result->evaluated_name;
             $questionId = $result->question_id;
-            $rating = (float) $result->rating;
-
-            // Update max question ID
-            if ($questionId > $maxQuestionId) {
-                $maxQuestionId = $questionId;
-            }
+            $evaluatedName = $result->evaluated_name;
 
             // Initialize evaluated user if not present in the array
             if (!isset($evaluationResults[$evaluatedName])) {
                 $evaluationResults[$evaluatedName] = ['evaluated_name' => $evaluatedName];
+                $questionCount = 0; // Initialize question count for each evaluated user
+            }
+
+            $rating = (float) $result->rating;
+
+            // Increment question count
+            $questionCount++;
+
+            // Update max question ID
+            if ($questionCount > $maxQuestionId) {
+                $maxQuestionId = $questionCount;
             }
 
             // Add or increment the rating for the question
             $evaluationResults[$evaluatedName]["Q$questionId"] = isset($evaluationResults[$evaluatedName]["Q$questionId"]) ? $evaluationResults[$evaluatedName]["Q$questionId"] + $rating : $rating;
         }
 
-        // Fill missing questions with "N/a"
+        // Fill missing questions with "N/a" for each evaluated user
         foreach ($evaluationResults as &$result) {
-            for ($i = 1; $i <= $maxQuestionId; $i++) {
+            for ($i = 1; $i <= $questionCount; $i++) {
                 if (!isset($result["Q$i"])) {
                     $result["Q$i"] = 'N/a';
                 }
