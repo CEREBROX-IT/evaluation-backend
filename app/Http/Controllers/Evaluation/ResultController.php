@@ -43,14 +43,8 @@ class ResultController extends Controller
         if (!$user instanceof User) {
             return $user;
         }
-        $evaluationApprove = DB::table('evaluation')
-            ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
-            ->select('evaluation.id', 'users.role', 'evaluation.comment', 'evaluation.suggestion')
-            ->where('users.id', $userid)
-            ->where('evaluation.status', true)
-            ->where('evaluation.approve_status', 'Approved')
-            ->orderBy('evaluation.id', 'desc') // Sort by evaluation.id in descending order
-            ->get();
+
+        $evaluationApprove = DB::table('evaluation')->join('users as evaluators', 'evaluation.user_id', '=', 'evaluators.id')->join('users as evaluated_users', 'evaluation.evaluated_id', '=', 'evaluated_users.id')->select('evaluation.id', 'evaluators.role as evaluator_role', 'evaluators.id as evaluator_id', 'evaluated_users.role as evaluated_role', 'evaluated_users.id as evaluated_id', 'evaluation.comment', 'evaluation.suggestion')->where('evaluated_users.id', $userid)->where('evaluation.status', true)->where('evaluation.approve_status', 'Approved')->orderBy('evaluation.id', 'desc')->get();
 
         return response()->json(['Comments & Suggestion Approved' => $evaluationApprove], 201);
     }

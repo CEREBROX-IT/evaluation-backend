@@ -82,8 +82,8 @@ class EvaluationController extends Controller
             return $user;
         }
 
-        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.evaluated_id', '=', 'users.id')->select('evaluation.id', 'evaluation.evaluated_id', 'evaluation.comment', 'evaluation.suggestion', 'users.role AS evaluator_role', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"), 'evaluation.evaluated_full_name', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
-
+        // Retrieve all comments, suggestions, and user details for all evaluation forms
+        $evaluationForms = DB::table('evaluation')->join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')->join('users as evaluator', 'evaluation.user_id', '=', 'evaluator.id')->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.user_id AS evaluator_id', DB::raw("CONCAT(evaluator.first_name, ' ', evaluator.last_name) AS evaluator_full_name"), 'evaluator.role AS evaluator_role', 'evaluation.evaluated_id', 'evaluation.evaluated_full_name', 'evaluated.role AS evaluated_role', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }
 
@@ -97,8 +97,9 @@ class EvaluationController extends Controller
 
         // Retrieve all comments, suggestions, and user details for all evaluation forms
         $evaluationForms = DB::table('evaluation')
-            ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
-            ->select('evaluation.id', 'evaluation.evaluated_id', 'evaluation.comment', 'evaluation.suggestion', 'users.role AS evaluator_role', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"), 'evaluation.evaluated_full_name', 'evaluation.approve_status', 'evaluation.updated_at')
+            ->join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')
+            ->join('users as evaluator', 'evaluation.user_id', '=', 'evaluator.id')
+            ->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.user_id AS evaluator_id', DB::raw("CONCAT(evaluator.first_name, ' ', evaluator.last_name) AS evaluator_full_name"), 'evaluator.role AS evaluator_role', 'evaluation.evaluated_id', 'evaluation.evaluated_full_name', 'evaluated.role AS evaluated_role', 'evaluation.approve_status', 'evaluation.updated_at')
             ->whereIn('evaluation.approve_status', ['Approved'])
             ->where('evaluation.status', true)
             ->get();
