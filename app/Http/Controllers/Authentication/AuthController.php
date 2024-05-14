@@ -308,13 +308,11 @@ class AuthController extends Controller
 
     public function getUsersRole(Request $request, $role = null)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
-        // If no role parameter is provided, return a 404 response
         if ($role === null) {
             return response()->json(['error' => 'Role parameter is required'], 404);
         }
@@ -330,7 +328,10 @@ class AuthController extends Controller
         $usersQuery = User::whereIn('role', $roles)->select('id', 'first_name', 'last_name', 'role');
 
         // Exclude users who have already been evaluated by the authenticated user
-        $evaluatedIds = EvaluationForm::where('user_id', $user->id)->pluck('evaluated_id');
+        $evaluatedIds = EvaluationForm::where('user_id', $user->id)
+            ->where('status', true)
+            ->pluck('evaluated_id');
+
         $usersQuery->whereNotIn('id', $evaluatedIds);
 
         // Sort users by created_at in descending order
@@ -339,7 +340,7 @@ class AuthController extends Controller
         // Transform each user object to include a "full name" field
         $users->transform(function ($user) {
             $user['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
-            unset($user['first_name'], $user['last_name']); // Remove individual name fields
+            unset($user['first_name'], $user['last_name']);
             return $user;
         });
 
