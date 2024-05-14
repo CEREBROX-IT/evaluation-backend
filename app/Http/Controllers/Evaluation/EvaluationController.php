@@ -82,25 +82,7 @@ class EvaluationController extends Controller
             return $user;
         }
 
-        $evaluationForms = DB::table('evaluation')
-            ->join('users', 'evaluation.user_id', '=', 'users.id')
-            ->select(
-                'evaluation.id',
-                'evaluation.user_id',
-                'evaluation.comment',
-                'evaluation.suggestion',
-                DB::raw("CASE
-                        WHEN users.role IN ('Principal', 'Treasurer', 'Registrar', 'Coordinator') THEN 'Admin'
-                        ELSE users.role
-                    END AS role"),
-                DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"),
-                'evaluation.evaluated_full_name',
-                'evaluation.approve_status',
-                'evaluation.updated_at',
-            )
-            ->where('evaluation.approve_status', 'Pending')
-            ->where('evaluation.status', true)
-            ->get();
+        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.evaluated_id', '=', 'users.id')->select('evaluation.id', 'evaluation.evaluated_id', 'evaluation.comment', 'evaluation.suggestion', 'users.role AS evaluator_role', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"), 'evaluation.evaluated_full_name', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
 
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }
@@ -115,21 +97,8 @@ class EvaluationController extends Controller
 
         // Retrieve all comments, suggestions, and user details for all evaluation forms
         $evaluationForms = DB::table('evaluation')
-            ->join('users', 'evaluation.user_id', '=', 'users.id')
-            ->select(
-                'evaluation.id',
-                'evaluation.user_id',
-                'evaluation.comment',
-                'evaluation.suggestion',
-                DB::raw("CASE
-                        WHEN users.role IN ('Principal', 'Treasurer', 'Registrar', 'Coordinator') THEN 'Admin'
-                        ELSE users.role
-                    END AS role"),
-                DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"),
-                'evaluation.evaluated_full_name',
-                'evaluation.approve_status',
-                'evaluation.updated_at',
-            )
+            ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
+            ->select('evaluation.id', 'evaluation.evaluated_id', 'evaluation.comment', 'evaluation.suggestion', 'users.role AS evaluator_role', DB::raw("CONCAT(users.first_name, ' ', users.last_name) AS evaluator_full_name"), 'evaluation.evaluated_full_name', 'evaluation.approve_status', 'evaluation.updated_at')
             ->whereIn('evaluation.approve_status', ['Approved'])
             ->where('evaluation.status', true)
             ->get();

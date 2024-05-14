@@ -39,10 +39,9 @@ class ResultController extends Controller
 
     public function getApproveComments(Request $request, $userid)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
         $evaluationApprove = DB::table('evaluation')
             ->join('users', 'evaluation.evaluated_id', '=', 'users.id')
