@@ -45,11 +45,6 @@ class SessionController extends Controller
             return $user; // Return the response if authorization fails
         }
 
-        // Check if the authenticated user is an admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
-        }
-
         // Begin a database transaction
         DB::beginTransaction();
 
@@ -97,11 +92,6 @@ class SessionController extends Controller
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user; // Return the response if authorization fails
-        }
-
-        // Check if the authenticated user is an admin or super admin
-        if ($user->role !== 'Admin' && $user->role !== 'SuperAdmin') {
-            return response()->json(['error' => 'Unauthorized Request'], 401);
         }
 
         // Retrieve all sessions from the Session model
