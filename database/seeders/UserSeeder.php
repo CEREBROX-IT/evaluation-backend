@@ -127,10 +127,10 @@ class UserSeeder extends Seeder
     }
 }
 
-// Princial
-// Treasurer
-// Registrar
-// Coordinator
+Principal
+Treasurer
+Registrar
+Coordinator
 // Student
 // Teacher
 // Non-Teaching
