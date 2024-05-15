@@ -153,7 +153,8 @@ class ResultController extends Controller
                 '5' => $ratingTotal->get(5, 0),
             ];
 
-            $overallRating = $ratingTotal['5'] == 0 ? array_sum(array_keys($ratingTotal)) / 4 : array_sum(array_keys($ratingTotal)) / 5;
+            // Calculate overall rating
+            $overallRating = $ratingTotal['5'] == 0 ? number_format(array_sum(array_keys($ratingTotal)) / 4, 3) : number_format(array_sum(array_keys($ratingTotal)) / 5, 3);
         } else {
             return response()->json(['message' => 'No evaluations available'], 200);
         }
