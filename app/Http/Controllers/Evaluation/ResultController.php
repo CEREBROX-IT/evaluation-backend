@@ -132,7 +132,7 @@ class ResultController extends Controller
 
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         $evaluated = EvaluationForm::where('evaluated_id', $userid)->exists();
@@ -143,7 +143,6 @@ class ResultController extends Controller
         $evaluationExists = EvaluationResult::where('status', true)->exists();
 
         if ($evaluationExists) {
-            // Fetch the total count of ratings for the specified type and user
             $ratingTotal = EvaluationResult::rightJoin('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(evaluation_result.rating) as total')->pluck('total', 'rating');
 
             $ratingTotal = [
@@ -153,11 +152,13 @@ class ResultController extends Controller
                 '4' => $ratingTotal->get(4, 0),
                 '5' => $ratingTotal->get(5, 0),
             ];
+
+            $overallRating = $ratingTotal['5'] == 0 ? array_sum(array_keys($ratingTotal)) / 4 : array_sum(array_keys($ratingTotal)) / 5;
         } else {
             return response()->json(['message' => 'No evaluations available'], 200);
         }
 
-        return response()->json(['message' => 'Overall Question Result (Bar Chart)', 'data' => $ratingTotal], 201);
+        return response()->json(['message' => 'Overall Question Result (Bar Chart)', 'data' => $ratingTotal, 'overall_rating' => $overallRating], 201);
     }
 
     public function getQuestionRating(Request $request)
