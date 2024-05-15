@@ -143,7 +143,7 @@ class ResultController extends Controller
         $evaluationExists = EvaluationResult::where('status', true)->exists();
 
         if ($evaluationExists) {
-            $ratingTotal = EvaluationResult::rightJoin('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(evaluation_result.rating) as total')->pluck('total', 'rating');
+            $ratingTotal = EvaluationResult::rightJoin('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.status', true)->where('evaluation.evaluated_id', $userid)->orderBy('rating')->groupBy('rating')->selectRaw('rating, count(evaluation_result.rating) as total')->pluck('total', 'rating');
 
             $ratingTotal = [
                 '1' => $ratingTotal->get(1, 0),
@@ -164,13 +164,11 @@ class ResultController extends Controller
 
     public function getQuestionRating(Request $request)
     {
-        // Get the user ID from the request query parameters
         $userid = $request->query('userid');
 
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')->where('evaluation.evaluated_id', $userid)->where('evaluation_result.status', true)->groupBy('question_id', 'question_description', 'type')->select('question_id', 'question_description', 'type')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')->get();
@@ -282,117 +280,48 @@ class ResultController extends Controller
         return response()->json(['message' => 'Pie chart per Question Office Services', 'data' => $formattedResults], 201);
     }
 
-    // =================== Temporary yooo! =================
-
-    // public function getEvaluationMasterList(Request $request)
-    // {
-    //     // Check if the request has valid authorization token
-    //     $user = $this->authorizeRequest($request);
-    //     if (!$user instanceof User) {
-    //         return $user; // Return the response if authorization fails
-    //     }
-
-    //     // Retrieve evaluation results grouped by evaluated user and question
-    //     $results = DB::table('evaluation')
-    //         ->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
-    //         ->where('evaluation.user_id', $user->id) // Filter by authenticated user as evaluator
-    //         ->select('evaluation.evaluated_full_name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.rating')
-    //         ->get();
-
-    //     // Group results by evaluated user and calculate total rating for each question
-    //     $evaluationResults = [];
-    //     $maxQuestionId = 0;
-
-    //     foreach ($results as $result) {
-    //         $evaluatedName = $result->evaluated_name;
-    //         $questionId = $result->question_id;
-    //         $rating = (int) $result->rating;
-
-    //         // Update max question ID
-    //         if ($questionId > $maxQuestionId) {
-    //             $maxQuestionId = $questionId;
-    //         }
-
-    //         // Initialize evaluated user if not present in the array
-    //         if (!isset($evaluationResults[$evaluatedName])) {
-    //             $evaluationResults[$evaluatedName] = ['evaluated_name' => $evaluatedName];
-    //         }
-
-    //         // Add or increment the rating for the question
-    //         $evaluationResults[$evaluatedName]["Q$questionId"] = isset($evaluationResults[$evaluatedName]["Q$questionId"]) ? $evaluationResults[$evaluatedName]["Q$questionId"] + $rating : $rating;
-    //     }
-
-    //     // Fill missing questions with "N/a"
-    //     foreach ($evaluationResults as &$result) {
-    //         for ($i = 1; $i <= $maxQuestionId; $i++) {
-    //             if (!isset($result["Q$i"])) {
-    //                 $result["Q$i"] = 'N/a';
-    //             }
-    //         }
-    //     }
-
-    //     // Format the response
-    //     $response = ['message' => 'Evaluation Result Master list', 'data' => array_values($evaluationResults)];
-
-    //     return response()->json($response, 201);
-    // }
-
     public function getEvaluationMasterList(Request $request)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
-        $results = DB::table('evaluation')
-            ->whereNotNull('evaluation.evaluated_id') // Exclude rows where evaluated_id is null
-            ->where('evaluation.status', true)
-            ->where('evaluation.office_services', 'N/a')
-            ->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
-            ->where('evaluation.user_id', $user->id)
-            ->select('evaluation.evaluated_full_name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.rating')
-            ->get();
+        $results = EvaluationForm::whereNotNull('evaluation.evaluated_id')->where('evaluation.status', true)->where('evaluation.office_services', 'N/a')->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')->select('evaluation.evaluated_full_name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.rating')->get();
 
-        // Group results by evaluated user
         $evaluationResults = [];
         $maxQuestionId = 0;
 
         foreach ($results as $result) {
-            $questionId = $result->question_id;
             $evaluatedName = $result->evaluated_name;
+            $questionId = $result->question_id;
+            $rating = (int) $result->rating;
+
+            // Update max question ID
+            if ($questionId > $maxQuestionId) {
+                $maxQuestionId = $questionId;
+            }
 
             // Initialize evaluated user if not present in the array
             if (!isset($evaluationResults[$evaluatedName])) {
                 $evaluationResults[$evaluatedName] = ['evaluated_name' => $evaluatedName];
-                $questionCount = 0; // Initialize question count for each evaluated user
-            }
-
-            $rating = (float) $result->rating;
-
-            // Increment question count
-            $questionCount++;
-
-            // Update max question ID
-            if ($questionCount > $maxQuestionId) {
-                $maxQuestionId = $questionCount;
             }
 
             // Add or increment the rating for the question
-            $evaluationResults[$evaluatedName]["Q$questionId"] = isset($evaluationResults[$evaluatedName]["Q$questionId"]) ? $evaluationResults[$evaluatedName]["Q$questionId"] + $rating : $rating;
+            $questionKey = "Q$questionId";
+            $evaluationResults[$evaluatedName][$questionKey] = isset($evaluationResults[$evaluatedName][$questionKey]) ? $evaluationResults[$evaluatedName][$questionKey] + $rating : $rating;
         }
 
-        // Fill missing questions with "N/a" for each evaluated user
+        // Ensure that every evaluated user's data includes all possible question IDs
         foreach ($evaluationResults as &$result) {
-            for ($i = 1; $i <= $questionCount; $i++) {
-                if (!isset($result["Q$i"])) {
-                    $result["Q$i"] = 'N/a';
-                }
+            $reindexedResult = [];
+            for ($i = 1; $i <= $maxQuestionId; $i++) {
+                $questionKey = "Q$i";
+                $reindexedResult[$questionKey] = isset($result[$questionKey]) ? $result[$questionKey] : 'N/a';
             }
-        }
+            $result = $reindexedResult;
 
-        // Calculate overall rating per evaluated user and add it as the last column
-        foreach ($evaluationResults as &$result) {
+            // Calculate overall rating per evaluated user and add it as the last column
             $overallRating = 0;
             $totalCount = 0;
             foreach ($result as $key => $value) {
