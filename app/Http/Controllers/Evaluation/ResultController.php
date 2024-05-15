@@ -206,7 +206,8 @@ class ResultController extends Controller
         $formattedResults[] = $formattedResult;
     }
 
-    return response()->json(['message' => 'Pie chart per Question', 'pie_chart' => $formattedResults, 'evaluator_count' => $evaluatorCount, 'average_overall_rating_score' => $averageOverallRatingScore], 201);
+    return response()->json(['message' => 'Pie chart per Question', 'pie_chart' => $formattedResults, 'evaluator_count'
+    => $evaluatorCount, 'average_overall_rating_score' => $averageOverallRatingScore], 201);
 }
 
 
@@ -327,96 +328,4 @@ class ResultController extends Controller
 
     //     return response()->json($response, 201);
     // }
-
-    public function getAverageRatingPerQuestion(Request $request)
-    {
-        // Retrieve all evaluation results
-        $evaluationResults = EvaluationResult::select('question_id', 'rating')->get();
-
-        // Initialize an array to store the total rating and evaluator count for each question
-        $questionRatings = [];
-
-        // Calculate the total rating and evaluator count for each question
-        foreach ($evaluationResults as $result) {
-            $questionId = $result->question_id;
-            $rating = (float) $result->rating;
-
-            // Initialize the question in the array if not already present
-            if (!isset($questionRatings[$questionId])) {
-                $questionRatings[$questionId] = ['total_rating' => 0, 'evaluator_count' => 0];
-            }
-
-            // Increment the total rating and evaluator count for the question
-            $questionRatings[$questionId]['total_rating'] += $rating;
-            $questionRatings[$questionId]['evaluator_count']++;
-        }
-
-        // Calculate the average rating for each question and store total evaluators
-        $averageRatings = [];
-        $totalEvaluators = 0;
-        foreach ($questionRatings as $questionId => $data) {
-            $totalRating = $data['total_rating'];
-            $evaluatorCount = $data['evaluator_count'];
-
-            // Calculate the average rating, considering division by zero
-            $averageRating = $evaluatorCount > 0 ? ($totalRating / $evaluatorCount) * 100 : 0;
-
-            // Store the average rating for the question and update total evaluators
-            $averageRatings["Q$questionId"] = number_format($averageRating, 3);
-            $totalEvaluators += $evaluatorCount;
-        }
-
-        // Format the response
-        $response = [
-            'message' => 'Average Rating per Question (Percentage)',
-            'data' => $averageRatings,
-            'total_evaluators' => $totalEvaluators,
-        ];
-
-        return response()->json($response, 200);
-    }
-
-    public function getSummationRatingPerQuestion(Request $request)
-    {
-        $questions = DB::table('question')->where('status', true)->select('id')->get();
-
-        // Get the IDs of questions with status true
-        $questionIds = $questions->pluck('id')->toArray();
-        $evaluationResults = DB::table('evaluation_result')
-            ->whereIn('question_id', $questionIds)
-            ->where('status', true) // Check if question rating status is true
-            ->select('question_id', 'rating')
-            ->get();
-
-        $questionRatings = [];
-
-        // Calculate the total rating for each question
-        foreach ($evaluationResults as $result) {
-            $questionId = $result->question_id;
-            $rating = (float) $result->rating;
-
-            // Initialize the question in the array if not already present
-            if (!isset($questionRatings[$questionId])) {
-                $questionRatings[$questionId] = ['total_rating' => 0];
-            }
-
-            // Add the rating to the total rating for the question
-            $questionRatings[$questionId]['total_rating'] += $rating;
-        }
-
-        $totalQuestions = count($questionIds);
-        $summationRatings = [];
-        foreach ($questionRatings as $questionId => $data) {
-            $totalRating = $data['total_rating'];
-
-            $summationRating = $totalRating / $totalQuestions;
-            $summationRating = number_format($summationRating, 3);
-            $summationRatings["Q$questionId"] = $summationRating;
-        }
-
-        // Format the response
-        $response = ['message' => 'Summation of question total of question', 'data' => $summationRatings];
-
-        return response()->json($response, 200);
-    }
 }
