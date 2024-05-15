@@ -25,7 +25,6 @@ Route::get('school-year/list', [SessionController::class, 'getSessionList']);
 // ============== Evaluation and Evaluation Result Endpoints ==============
 Route::get('/users/not-evaluated/status={status}', [EvaluationController::class, 'getUsersNotEvaluated']);
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
-Route::get('/rating-total', [ResultController::class, 'getRatingTotal']);
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
 Route::get('question-description/rating-total/office-services', [ResultController::class, 'officeServiceQuestionRating']);
 Route::get('evaluation-form/recent-approved/comment-suggestion', [EvaluationController::class, 'recentApproveComment']);
