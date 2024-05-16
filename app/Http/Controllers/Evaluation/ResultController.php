@@ -142,7 +142,7 @@ class ResultController extends Controller
     }
 
     $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id'
-    )->where('evaluation.evaluated_id', $userid)->where('evaluation_result.type', $type)
+    )->where('evaluation.evaluated_id', $userid)->where('evaluation_result.type', $type)->where('evaluation.approve_status', "Approved")
     ->where('evaluation_result.status', true)->groupBy('question_id', 'question_description', 'type')
     ->select('question_id', 'question_description', 'type')->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')
     ->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')
@@ -152,7 +152,7 @@ class ResultController extends Controller
 
     $evaluatorCount = EvaluationForm::join('users', 'evaluation.user_id', '=', 'users.id')
     ->join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
-    ->where('evaluation.evaluated_id', $userid)
+    ->where('evaluation.evaluated_id', $userid)->where('evaluation.approve_status', "Approved")
     ->where('evaluation_result.type', $type)
     ->distinct('evaluation.user_id')
     ->count('evaluation.user_id');
