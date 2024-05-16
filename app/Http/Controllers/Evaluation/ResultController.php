@@ -131,7 +131,94 @@ class ResultController extends Controller
         return response()->json(['message' => ' Evaluation result deleted successfully', 'data' => $result], 201);
     }
 
-    public function getQuestionRating(Request $request)
+
+    public function getEvaluationMasterList(Request $request)
+{
+    // Authorize the request
+    $user = $this->authorizeRequest($request);
+    if (!$user instanceof User) {
+        return $user;
+    }
+
+    // Initialize the masterlist array
+    $masterlist = [];
+
+    // Get all distinct evaluated_ids
+    $evaluatedIds = EvaluationForm::distinct('evaluated_id')->pluck('evaluated_id');
+
+    // Loop through each evaluated user
+    foreach ($evaluatedIds as $evaluatedId) {
+        // Find the user
+        $evaluatedUser = User::find($evaluatedId);
+
+        // Check if the user exists
+        if (!$evaluatedUser) {
+            continue; // Skip to the next evaluated user if not found
+        }
+
+        // Initialize the evaluated user's details
+        $evaluatedDetails = [
+            'evaluated_id' => $evaluatedUser->id,
+            'evaluated_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
+        ];
+
+        // Initialize the pie chart array for this evaluated user
+        $pieChart = [];
+
+        // Get all evaluations for this evaluated user
+        $evaluations = EvaluationForm::where('evaluated_id', $evaluatedId)->get();
+
+        // Initialize an array to store ratings per question
+        $questionRatings = [];
+
+        // Loop through each evaluation
+        foreach ($evaluations as $evaluation) {
+            // Get the evaluation results for this evaluation
+            $evaluationResults = EvaluationResult::where('evaluation_id', $evaluation->id)->get();
+
+            // Loop through each evaluation result
+            foreach ($evaluationResults as $result) {
+                // Check if the question_id exists in the questionRatings array
+                if (isset($questionRatings[$result->question_id])) {
+                    // If the question_id exists, add the rating to the total
+                    $questionRatings[$result->question_id]['total_rating'] += $result->rating;
+                } else {
+                    // If the question_id doesn't exist, initialize it with the current rating
+                    $questionRatings[$result->question_id] = [
+                        'question_id' => $result->question_id,
+                        'type' => $result->type,
+                        'question_description' => $result->question_description,
+                        'total_rating' => $result->rating,
+                    ];
+                }
+            }
+        }
+
+        // Convert the associative array to indexed array
+        $questionRatings = array_values($questionRatings);
+
+        // Add the evaluated user's details and ratings per question to the masterlist
+        $masterlist[] = [
+            'evaluated_user' => $evaluatedDetails,
+            'pie_chart' => $questionRatings,
+        ];
+    }
+
+    // Return the masterlist
+    return response()->json(['message' => 'MasterList', 'masterlist' => $masterlist], 200);
+}
+
+
+
+
+
+
+
+
+
+
+
+public function getQuestionRating(Request $request)
 {
     $userid = $request->query('userid'); // The user ID for whom the results are requested
     $type = $request->query('type'); // The type of question
@@ -157,12 +244,24 @@ class ResultController extends Controller
     ->distinct('evaluation.user_id')
     ->count('evaluation.user_id');
 
-    $totalOverallRatingScore = 0; // Initialize variable to store total overall_rating_score
+    $totalOverallRatingScore = 0;
 
     foreach ($questionRatings as $result) {
-        $ratings = [$result->{'1'}, $result->{'2'}, $result->{'3'}, $result->{'4'}, $result->{'5'}];
-        $overallRatingScore = array_sum($ratings) / $evaluatorCount;
-        $result->overall_rating_score = number_format($overallRatingScore, 2); // Format to two decimal places
+        $ratings = [
+            1 => $result->{'1'},
+            2 => $result->{'2'},
+            3 => $result->{'3'},
+            4 => $result->{'4'},
+            5 => $result->{'5'},
+        ];
+
+        $overallRatingScore = 0;
+        foreach ($ratings as $rating => $count) {
+            $overallRatingScore += $rating * $count;
+        }
+        $overallRatingScore /= $evaluatorCount;
+
+        $result->overall_rating_score = number_format($overallRatingScore, 2);
 
         $highestNonZeroRating = 0;
         foreach ($ratings as $index => $count) {
@@ -175,10 +274,9 @@ class ResultController extends Controller
             $ratingRange[] = (string) $i;
         }
 
-        $totalOverallRatingScore += $overallRatingScore; // Add overall_rating_score to total
+        $totalOverallRatingScore += $overallRatingScore;
     }
 
-    // Calculate average overall rating score and format to two decimal places
     $averageOverallRatingScore = number_format($totalOverallRatingScore / count($questionRatings), 2);
 
     // Organize the results into the desired format
@@ -209,6 +307,7 @@ class ResultController extends Controller
     return response()->json(['message' => 'Pie chart per Question', 'pie_chart' => $formattedResults, 'evaluator_count'
     => $evaluatorCount, 'average_overall_rating_score' => $averageOverallRatingScore], 201);
 }
+
 
 
 
@@ -328,4 +427,8 @@ class ResultController extends Controller
 
     //     return response()->json($response, 201);
     // }
+
+
+
+
 }
