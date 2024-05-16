@@ -132,7 +132,271 @@ class ResultController extends Controller
     }
 
 
-    public function getEvaluationMasterList(Request $request)
+
+
+
+
+// public function getEvaluationMasterList(Request $request)
+// {
+//     // Authorize the request
+//     $user = $this->authorizeRequest($request);
+//     if (!$user instanceof User) {
+//         return $user;
+//     }
+
+//     // Initialize the masterlist array
+//     $masterlist = [];
+
+//     try {
+//         // Get all distinct evaluated_ids with approved evaluations
+//         $evaluatedIds = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+//             ->where('evaluation.approve_status', 'Approved')
+//             ->where('evaluation.status', true)
+//             ->distinct('evaluation.evaluated_id')
+//             ->pluck('evaluation.evaluated_id');
+
+//         // Loop through each evaluated user
+//         foreach ($evaluatedIds as $evaluatedId) {
+//             // Find the user
+//             $evaluatedUser = User::find($evaluatedId);
+
+//             // Check if the user exists
+//             if (!$evaluatedUser) {
+//                 continue; // Skip to the next evaluated user if not found
+//             }
+
+//             // Initialize the pie chart array for this evaluated user
+//             $pieChart = [];
+//             $totalOverallRating = 0; // Total overall rating for this user
+//             $totalQuestions = 0; // Total questions evaluated for this user
+
+//             // Get all evaluations for this evaluated user
+//             $evaluations = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+//                 ->where('evaluation.evaluated_id', $evaluatedId)
+//                 ->where('evaluation.approve_status', 'Approved')
+//                 ->where('evaluation.status', true)
+//                 ->get();
+
+//             // Loop through each evaluation
+//             foreach ($evaluations as $evaluation) {
+//                 // Increment total rating for this question
+//                 $totalRating = ($pieChart[$evaluation->question_id]['total_rating'] ?? 0) + $evaluation->rating;
+
+//                 // Increment evaluators count for this question
+//                 $evaluatorsCount = ($pieChart[$evaluation->question_id]['evaluators_count'] ?? 0) + 1;
+
+//                 // Calculate overall rating for this question
+//                 $overallRating = round($totalRating / $evaluatorsCount, 2);
+
+//                 // Add the evaluation details to the pie chart
+//                 $pieChart[$evaluation->question_id] = [
+//                     'question_id' => $evaluation->question_id,
+//                     'type' => $evaluation->type,
+//                     'question_description' => $evaluation->question_description,
+//                     'total_rating' => $totalRating,
+//                     'evaluators_count' => $evaluatorsCount,
+//                     'overall_rating' => $overallRating,
+//                 ];
+
+//                 // Increment total overall rating for this user
+//                 $totalOverallRating += $overallRating;
+
+//                 // Increment total questions evaluated for this user
+//                 $totalQuestions++;
+//             }
+
+//             // Calculate average overall rating score for this user
+//             $averageOverallRatingScore = $totalQuestions > 0 ? round($totalOverallRating / $totalQuestions, 2) : 0;
+
+//             // Add the evaluated user's details, pie chart, and average overall rating score to the masterlist
+//             $masterlist[] = [
+//                 'evaluated_id' => $evaluatedUser->id,
+//                 'evaluated_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
+//                 'pie_chart' => array_values($pieChart), // Reset array keys to numeric indices
+//                 'average_overall_rating_score' => $averageOverallRatingScore,
+//             ];
+//         }
+
+//         // Return the masterlist
+//         return response()->json(['message' => 'MasterList', 'masterlist' => $masterlist], 200);
+//     } catch (\Exception $e) {
+//         // Handle any exceptions
+//         return response()->json(['message' => 'Error occurred', 'error' => $e->getMessage()], 500);
+//     }
+// }
+
+
+// public function getEvaluationMasterList(Request $request)
+// {
+//     // Authorize the request
+//     $user = $this->authorizeRequest($request);
+//     if (!$user instanceof User) {
+//         return $user;
+//     }
+
+//     // Check if the request contains the question type parameter
+//     $questionType = $request->input('evaluationType');
+
+//     // Initialize the masterlist array
+//     $masterlist = [];
+
+//     try {
+//         // Get all distinct evaluated_ids with approved evaluations
+//         $evaluatedIds = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+//             ->where('evaluation.approve_status', 'Approved')
+//             ->where('evaluation.status', true)
+//             ->distinct('evaluation.evaluated_id')
+//             ->pluck('evaluation.evaluated_id');
+
+//         // Loop through each evaluated user
+//         foreach ($evaluatedIds as $evaluatedId) {
+//             // Find the user
+//             $evaluatedUser = User::find($evaluatedId);
+
+//             // Check if the user exists
+//             if (!$evaluatedUser) {
+//                 continue; // Skip to the next evaluated user if not found
+//             }
+
+//             // Initialize the ratings array for this evaluated user
+//             $ratings = [];
+
+//             // Get all evaluations for this evaluated user
+//             $evaluations = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+//                 ->where('evaluation.evaluated_id', $evaluatedId)
+//                 ->where('evaluation.approve_status', 'Approved')
+//                 ->where('evaluation.status', true);
+
+//             // Filter evaluations by question type if provided in the request
+//             if ($questionType) {
+//                 $evaluations->where('evaluation_result.type', $questionType);
+//             }
+
+//             $evaluations = $evaluations->get();
+
+//             // Loop through each evaluation
+//             foreach ($evaluations as $evaluation) {
+//                 // Add the rating for this question to the ratings array
+//                 $ratings[$evaluation->question_description] = $evaluation->rating;
+//             }
+
+//             // Add the evaluated user's details and ratings to the masterlist
+//             $masterlist[] = array_merge([
+//                 'evaluated_id' => $evaluatedUser->id,
+//                 'Evaluated_full_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
+//             ], $ratings);
+//         }
+
+//         // Return the masterlist
+//         return response()->json(['message' => 'MasterList', 'data' => $masterlist], 200);
+//     } catch (\Exception $e) {
+//         // Handle any exceptions
+//         return response()->json(['message' => 'Error occurred', 'error' => $e->getMessage()], 500);
+//     }
+// }
+
+
+
+public function getEvaluationMasterList(Request $request)
+{
+    // Authorize the request
+    $user = $this->authorizeRequest($request);
+    if (!$user instanceof User) {
+        return $user;
+    }
+
+    // Check if the request contains the question type parameter
+    $questionType = $request->input('evaluationType');
+
+    // Initialize the masterlist array
+    $masterlist = [];
+
+    try {
+        // Get all distinct evaluated_ids with approved evaluations
+        $evaluatedIds = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+            ->where('evaluation.approve_status', 'Approved')
+            ->where('evaluation.status', true)
+            ->distinct('evaluation.evaluated_id')
+            ->pluck('evaluation.evaluated_id');
+
+        // Loop through each evaluated user
+        foreach ($evaluatedIds as $evaluatedId) {
+            // Find the user
+            $evaluatedUser = User::find($evaluatedId);
+
+            // Check if the user exists
+            if (!$evaluatedUser) {
+                continue; // Skip to the next evaluated user if not found
+            }
+
+            // Get all evaluations for this evaluated user
+            $evaluations = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+                ->where('evaluation.evaluated_id', $evaluatedId)
+                ->where('evaluation.approve_status', 'Approved')
+                ->where('evaluation.status', true);
+
+            // Filter evaluations by question type if provided in the request
+            if ($questionType) {
+                $evaluations->where('evaluation_result.type', $questionType);
+            }
+
+            $evaluations = $evaluations->get();
+
+            // Check if there are evaluations for this user
+            if ($evaluations->isEmpty()) {
+                continue; // Skip to the next evaluated user if no evaluations
+            }
+
+            // Initialize an array to store the total rating and count of evaluators for each question
+            $ratings = [];
+
+            // Loop through each evaluation
+            foreach ($evaluations as $evaluation) {
+                // Increment total rating for this question
+                if (!isset($ratings[$evaluation->question_description]['total_rating'])) {
+                    $ratings[$evaluation->question_description]['total_rating'] = 0;
+                }
+                $ratings[$evaluation->question_description]['total_rating'] += $evaluation->rating;
+
+                // Increment evaluators count for this question
+                if (!isset($ratings[$evaluation->question_description]['evaluators_count'])) {
+                    $ratings[$evaluation->question_description]['evaluators_count'] = 0;
+                }
+                $ratings[$evaluation->question_description]['evaluators_count']++;
+            }
+
+            // Calculate the average rating for each question
+            foreach ($ratings as $questionDescription => $ratingData) {
+                $averageRating = $ratingData['evaluators_count'] > 0 ? round($ratingData['total_rating'] / $ratingData['evaluators_count'], 2) : 0;
+                $ratings[$questionDescription] = number_format($averageRating, 2);
+            }
+
+            // Add the evaluated user's details and ratings to the masterlist
+            $masterlist[] = [
+                'Evaluated_full_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
+            ] + $ratings;
+        }
+
+        // Return the masterlist
+        return response()->json(['message' => 'MasterList', 'data' => $masterlist], 200);
+    } catch (\Exception $e) {
+        // Handle any exceptions
+        return response()->json(['message' => 'Error occurred', 'error' => $e->getMessage()], 500);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+public function AverageRatingMasterlist(Request $request)
 {
     // Authorize the request
     $user = $this->authorizeRequest($request);
@@ -143,70 +407,92 @@ class ResultController extends Controller
     // Initialize the masterlist array
     $masterlist = [];
 
-    // Get all distinct evaluated_ids
-    $evaluatedIds = EvaluationForm::distinct('evaluated_id')->pluck('evaluated_id');
+    try {
+        // Get all distinct evaluated_ids with approved evaluations
+        $evaluatedIds = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+            ->where('evaluation.approve_status', 'Approved')
+            ->where('evaluation.status', true)
+            ->distinct('evaluation.evaluated_id')
+            ->pluck('evaluation.evaluated_id');
 
-    // Loop through each evaluated user
-    foreach ($evaluatedIds as $evaluatedId) {
-        // Find the user
-        $evaluatedUser = User::find($evaluatedId);
+        // Loop through each evaluated user
+        foreach ($evaluatedIds as $evaluatedId) {
+            // Find the user
+            $evaluatedUser = User::find($evaluatedId);
 
-        // Check if the user exists
-        if (!$evaluatedUser) {
-            continue; // Skip to the next evaluated user if not found
-        }
-
-        // Initialize the evaluated user's details
-        $evaluatedDetails = [
-            'evaluated_id' => $evaluatedUser->id,
-            'evaluated_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
-        ];
-
-        // Initialize the pie chart array for this evaluated user
-        $pieChart = [];
-
-        // Get all evaluations for this evaluated user
-        $evaluations = EvaluationForm::where('evaluated_id', $evaluatedId)->get();
-
-        // Initialize an array to store ratings per question
-        $questionRatings = [];
-
-        // Loop through each evaluation
-        foreach ($evaluations as $evaluation) {
-            // Get the evaluation results for this evaluation
-            $evaluationResults = EvaluationResult::where('evaluation_id', $evaluation->id)->get();
-
-            // Loop through each evaluation result
-            foreach ($evaluationResults as $result) {
-                // Check if the question_id exists in the questionRatings array
-                if (isset($questionRatings[$result->question_id])) {
-                    // If the question_id exists, add the rating to the total
-                    $questionRatings[$result->question_id]['total_rating'] += $result->rating;
-                } else {
-                    // If the question_id doesn't exist, initialize it with the current rating
-                    $questionRatings[$result->question_id] = [
-                        'question_id' => $result->question_id,
-                        'type' => $result->type,
-                        'question_description' => $result->question_description,
-                        'total_rating' => $result->rating,
-                    ];
-                }
+            // Check if the user exists
+            if (!$evaluatedUser) {
+                continue; // Skip to the next evaluated user if not found
             }
+
+            // Initialize the pie chart array for this evaluated user
+            $pieChart = [];
+            $totalOverallRating = 0; // Total overall rating for this user
+            $totalQuestions = 0; // Total questions evaluated for this user
+
+            // Get all evaluations for this evaluated user
+            $evaluations = EvaluationForm::join('evaluation_result', 'evaluation.id', '=', 'evaluation_result.evaluation_id')
+                ->where('evaluation.evaluated_id', $evaluatedId)
+                ->where('evaluation.approve_status', 'Approved')
+                ->where('evaluation.status', true)
+                ->get();
+
+            // Loop through each evaluation
+            foreach ($evaluations as $evaluation) {
+                // Increment total rating for this question
+                $totalRating = ($pieChart[$evaluation->question_id]['total_rating'] ?? 0) + $evaluation->rating;
+
+                // Increment evaluators count for this question
+                $evaluatorsCount = ($pieChart[$evaluation->question_id]['evaluators_count'] ?? 0) + 1;
+
+                // Calculate overall rating for this question
+                $overallRating = round($totalRating / $evaluatorsCount, 2);
+
+                // Add the evaluation details to the pie chart
+                $pieChart[$evaluation->question_id] = [
+                    'question_id' => $evaluation->question_id,
+                    'type' => $evaluation->type,
+                    'question_description' => $evaluation->question_description,
+                    'total_rating' => $totalRating,
+                    'evaluators_count' => $evaluatorsCount,
+                    'overall_rating' => $overallRating,
+                ];
+
+                // Increment total overall rating for this user
+                $totalOverallRating += $overallRating;
+
+                // Increment total questions evaluated for this user
+                $totalQuestions++;
+            }
+
+            // Calculate average overall rating score for this user
+            $averageOverallRatingScore = $totalQuestions > 0 ? round($totalOverallRating / $totalQuestions, 2) : 0;
+
+            // Add the evaluated user's details, pie chart, and average overall rating score to the masterlist
+            $masterlist[] = [
+                'evaluated_id' => $evaluatedUser->id,
+                'evaluated_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
+                'evaluated_role' => $evaluatedUser->role,
+                'average_overall_rating_score' => $averageOverallRatingScore,
+            ];
         }
 
-        // Convert the associative array to indexed array
-        $questionRatings = array_values($questionRatings);
-
-        // Add the evaluated user's details and ratings per question to the masterlist
-        $masterlist[] = [
-            'evaluated_user' => $evaluatedDetails,
-            'pie_chart' => $questionRatings,
-        ];
+        // Return the masterlist
+        return response()->json(['message' => 'MasterList', 'masterlist' => $masterlist], 200);
+    } catch (\Exception $e) {
+        // Handle any exceptions
+        return response()->json(['message' => 'Error occurred', 'error' => $e->getMessage()], 500);
     }
-
-    // Return the masterlist
-    return response()->json(['message' => 'MasterList', 'masterlist' => $masterlist], 200);
 }
+
+
+
+
+
+
+
+
+
 
 
 
