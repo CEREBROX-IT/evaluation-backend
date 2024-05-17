@@ -131,7 +131,7 @@ class ResultController extends Controller
         return response()->json(['message' => ' Evaluation result deleted successfully', 'data' => $result], 201);
     }
 
-public function getEvaluationMasterList(Request $request)
+    public function getEvaluationMasterList(Request $request)
 {
     // Authorize the request
     $user = $this->authorizeRequest($request);
@@ -183,41 +183,57 @@ public function getEvaluationMasterList(Request $request)
 
             // Initialize an array to store the total rating and count of evaluators for each question
             $ratings = [];
+            $totalRatingsSum = 0;
+            $totalQuestionsCount = 0;
 
             // Loop through each evaluation
             foreach ($evaluations as $evaluation) {
-                // Increment total rating for this question
-                if (!isset($ratings[$evaluation->question_description]['total_rating'])) {
-                    $ratings[$evaluation->question_description]['total_rating'] = 0;
+                // Initialize question details if not set
+                if (!isset($ratings[$evaluation->question_description])) {
+                    $ratings[$evaluation->question_description] = [
+                        'total_rating' => 0,
+                        'evaluators_count' => 0
+                    ];
                 }
-                $ratings[$evaluation->question_description]['total_rating'] += $evaluation->rating;
 
-                // Increment evaluators count for this question
-                if (!isset($ratings[$evaluation->question_description]['evaluators_count'])) {
-                    $ratings[$evaluation->question_description]['evaluators_count'] = 0;
-                }
+                // Increment total rating and evaluators count for this question
+                $ratings[$evaluation->question_description]['total_rating'] += $evaluation->rating;
                 $ratings[$evaluation->question_description]['evaluators_count']++;
+
+                // Add to the overall total ratings sum and count of questions
+                $totalRatingsSum += $evaluation->rating;
+                $totalQuestionsCount++;
             }
 
             // Calculate the average rating for each question
             foreach ($ratings as $questionDescription => $ratingData) {
-                $averageRating = $ratingData['evaluators_count'] > 0 ? round($ratingData['total_rating'] / $ratingData['evaluators_count'], 2) : 0;
+                $averageRating = $ratingData['evaluators_count'] > 0
+                    ? round($ratingData['total_rating'] / $ratingData['evaluators_count'], 2)
+                    : 0;
                 $ratings[$questionDescription] = number_format($averageRating, 2);
             }
 
-            // Add the evaluated user's details and ratings to the masterlist
+            // Calculate the overall average rating for the evaluated user
+            $overallAverageRating = $totalQuestionsCount > 0
+                ? round($totalRatingsSum / $totalQuestionsCount, 2)
+                : 0;
+
+            // Add the evaluated user's details, ratings, and overall average rating to the masterlist
             $masterlist[] = [
-                'Evaluated_full_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
-            ] + $ratings;
+                'evaluated_id' => $evaluatedUser->id,
+                'evaluated_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
+                'ratings' => $ratings,
+                'overall_average_rating' => number_format($overallAverageRating, 2),
+            ];
         }
 
-        // Return the masterlist
-        return response()->json(['message' => 'MasterList', 'data' => $masterlist], 200);
     } catch (\Exception $e) {
-        // Handle any exceptions
-        return response()->json(['message' => 'Error occurred', 'error' => $e->getMessage()], 500);
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+
+    return response()->json(['data' => $masterlist], 200);
 }
+
 
 
 public function AverageRatingMasterlist(Request $request)
