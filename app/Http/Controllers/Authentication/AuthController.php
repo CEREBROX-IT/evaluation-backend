@@ -29,21 +29,16 @@ class AuthController extends Controller
         if (!$request->header('Authorization')) {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
-
         $token = $request->header('Authorization');
         $jwtToken = str_replace('Bearer ', '', $token);
-
         try {
             $user = Auth::setToken($jwtToken)->user();
         } catch (\Exception $e) {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
-
-        // Check if $user is null, indicating invalid or expired token
         if (!$user) {
             return response()->json(['error' => 'Invalid token or expired'], 200);
         }
-
         return $user;
     }
 
@@ -57,10 +52,7 @@ class AuthController extends Controller
         if ($existingUser) {
             return response()->json(['message' => 'Username already exists'], 202);
         }
-
-        // If email is empty string or not provided, set it to null
         $email = $request->filled('email') ? $request->email : null;
-
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -71,7 +63,6 @@ class AuthController extends Controller
             'role' => $request->role,
             'status' => true,
         ]);
-
         return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
     }
 
@@ -86,10 +77,7 @@ class AuthController extends Controller
                     'username' => ['The provided credentials are incorrect.'],
                 ]);
             }
-
-            // Retrieve the authenticated user
             $user = Auth::user();
-
             // Define the session school year
             $sessionSchoolYear = null;
             $sessionId = null;
@@ -99,15 +87,12 @@ class AuthController extends Controller
                 $sessionSchoolYear = $session->school_year;
                 $sessionId = $session->id;
             }
-
             $evaluatedStatus = null;
-
             $evaluation = EvaluationForm::where('user_id', $user->id)
                 ->where(function ($query) {
                     $query->where('approve_status', 'Pending')->orWhere('approve_status', 'Approved');
                 })
                 ->first();
-
             if ($evaluation && $user->role === 'Teacher' && $user->last_evaluated === $sessionSchoolYear) {
                 $evaluatedStatus = 'completed';
             } elseif ($user->role === 'Student') {
@@ -115,8 +100,6 @@ class AuthController extends Controller
             } else {
                 $evaluatedStatus = 'not evaluated';
             }
-
-            // Define the claims to be included in the token
             $customClaims = [
                 'id' => $user->id,
                 'first_name' => $user->first_name,
@@ -128,13 +111,9 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'teacher_evaluated' => $evaluatedStatus,
                 'last_evaluated' => $user->last_evaluated,
-                'exp' => now()->addDay()->timestamp, // Set expiration to 1 day from now
+                'exp' => now()->addDay()->timestamp,
             ];
-
-            // Generate the token with custom claims
             $token = JWTAuth::claims($customClaims)->attempt($credentials);
-
-            // Return the token in the response
             return response()->json(['token' => $token], 201);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
@@ -144,27 +123,18 @@ class AuthController extends Controller
     // ================= Update user profile =================
     public function updateUserDetails(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
-        // If user is authenticated, proceed with updating profile
-        // Find the user by ID
         $user = User::find($id);
-
-        // Check if the user exists
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
-        // Validate unique username and email
         $request->validate([
             'username' => 'unique:users,username,' . $id,
             'email' => 'nullable|unique:users,email,' . $id,
         ]);
-
         // Update user's profile information
         $user->update([
             'first_name' => $request->first_name,
@@ -174,58 +144,40 @@ class AuthController extends Controller
             'email_status' => $request->email_status,
             'role' => $request->role,
         ]);
-
         return response()->json(['message' => 'User details updated successfully', 'user' => $user], 201);
     }
 
     // ================= Update user password =================
     public function updatePassword(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
-        // Find the user by ID
         $user = User::find($id);
-
-        // Check if the user exists
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
-        // Verify the current password
         if (!Hash::check($request->current_password, $user->password)) {
             return response()->json(['error' => 'Current password is incorrect'], 401);
         }
-
-        // Update the password
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
-
         return response()->json(['message' => 'Password updated successfully'], 201);
     }
 
     // ================= Update user email address =================
     public function updateEmail(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
-        // Find the user by ID
         $user = User::find($id);
-
-        // Check if the user exists
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
-        // Validate the incoming request data
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email,' . $id,
         ]);
@@ -233,75 +185,53 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()], 400);
         }
-
-        // Update user's email
         $user->update([
             'email' => $request->email,
             'email_status' => false,
         ]);
-
         // Send the password reset email
         Mail::to($user->email)->send(new VerfiyEmailAddress($user));
-
         return response()->json(['message' => 'Email updated successfully', 'user' => $user], 201);
     }
-    // ================= ForgotPassword =================
 
+    // ================= ForgotPassword =================
     public function resetPassword(Request $request)
     {
-        // Find the user by email
         $user = User::where('email', $request->email)->first();
-
-        // If no user found, return error response with status code 404
         if (!$user) {
             return response()->json(['error' => 'There is no account associated with that email'], 404);
         }
-
-        // Validate the request data
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
-
         // Generate a password reset token
         $token = Str::random(60);
-
         // Update the user's password reset token
         $user->update(['password_reset_token' => $token]);
-
         // Define the reset URL
         $resetUrl = 'http://127.0.0.1:8000/reset-password?token=' . $token;
-
         // Send the password reset email
         Mail::to($user->email)->send(new ResetPasswordMail($user, $resetUrl));
-
-        // Return success response
         return response()->json(['message' => 'Password reset email sent successfully'], 201);
     }
 
     // ================= Set New Password =================
     public function setNewPassword(Request $request)
     {
-        // Validate the request data
         $request->validate([
             'token' => 'required',
             'password' => 'required|string|min:6|confirmed',
         ]);
-
-        // Find the user by the token
         $user = User::where('password_reset_token', $request->token)->first();
-
-        // Check if the user exists and if the token matches
         if (!$user || $user->password_reset_token !== $request->token) {
-            // Token is invalid or has already been used, return invalid_token view
             return view('screen/authentication/invalidReset');
         }
 
         // Update the user's password
         $user->update([
             'password' => Hash::make($request->password),
-            'password_reset_token' => null, // Clear the reset token
+            'password_reset_token' => null,
         ]);
-
         // Redirect the user to the client URL
         return redirect(env('CLIENT_URL'));
     }
@@ -312,28 +242,21 @@ class AuthController extends Controller
         if (!$user instanceof User) {
             return $user;
         }
-
         if ($role === null) {
             return response()->json(['error' => 'Role parameter is required'], 404);
         }
-
-        // Define the roles to be queried based on the role parameter
         if (strtolower($role) === 'admin') {
             $roles = ['Principal', 'Treasurer', 'Coordinator', 'Registrar'];
         } else {
             $roles = [$role];
         }
-
-        // Retrieve the list of users based on the specified roles
         $usersQuery = User::whereIn('role', $roles)->select('id', 'first_name', 'last_name', 'role');
-
         // Exclude users who have already been evaluated by the authenticated user
         $evaluatedIds = EvaluationForm::where('user_id', $user->id)
             ->where('status', true)
             ->pluck('evaluated_id');
 
         $usersQuery->whereNotIn('id', $evaluatedIds);
-
         // Sort users by created_at in descending order
         $users = $usersQuery->orderBy('updated_at', 'desc')->get();
 
@@ -353,10 +276,7 @@ class AuthController extends Controller
         if (!$user instanceof User) {
             return $user;
         }
-
         $users = User::where('status', true)->get();
-
-        // Return the users as a response
         return response()->json(['data' => $users], 201);
     }
 
@@ -366,29 +286,21 @@ class AuthController extends Controller
         if (!$user instanceof User) {
             return $user;
         }
-
         $users = User::find($id);
-
-        // Check if the question exists
         if (!$users) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
-        // Update the status of the question to false
         $users->update(['status' => false]);
-
         // Return success response
         return response()->json(['message' => 'User deleted successfully'], 201);
     }
 
     public function userTotal(Request $request)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
         $totalPrincipal = User::where('role', 'Principal')->where('status', true)->count();
         $totalTreasurer = User::where('role', 'Treasurer')->where('status', true)->count();
         $totalRegistrar = User::where('role', 'Registrar')->where('status', true)->count();
@@ -418,19 +330,14 @@ class AuthController extends Controller
 
     public function getUserProfile(Request $request, $id)
     {
-        // Check if the request has a valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user;
         }
-
         $user = User::find($id);
-
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
-        // Return user's profile information with only desired fields
         return response()->json(
             [
                 'message' => 'User Profile',
@@ -448,19 +355,14 @@ class AuthController extends Controller
     // ================= Update user profile =================
     public function updateProfile(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
             return $user;
         }
-
         $user = User::find($id);
-
-        // Check if the user exists
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
         // Update user's profile information
         $user->update([
             'first_name' => $request->first_name,
@@ -478,7 +380,7 @@ class AuthController extends Controller
         return redirect('/welcome');
     }
 
-    // ================= Testing only yooo!!! =======================
+    // ================= Temporary Function =======================
 
     public function getOfficeService(Request $request)
     {

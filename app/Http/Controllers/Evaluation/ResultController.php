@@ -10,7 +10,6 @@ use App\Models\EvaluationForm;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
@@ -20,7 +19,6 @@ class ResultController extends Controller
         if (!$request->header('Authorization')) {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
-
         $token = $request->header('Authorization');
         $jwtToken = str_replace('Bearer ', '', $token);
 
@@ -29,8 +27,6 @@ class ResultController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
-
-        // Check if $user is null, indicating invalid or expired token
         if (!$user) {
             return response()->json(['error' => 'Invalid token or expired'], 401);
         }
@@ -57,19 +53,16 @@ class ResultController extends Controller
     // ================= Create Evaluation Result =================
     public function createEvaluationResult(Request $request)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         // Update the user's last evaluated school year
         $userEvaluation = User::where('id', $request->user_id)->update(['last_evaluated' => $request->school_year]);
 
-        // Merge first_name and last_name into full_name
         $evaluatedFullName = $request->evaluated_full_name;
-
-        // Create an Evaluation instance with the merged full_name
+        // Create an Evaluation instance
         $evaluation = EvaluationForm::create(array_merge($request->except(['evaluated_full_name']), ['evaluated_full_name' => $evaluatedFullName]));
 
         // Iterate over each question in the request
@@ -86,18 +79,15 @@ class ResultController extends Controller
                 'status' => true,
             ]);
         }
-
-        // Return a response indicating success
         return response()->json(['message' => 'Evaluation and EvaluationResult created successfully', 'evaluation' => $evaluation], 201);
     }
 
     // ================= Update Evaluation Result =================
     public function updateEvaluationRating(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         $result = EvaluationResult::find($id);
@@ -105,44 +95,35 @@ class ResultController extends Controller
         if ($result) {
             return response()->json(['message' => ' Evaluation result not found'], 404);
         }
-
         $result = update(['rating' => $request->rating]);
-
         return response()->json(['message' => ' Evaluation result rating updated successfully', 'result' => $result], 201);
     }
 
     // ================= Delete Evaluation Result =================
     public function deleteEvaluationResult(Request $request, $id)
     {
-        // Check if the request has valid authorization token
+
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
         $result = EvaluationResult::find($id);
 
         if ($result) {
             return response()->json(['message' => ' Evaluation result not found'], 404);
         }
-
         $result = update(['status' => false]);
-
         return response()->json(['message' => ' Evaluation result deleted successfully', 'data' => $result], 201);
     }
 
     public function getEvaluationMasterList(Request $request)
 {
-    // Authorize the request
+
     $user = $this->authorizeRequest($request);
     if (!$user instanceof User) {
         return $user;
     }
-
-    // Check if the request contains the question type parameter
     $questionType = $request->input('evaluationType');
-
-    // Initialize the masterlist array
     $masterlist = [];
 
     try {
@@ -155,12 +136,10 @@ class ResultController extends Controller
 
         // Loop through each evaluated user
         foreach ($evaluatedIds as $evaluatedId) {
-            // Find the user
-            $evaluatedUser = User::find($evaluatedId);
 
-            // Check if the user exists
+            $evaluatedUser = User::find($evaluatedId);
             if (!$evaluatedUser) {
-                continue; // Skip to the next evaluated user if not found
+                continue;
             }
 
             // Get all evaluations for this evaluated user
@@ -178,7 +157,7 @@ class ResultController extends Controller
 
             // Check if there are evaluations for this user
             if ($evaluations->isEmpty()) {
-                continue; // Skip to the next evaluated user if no evaluations
+                continue;
             }
 
             // Initialize an array to store the total rating and count of evaluators for each question
@@ -188,7 +167,6 @@ class ResultController extends Controller
 
             // Loop through each evaluation
             foreach ($evaluations as $evaluation) {
-                // Initialize question details if not set
                 if (!isset($ratings[$evaluation->question_description])) {
                     $ratings[$evaluation->question_description] = [
                         'total_rating' => 0,
@@ -218,7 +196,6 @@ class ResultController extends Controller
                 ? round($totalRatingsSum / $totalQuestionsCount, 2)
                 : 0;
 
-            // Add the evaluated user's details, ratings, and overall average rating to the masterlist
             $masterlist[] = [
                 'evaluated_id' => $evaluatedUser->id,
                 'evaluated_name' => $evaluatedUser->first_name . ' ' . $evaluatedUser->last_name,
@@ -330,9 +307,9 @@ public function AverageRatingMasterlist(Request $request)
             $formattedResult['evaluator_role'] = $evaluatorRole;
             $formattedResult['evaluated_role'] = $evaluatedRole;
 
-            $finalResults[$evaluatedId]['evaluated_id'] = $evaluatedId; // Added evaluated_id
-            $finalResults[$evaluatedId]['evaluated_name'] = $evaluatedName; // Added evaluated_name
-            $finalResults[$evaluatedId]['results'][] = $formattedResult; // Results array
+            $finalResults[$evaluatedId]['evaluated_id'] = $evaluatedId;
+            $finalResults[$evaluatedId]['evaluated_name'] = $evaluatedName;
+            $finalResults[$evaluatedId]['results'][] = $formattedResult;
 
         }
 
@@ -356,8 +333,8 @@ public function AverageRatingMasterlist(Request $request)
 
 public function getQuestionRating(Request $request)
 {
-    $userid = $request->query('userid'); // The user ID for whom the results are requested
-    $type = $request->query('type'); // The type of question
+    $userid = $request->query('userid');
+    $type = $request->query('type');
 
     $user = $this->authorizeRequest($request);
     if (!$user instanceof User) {

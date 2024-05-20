@@ -18,7 +18,6 @@ class EvaluationController extends Controller
         if (!$request->header('Authorization')) {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
-
         $token = $request->header('Authorization');
         $jwtToken = str_replace('Bearer ', '', $token);
 
@@ -27,22 +26,18 @@ class EvaluationController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Unauthorized Request'], 401);
         }
-
-        // Check if $user is null, indicating invalid or expired token
         if (!$user) {
             return response()->json(['error' => 'Invalid token or expired'], 200);
         }
-
         return $user;
     }
 
-    // Function to get Users who have already been Evaluated
+    // ================= Function to get Users who have already been Evaluated =================
     public function getUserEvaluated(Request $request)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         // Retrieve the total count of users who have already been evaluated
@@ -57,24 +52,23 @@ class EvaluationController extends Controller
         $totalAdmins = $adminsEvaluated;
 
         // Return the response
-        return response()->json(['message' => 'Total Users Evaluated', 'admins' => $totalAdmins, 'students' => $studentsEvaluated, 'teachers' => $teachersEvaluated, 'non_teaching' => $nonTeachingEvaluated], 201);
+        return response()->json(['message' => 'Total Users Evaluated', 'admins' => $totalAdmins, 'students' => $studentsEvaluated,
+        'teachers' => $teachersEvaluated, 'non_teaching' => $nonTeachingEvaluated], 201);
     }
 
-    // Function to get user that does not have evaluated
+    // ================= Function to get user that does not have evaluated =================
     public function getUsersNotEvaluated(Request $request, $status)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
-        // Retrieve users who have not yet do evaluation
         $usersNotEvaluated = User::where('status', $status)->whereDoesntHave('evaluationForms')->select('id', 'first_name', 'last_name', 'role')->get();
-
         return response()->json(['users not Evaluated yet' => $usersNotEvaluated], 200);
     }
 
+
+    // ================= Function to retrieve Pending Comments =================
     public function getComments(Request $request)
     {
         $user = $this->authorizeRequest($request);
@@ -83,23 +77,29 @@ class EvaluationController extends Controller
         }
 
         // Retrieve all comments, suggestions, and user details for all evaluation forms
-        $evaluationForms = DB::table('evaluation')->join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')->join('users as evaluator', 'evaluation.user_id', '=', 'evaluator.id')->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.user_id AS evaluator_id', DB::raw("CONCAT(evaluator.first_name, ' ', evaluator.last_name) AS evaluator_full_name"), 'evaluator.role AS evaluator_role', 'evaluation.evaluated_id', 'evaluation.evaluated_full_name', 'evaluated.role AS evaluated_role', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.approve_status', 'Pending')->where('evaluation.status', true)->get();
+        $evaluationForms = EvaluationForm::join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')->join('users as evaluator',
+        'evaluation.user_id', '=', 'evaluator.id')->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.user_id AS evaluator_id',
+        DB::raw("CONCAT(evaluator.first_name, ' ', evaluator.last_name) AS evaluator_full_name"), 'evaluator.role AS evaluator_role', 'evaluation.evaluated_id',
+        'evaluation.evaluated_full_name', 'evaluated.role AS evaluated_role', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.approve_status', 'Pending')
+        ->where('evaluation.status', true)->get();
+
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }
 
+        // ================= Function to retrieve recently Approved Comments =================
     public function recentApproveComment(Request $request)
     {
-        // Check if the request has valid authorization token
+
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
         // Retrieve all comments, suggestions, and user details for all evaluation forms
-        $evaluationForms = DB::table('evaluation')
-            ->join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')
-            ->join('users as evaluator', 'evaluation.user_id', '=', 'evaluator.id')
-            ->select('evaluation.id', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.user_id AS evaluator_id', DB::raw("CONCAT(evaluator.first_name, ' ', evaluator.last_name) AS evaluator_full_name"), 'evaluator.role AS evaluator_role', 'evaluation.evaluated_id', 'evaluation.evaluated_full_name', 'evaluated.role AS evaluated_role', 'evaluation.approve_status', 'evaluation.updated_at')
+        $evaluationForms = EvaluationForm::join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')
+            ->join('users as evaluator', 'evaluation.user_id', '=', 'evaluator.id')->select('evaluation.id', 'evaluation.comment',
+            'evaluation.suggestion', 'evaluation.user_id AS evaluator_id', DB::raw("CONCAT(evaluator.first_name, ' ', evaluator.last_name) AS evaluator_full_name"),
+            'evaluator.role AS evaluator_role', 'evaluation.evaluated_id', 'evaluation.evaluated_full_name', 'evaluated.role AS evaluated_role', 'evaluation.approve_status',
+            'evaluation.updated_at')
             ->whereIn('evaluation.approve_status', ['Approved'])
             ->where('evaluation.status', true)
             ->get();
@@ -118,24 +118,26 @@ class EvaluationController extends Controller
 
     public function officeServiceComments(Request $request)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
         // Retrieve comments, suggestions, and user details for approved evaluation forms
-        $evaluationForms = DB::table('evaluation')->join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id', 'users.first_name', 'users.last_name', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at')->where('evaluation.status', true)->where('evaluation.approve_status', 'Approved')->where('evaluation.office_services', '!=', 'N/a')->get();
+        $evaluationForms = EvaluationForm::join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id',
+        'users.first_name', 'users.last_name', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at')
+        ->where('evaluation.status', true)->where('evaluation.approve_status', 'Approved')
+        ->where('evaluation.office_services', '!=', 'N/a')->get();
 
         return response()->json(['message' => 'Office Service Comments & Suggestions', 'data' => $evaluationForms], 201);
     }
 
+    // ================= Function to update Comments =================
     public function updateEvaluation(Request $request, $id)
     {
-        // Check if the request has valid authorization token
+
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
 
         $evaluation = EvaluationForm::find($id);
@@ -152,45 +154,29 @@ class EvaluationController extends Controller
         return response()->json(['message' => 'Evaluation updated successfully', 'evaluation' => $evaluation], 201);
     }
 
+        // ================= Function to approve Comments =================
     public function approveEvaluation(Request $request, $id)
     {
-        // Check if the request has valid authorization token
         $user = $this->authorizeRequest($request);
         if (!$user instanceof User) {
-            return $user; // Return the response if authorization fails
+            return $user;
         }
-
-        // If the ID parameter is "all", approve all evaluations
         if ($id === 'all') {
             $evaluations = EvaluationForm::all();
 
             foreach ($evaluations as $evaluation) {
                 $evaluation->update(['approve_status' => 'Approved']);
             }
-
             return response()->json(['message' => 'All evaluations approved successfully'], 201);
         }
-
-        // If a specific ID is provided, approve only that evaluation
         $evaluation = EvaluationForm::find($id);
 
         if (!$evaluation) {
             return response()->json(['error' => 'Evaluation not found'], 404);
         }
-
         $evaluation->update([
             'approve_status' => 'Approved',
         ]);
-
         return response()->json(['message' => 'Evaluation approved successfully', 'evaluation' => $evaluation], 201);
-    }
-
-    // =================== Temporary yooo! =================
-
-    public function getEvaluation(Request $request, $id)
-    {
-        $evaluation = EvaluationForm::where('id', $id)->get();
-
-        return response()->json(['data' => $evaluation], 200);
     }
 }
