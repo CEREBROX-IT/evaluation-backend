@@ -13,7 +13,7 @@ class EvaluationForm extends Model
     protected $table = 'evaluation';
 
     // Define the fillable attributes
-    protected $fillable = ['user_id', 'evaluated_id', 'evaluated_result_id', 'evaluated_first_name', 'evaluated_last_name', 'subject_name', 'semester', 'comment', 'suggestion', 'strand', 'year_level', 'approve_status', 'status'];
+    protected $fillable = ['session_id', 'school_year', 'user_id', 'evaluated_id', 'evaluated_result_id', 'evaluated_full_name', 'class_size', 'no_of_student_present', 'no_of_student_late', 'gender', 'category', 'office_services', 'length_of_service', 'subject_name', 'semester', 'comment', 'suggestion', 'strand', 'year_level', 'approve_status', 'status'];
 
     // Define the relationships
     public function user()
@@ -29,5 +29,10 @@ class EvaluationForm extends Model
     public function evaluationResult()
     {
         return $this->hasOne(EvaluationResult::class, 'evaluation_id');
+    }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class, 'session_id');
     }
 }

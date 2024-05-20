@@ -10,13 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('question', function (Blueprint $table) {
+        Schema::create('user_information', function (Blueprint $table) {
             $table->id();
-            $table->string('type', 75);
-            $table->string('question_group', 75);
-            $table->string('evaluation_type', 75);
-            $table->string('question_description');
-            $table->tinyInteger('status');
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('gender', 10);
+            $table->string('category', 20);
+            $table->string('length_of_service', 50);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('question');
+        Schema::dropIfExists('user_information');
     }
 };

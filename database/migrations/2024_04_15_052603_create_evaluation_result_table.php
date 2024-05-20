@@ -14,10 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('evaluation_id')->constrained('evaluation');
             $table->foreignId('question_id')->constrained('question');
-            $table->string('evaluation_for');
-            $table->string('question_type');
+            $table->string('type', 75);
+            $table->string('question_group', 75);
+            $table->string('evaluation_type', 75);
             $table->string('question_description');
-            $table->string('rating');
+            $table->string('rating', 5);
             $table->tinyInteger('status')->default(true);
             $table->timestamps();
         });
