@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Validation\ValidationException;
-
 //for the smtp
 use Illuminate\Support\Str;
 // responsible for constructing the email that will be sent to the user
