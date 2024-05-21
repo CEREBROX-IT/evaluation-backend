@@ -1,56 +1,47 @@
-version: '3.8'
 
+version: "3.7"
 services:
   app:
     build:
-      context: .
+      args:
+        user: peter
+        uid: 1004
+      context: ./
       dockerfile: Dockerfile
-    image: laravel-app
-    container_name: laravel-app
+    image: evaluation_db
+    container_name: evaluation_db
     restart: unless-stopped
-    tty: true
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-    working_dir: /var/www
+    working_dir: /var/www/
     volumes:
       - ./:/var/www
-      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+       - app-network
+  db:
+    image: mysql:8.0
+    container_name: evaluation_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
     networks:
       - app-network
-
-  webserver:
+  nginx:
     image: nginx:alpine
     container_name: nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - 8000:80
     volumes:
       - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker-compose/nginx/conf.d/evaluationdb.conf:/etc/nginx/conf.d/default.conf
     networks:
       - app-network
-
-  db:
-    image: mysql:5.7
-    container_name: mysql
-    restart: unless-stopped
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - app-network
-
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  dbdata:
-    driver: local
