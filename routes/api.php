@@ -26,13 +26,17 @@ Route::get('/users/not-evaluated/status={status}', [EvaluationController::class,
 Route::post('evaluation-result/create', [ResultController::class, 'createEvaluationResult']);
 Route::get('question-description/rating-total/', [ResultController::class, 'getQuestionRating']);
 Route::get('question-description/rating-total/office-services', [ResultController::class, 'officeServiceQuestionRating']);
+Route::get('question-description/teachers-rating/', [ResultController::class, 'TeachergetQuestionRating']);
 Route::get('evaluation-form/recent-approved/comment-suggestion', [EvaluationController::class, 'recentApproveComment']);
 Route::get('evaluation-form/pending/comment-suggestion', [EvaluationController::class, 'getComments']);
 Route::get('list-approved/userid={userid}', [ResultController::class, 'getApproveComments']);
 Route::post('evaluation-form/update/{id}', [EvaluationController::class, 'updateEvaluation']);
 Route::post('evaluation-form/approve/{id}', [EvaluationController::class, 'approveEvaluation']);
 Route::get('/list-evaluated-category/userId={userId}', [ResultController::class, 'checkEvaluation']);
+Route::get('/office-services/masterlist', [ResultController::class, 'OSAverageRatingMasterlist']);
 Route::get('/get/office-services/comment-suggestion', [EvaluationController::class, 'officeServiceComments']);
+Route::get('/admin-evaluation/masterlist', [ResultController::class, 'AdminEvalAverageRatingMasterlist']);
+Route::get('/get/admin-evaluation/comment-suggestion', [EvaluationController::class, 'AdministratorEvalComments']);
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/All', [QuestionController::class, 'getAllQuestions']);

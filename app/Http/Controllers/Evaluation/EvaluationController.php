@@ -86,7 +86,7 @@ class EvaluationController extends Controller
         return response()->json(['Comments & Suggestion' => $evaluationForms], 201);
     }
 
-        // ================= Function to retrieve recently Approved Comments =================
+    // ================= Function to retrieve recently Approved Comments =================
     public function recentApproveComment(Request $request)
     {
 
@@ -108,7 +108,7 @@ class EvaluationController extends Controller
             if ($form->approve_status === 'Approved') {
                 $approvalDate = Carbon::parse($form->updated_at);
                 $now = Carbon::now();
-                return $approvalDate->diffInDays($now) <= 24 * 60 * 60;
+                return $approvalDate->diffInDays($now) <= 10;
             }
             return true;
         });
@@ -129,6 +129,21 @@ class EvaluationController extends Controller
         ->where('evaluation.office_services', '!=', 'N/a')->get();
 
         return response()->json(['message' => 'Office Service Comments & Suggestions', 'data' => $evaluationForms], 201);
+    }
+
+    public function AdministratorEvalComments(Request $request)
+    {
+        $user = $this->authorizeRequest($request);
+        if (!$user instanceof User) {
+            return $user;
+        }
+        // Retrieve comments, suggestions, and user details for approved evaluation forms
+        $evaluationForms = EvaluationForm::join('users', 'evaluation.user_id', '=', 'users.id')->select('evaluation.id', 'evaluation.user_id',
+        'users.first_name', 'users.last_name', 'evaluation.comment', 'evaluation.suggestion', 'evaluation.approve_status', 'evaluation.updated_at')
+        ->where('evaluation.status', true)->where('evaluation.approve_status', 'Approved')
+        ->where('evaluation.length_of_service', '!=', 'N/a')->get();
+
+        return response()->json(['message' => 'Administrator Evaluation Comments & Suggestions', 'data' => $evaluationForms], 201);
     }
 
     // ================= Function to update Comments =================
