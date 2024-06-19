@@ -1,0 +1,928 @@
+{
+	"info": {
+		"_postman_id": "e5c8e2bd-a6c9-43d8-8f8b-63bfdc25c419",
+		"name": "Evaluation REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24785765",
+		"_collection_link": "https://capstone-uccp-cdo.postman.co/workspace/My-Workspace~75bd20cb-372a-4393-8647-63a7bf4ab843/collection/24785765-e5c8e2bd-a6c9-43d8-8f8b-63bfdc25c419?action=share&source=collection_link&creator=24785765"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"ddddd\",\n    \"email\": null,\n    \"last_name\": \"ddddd\",\n    \"username\": \"ddddd\",\n    \"password\": \"sample123\",\n    \"role\": \"Teacher\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0OTgwODExLCJleHAiOjE3MTUwNjcyMTAsIm5iZiI6MTcxNDk4MDgxMSwianRpIjoiV09WWmlPVXlNV0R5dDJwRiIsInN1YiI6IjQiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjQsImZpcnN0X25hbWUiOiJKb2huIERvZSIsImxhc3RfbmFtZSI6Ik1pZ3VlbCIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjpudWxsLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJUZWFjaGVyIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJjb21wbGV0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6IjIwMjQtMjAyNSJ9.QtWomPBGI4K5TDXLUSlVrTAc9nfOaeuArckucCYe520",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"email\" : \"fopamo1585@rehezb.com\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/users/update-email/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"email\" : \"robantepeterfran@gmail.com\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/user/reset-password"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEyNzYzMTM4LCJleHAiOjE3MTI4NDk1MzcsIm5iZiI6MTcxMjc2MzEzOCwianRpIjoiU1JNUGM4b3pwSlZmaFBqRyIsInN1YiI6IjMiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UifQ.t6quPPDQAIpnwZFOW62JKnQg1TnoHQgWY6V7-Wa0HqM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"current_password\": \"sample123\",\n    \"new_password\": \"sample123123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/user/update-password/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"superadmin\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout (NOT WORKING YET)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMzI4OTM0LCJleHAiOjE3MTM0MTUzMzQsIm5iZiI6MTcxMzMyODkzNCwianRpIjoiZmU3dWZsSktSN2JManJscCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6bnVsbCwicm9sZSI6IlN0dWRlbnQifQ.Jef3B1z6egmogR8PsXDCensWVLSauIIo1-3-sfYL3RI",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/user/updateprofile/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Office Services List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NTY2NzE3LCJleHAiOjE3MTU2NTMxMTcsIm5iZiI6MTcxNTU2NjcxNywianRpIjoidVExVXFMWUtkRnhPdjZwViIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJTcGVjaWFsIEFkbWluIiwibGFzdF9uYW1lIjoiU3BlY2lhbCIsInVzZXJuYW1lIjoic3BlY2lhbEFkbWluIiwiZW1haWwiOiJzcGVjaWFsQWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTcGVjaWFsQWRtaW4iLCJ0ZWFjaGVyX2V2YWx1YXRlZCI6Im5vdCBldmFsdWF0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6bnVsbH0.BR5PJ8uVrQ0S4QdOZ2d9MYxh7pIVu0sHV37mL-wDYYc",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/get/office-services"
+					},
+					"response": []
+				},
+				{
+					"name": "Get List of User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NjQ5MzA2LCJleHAiOjE3MTU3MzU3MDYsIm5iZiI6MTcxNTY0OTMwNiwianRpIjoiSEhJdmVJWlBBOVhqRkt4dSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJTcGVjaWFsIEFkbWluIiwibGFzdF9uYW1lIjoiU3BlY2lhbCIsInVzZXJuYW1lIjoic3BlY2lhbEFkbWluIiwiZW1haWwiOiJzcGVjaWFsQWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTcGVjaWFsQWRtaW4iLCJ0ZWFjaGVyX2V2YWx1YXRlZCI6Im5vdCBldmFsdWF0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6IjIwMjItMjAyMyJ9.NDnMs-POEBzMZhNFt0-UzQ-bXjuTcDtfJygH5IDAcwM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/get-user/role=Admin"
+					},
+					"response": []
+				},
+				{
+					"name": "User Not Yet Evaluated",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzOTI1MDAwLCJleHAiOjE3MTQwMTE0MDAsIm5iZiI6MTcxMzkyNTAwMCwianRpIjoiaVdvZjdJMHZ0Skh2UzhNMSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.kzZZkpVcmgq1i9XdQsCes6PaFuznC3GGFMsDm6EfuDI",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/users/not-evaluated/status=1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMTQ5NDY2LCJleHAiOjE3MTMyMzU4NjYsIm5iZiI6MTcxMzE0OTQ2NiwianRpIjoiTkhnc0hoSTRGbDJIY09DayIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6IkpvaG4gTWlrZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoieG9mb2ZvNDE1OEBhY25hbWUuY29tIiwicm9sZSI6IlN0dWRlbnQifQ.yyFSj0w-ccG-TQxjoPJT-GSqpjkpu7zvRITNMCRkqRY",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/delete-user/id=2"
+					},
+					"response": []
+				},
+				{
+					"name": "User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MTgxMTIzLCJleHAiOjE3MTUyNjc1MjMsIm5iZiI6MTcxNTE4MTEyMywianRpIjoibzc3TG1jaHFpQ1lYN01JaSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.bCq-KVOzosWuLNPwOCuG32mfdB5ZWZiR2-3GgNjrVYc",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/user/profile/userId=1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Evaluation",
+			"item": [
+				{
+					"name": "Create Evaluation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NjQwMTU5LCJleHAiOjE3MTg3MjY1NTgsIm5iZiI6MTcxODY0MDE1OSwianRpIjoiTWlHeWpoSGVLclo0VVoySSIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.4sNLQ0OsLMMjV8_3-VMJOGNOP9fczyWTJVQtL3-vSJE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"session_id\": 1,\n    \"school_year\": \"2024-2025\",\n    \"user_id\": 34,\n    \"evaluated_id\": 4,// pwede rani null pag office services na ang eh evaluate\n    \"evaluated_full_name\": \"Maria Santol\", // pwede rani null pag office services na ang eh evaluate\n    \"class_size\": \"N/a\", // set to \"N/a\" if not applicable\n    \"no_of_student_present\": \"N/a\", // set to \"N/a\" if not applicable\n    \"no_of_student_late\": \"N/a\", // set to \"N/a\" if not applicable\n    \"gender\": \"N/a\", // set to \"N/a\" if not applicable\n    \"category\":\"N/a\",\n    \"office_services\": \"N/a\", // set to \"N/a\" if not applicable\n    \"length_of_service\": \"N/a\", // set to \"N/a\" if not applicable\n    \"subject_name\": \"Math\", \n    \"semester\": \"2nd semester\",\n    \"comment\": \"Good performance\",\n    \"suggestion\": \"Suggestion sample\",\n    \"strand\": \"Science\",\n    \"year_level\": \"10\",\n    \"questions\": [\n        {\n            \"question_id\": 25,\n            \"type\": \"VALUATION OF TEACHERS PERFORMANCE\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"People Effectiveness\",\n            \"question_description\": \"Does institutional services outside of teaching (registration)\",\n             \"rating\": \"2\"\n        },\n        {\n            \"question_id\": 26,\n            \"type\": \"VALUATION OF TEACHERS PERFORMANCE\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"People Effectiveness\",\n            \"question_description\": \"Does institutional services outside of teaching (committee tasks)\",\n             \"rating\": \"5\"\n        },\n        {\n            \"question_id\": 26,\n            \"type\": \"VALUATION OF TEACHERS PERFORMANCE\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"People Effectiveness\",\n            \"question_description\": \"Does institutional services outside of teaching (committee tasks)\",\n             \"rating\": \"3\"\n        },\n                {\n            \"question_id\": 27,\n            \"type\": \"VALUATION OF TEACHERS PERFORMANCE\",\n            \"question_group\": \"N/a\",\n            \"evaluation_type\": \"People Effectiveness\",\n            \"question_description\": \"Communicates clearly in written and spoken words)\",\n             \"rating\": \"5\"\n        }\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/evaluation-result/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Approve Comment & Suggestion (teacher dashboard)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NjQ5MzA2LCJleHAiOjE3MTU3MzU3MDYsIm5iZiI6MTcxNTY0OTMwNiwianRpIjoiSEhJdmVJWlBBOVhqRkt4dSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJTcGVjaWFsIEFkbWluIiwibGFzdF9uYW1lIjoiU3BlY2lhbCIsInVzZXJuYW1lIjoic3BlY2lhbEFkbWluIiwiZW1haWwiOiJzcGVjaWFsQWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTcGVjaWFsQWRtaW4iLCJ0ZWFjaGVyX2V2YWx1YXRlZCI6Im5vdCBldmFsdWF0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6IjIwMjItMjAyMyJ9.NDnMs-POEBzMZhNFt0-UzQ-bXjuTcDtfJygH5IDAcwM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/list-approved/userid=2"
+					},
+					"response": []
+				},
+				{
+					"name": "List Evaluated Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NTYzNjk3LCJleHAiOjE3MTU2NTAwOTYsIm5iZiI6MTcxNTU2MzY5NywianRpIjoieThUbGl6QWhQVmpORldIRSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJDb29yZGluYXRvciIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.ATW8G3srFmYbN74CW_yE92FHhxy1xGPBKTe82gRBzZ0",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/list-evaluated-category/userId=1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistic total",
+			"item": [
+				{
+					"name": "Get Total Count User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NTY5NzU1LCJleHAiOjE3MTU2NTYxNTUsIm5iZiI6MTcxNTU2OTc1NSwianRpIjoiU2o4YjNsQzNpcWpWTUMxWSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJTcGVjaWFsIEFkbWluIiwibGFzdF9uYW1lIjoiU3BlY2lhbCIsInVzZXJuYW1lIjoic3BlY2lhbEFkbWluIiwiZW1haWwiOiJzcGVjaWFsQWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTcGVjaWFsQWRtaW4iLCJ0ZWFjaGVyX2V2YWx1YXRlZCI6Im5vdCBldmFsdWF0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6IjIwMjItMjAyMyJ9.P7ZLnVMnnolsUO3t_JU-OcoKp3xTv0DkiV0aytq-iB0",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/total/user-count"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Done Evaluated",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/total/users-evaluated"
+					},
+					"response": []
+				},
+				{
+					"name": "Teachers Overall Rating",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzE3NTM0LCJleHAiOjE3MTg4MDM5MzMsIm5iZiI6MTcxODcxNzUzNCwianRpIjoiUjJDTmhvNTRnM3RyMFdBRCIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.EtRGeZWc_6E2yI14tpoAFA_kPJZGWK_ofGRXt5Nmsx8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/question-description/teachers-rating?userid=17",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"question-description",
+								"teachers-rating"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "VALUATION OF TEACHERS PERFORMANCE ",
+									"description": "The type of question",
+									"disabled": true
+								},
+								{
+									"key": "userid",
+									"value": "17"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Evaluation Question",
+					"item": [
+						{
+							"name": "Create Question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MDkxNjA2LCJleHAiOjE3MTUxNzgwMDYsIm5iZiI6MTcxNTA5MTYwNiwianRpIjoiVFljN29Gb1RERWNlQTJLQyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.DozZx0e84oDS-zddweosv3r6zI8AFIfe9r8awUoJ6wA",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"ADMINISTRATORS EVALUATION\",\n    \"question_group\": \"2\",\n    \"evaluation_type\": \"Self-Understanding Skill\",\n    \"question_description\": \"Projects a strong image before the faculty\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/question/create"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Question",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MjMxNDE2LCJleHAiOjE3MTUzMTc4MTUsIm5iZiI6MTcxNTIzMTQxNiwianRpIjoiUG1uQmJ2ZHBBb2ZSY1gzTCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.svDq9D0otGds3PtOFwRmS0vcCMNH9MC11x8JspvSPaM",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/question/get/type=STUDENT EVALUATION OF TEACHING"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MDkxNjA2LCJleHAiOjE3MTUxNzgwMDYsIm5iZiI6MTcxNTA5MTYwNiwianRpIjoiVFljN29Gb1RERWNlQTJLQyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.DozZx0e84oDS-zddweosv3r6zI8AFIfe9r8awUoJ6wA",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"ADMINISTRATORS EVALUATION\",\n    \"question_group\": \"2\",\n    \"evaluation_type\": \"Self-Understanding Skill\",\n    \"question_description\": \"Projects a strong image before the faculty\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/question/update/177"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Question",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1MDkxNjA2LCJleHAiOjE3MTUxNzgwMDYsIm5iZiI6MTcxNTA5MTYwNiwianRpIjoiVFljN29Gb1RERWNlQTJLQyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyNC0yMDI1Iiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.DozZx0e84oDS-zddweosv3r6zI8AFIfe9r8awUoJ6wA",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/question/delete/177"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "School Year Session",
+					"item": [
+						{
+							"name": "Create Session",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDkzNjU3LCJleHAiOjE3MTQxODAwNTYsIm5iZiI6MTcxNDA5MzY1NywianRpIjoiQmluamNCemJReFRnYW5VUiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6MSwic2Nob29sX3llYXIiOiIyMDIyLTIwMjMiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.oTQxjj5PZt8MjT4-jZTyRlxZnEUX0W6JEoopCkeWEOo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"school_year\" : \"2024-2025\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/school-year/create"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Session",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDkzNjU3LCJleHAiOjE3MTQxODAwNTYsIm5iZiI6MTcxNDA5MzY1NywianRpIjoiQmluamNCemJReFRnYW5VUiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJKb2huIEdlb3JnZSIsImxhc3RfbmFtZSI6IkRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwic2Vzc2lvbl9pZCI6MSwic2Nob29sX3llYXIiOiIyMDIyLTIwMjMiLCJyb2xlIjoiU3VwZXJBZG1pbiIsInRlYWNoZXJfZXZhbHVhdGVkIjoibm90IGV2YWx1YXRlZCIsImxhc3RfZXZhbHVhdGVkIjoiMjAyMi0yMDIzIn0.oTQxjj5PZt8MjT4-jZTyRlxZnEUX0W6JEoopCkeWEOo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"school_year\" : \"2022-2023\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://127.0.0.1:8000/api/school-year/list"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Office Services and Admin Eval",
+					"item": [
+						{
+							"name": "Approve comment Office Services",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1Njc2NTA4LCJleHAiOjE3MTU3NjI5MDcsIm5iZiI6MTcxNTY3NjUwOCwianRpIjoiTWg4QksyMUFXNFJ5RkdmWCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJTcGVjaWFsIEFkbWluIiwibGFzdF9uYW1lIjoiU3BlY2lhbCIsInVzZXJuYW1lIjoic3BlY2lhbEFkbWluIiwiZW1haWwiOiJzcGVjaWFsQWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjo0LCJzY2hvb2xfeWVhciI6IjIwMjYtMjAyNyIsInJvbGUiOiJUcmVhc3VyZXIiLCJ0ZWFjaGVyX2V2YWx1YXRlZCI6Im5vdCBldmFsdWF0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6IjIwMjItMjAyMyJ9.2kSBKrVXWQrtOZajP7esZZ88-iKtJUl0Tg9XKnO2ylA",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/get/office-services/comment-suggestion"
+							},
+							"response": []
+						},
+						{
+							"name": "Approve comment Admin Eval",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzI1NDg5LCJleHAiOjE3MTg4MTE4ODgsIm5iZiI6MTcxODcyNTQ4OSwianRpIjoibGU4cFJOYmlKRkZMaXVYTiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.5QFStXksgYlqHowtAeNSnLIe0oc-KqEhomz5acQWUD4",
+										"type": "text"
+									}
+								],
+								"url": "http://127.0.0.1:8000/api/get/admin-evaluation/comment-suggestion"
+							},
+							"response": []
+						},
+						{
+							"name": "OS and Admin Eval Overall Rating",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzI1NDg5LCJleHAiOjE3MTg4MTE4ODgsIm5iZiI6MTcxODcyNTQ4OSwianRpIjoibGU4cFJOYmlKRkZMaXVYTiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.5QFStXksgYlqHowtAeNSnLIe0oc-KqEhomz5acQWUD4",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/question-description/rating-total/?userid=8&type=EVALUATION OF TEACHERS PERFORMANCE ",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"question-description",
+										"rating-total",
+										""
+									],
+									"query": [
+										{
+											"key": "userid",
+											"value": "8",
+											"description": "The user ID for whom the results are requested"
+										},
+										{
+											"key": "type",
+											"value": "EVALUATION OF TEACHERS PERFORMANCE ",
+											"description": "The type of question"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Approve Evaluation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1Nzc4OTIyLCJleHAiOjE3MTU4NjUzMjIsIm5iZiI6MTcxNTc3ODkyMiwianRpIjoidVExYk9OUUxHYzhyRUU0NSIsInN1YiI6IjM0IiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyIsImlkIjozNCwiZmlyc3RfbmFtZSI6IlByaW5jaXBhbCIsImxhc3RfbmFtZSI6IlRhbmdpcmluIiwidXNlcm5hbWUiOiJwcmluY2lwYWwiLCJlbWFpbCI6bnVsbCwic2Vzc2lvbl9pZCI6MSwic2Nob29sX3llYXIiOiIyMDIyLTIwMjMiLCJyb2xlIjoiUHJpbmNpcGFsIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.Z0jaUE0NHbfUav1l_cSw3IYXiQjrXljeaPn9TpGPGHY",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/evaluation-form/approve/all"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User (SuperAdmin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0MDE1MDY1LCJleHAiOjE3MTQxMDE0NjUsIm5iZiI6MTcxNDAxNTA2NSwianRpIjoiUUZTN2tuSnp0RWZwbG45bSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJqb2huIiwibGFzdF9uYW1lIjoiRG9lIiwidXNlcm5hbWUiOiJqb2huZG9lIiwiZW1haWwiOiJtb21vZDEwNTU5QGR4aWNlLmNvbSIsInNlc3Npb25faWQiOjEsInNjaG9vbF95ZWFyIjoiMjAyMi0yMDIzIiwicm9sZSI6IkFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOiIyMDIyLTIwMjMifQ.GjP0gY3uTKaw_VB9A7gfu0n9QcCwBUE26lI8oBnuhQE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"username\" : \"second\",\n    \"email\": \"second@email.com\",\n    \"email_status\": \"1\",\n    \"role\": \"SuperAdmin\"\n}\n"
+						},
+						"url": "http://127.0.0.1:8000/api/super-admin/update-details/userid=2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment/Suggestion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEzMzMxMzg5LCJleHAiOjE3MTM0MTc3ODksIm5iZiI6MTcxMzMzMTM4OSwianRpIjoiR0U2RUFrZ1lEN09vTjB1eSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiZmlyc3RfbmFtZSI6ImpvaG4iLCJsYXN0X25hbWUiOiJEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6bnVsbCwicm9sZSI6IlN0dWRlbnQifQ.UYRCDZzFEM2pGhS5NNYxrEks3FKe8myGN7Yl-1whuT4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"sample\",\n    \"suggestion\": \"edited sample\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/evaluation-form/update/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Pending Comment & Suggestion",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE1NjQ5MzA2LCJleHAiOjE3MTU3MzU3MDYsIm5iZiI6MTcxNTY0OTMwNiwianRpIjoiSEhJdmVJWlBBOVhqRkt4dSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjEsImZpcnN0X25hbWUiOiJTcGVjaWFsIEFkbWluIiwibGFzdF9uYW1lIjoiU3BlY2lhbCIsInVzZXJuYW1lIjoic3BlY2lhbEFkbWluIiwiZW1haWwiOiJzcGVjaWFsQWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTcGVjaWFsQWRtaW4iLCJ0ZWFjaGVyX2V2YWx1YXRlZCI6Im5vdCBldmFsdWF0ZWQiLCJsYXN0X2V2YWx1YXRlZCI6IjIwMjItMjAyMyJ9.NDnMs-POEBzMZhNFt0-UzQ-bXjuTcDtfJygH5IDAcwM",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/evaluation-form/pending/comment-suggestion"
+					},
+					"response": []
+				},
+				{
+					"name": "Recent Approve Comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzI1NDg5LCJleHAiOjE3MTg4MTE4ODgsIm5iZiI6MTcxODcyNTQ4OSwianRpIjoibGU4cFJOYmlKRkZMaXVYTiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.5QFStXksgYlqHowtAeNSnLIe0oc-KqEhomz5acQWUD4",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/evaluation-form/recent-approved/comment-suggestion"
+					},
+					"response": []
+				},
+				{
+					"name": "Teachers Question Masterlist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzE3NTM0LCJleHAiOjE3MTg4MDM5MzMsIm5iZiI6MTcxODcxNzUzNCwianRpIjoiUjJDTmhvNTRnM3RyMFdBRCIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.EtRGeZWc_6E2yI14tpoAFA_kPJZGWK_ofGRXt5Nmsx8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/evaluation/masterlist",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"evaluation",
+								"masterlist"
+							],
+							"query": [
+								{
+									"key": "evaluationType",
+									"value": "VALUATION OF TEACHERS PERFORMANCE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Office Service Masterlist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzI1NDg5LCJleHAiOjE3MTg4MTE4ODgsIm5iZiI6MTcxODcyNTQ4OSwianRpIjoibGU4cFJOYmlKRkZMaXVYTiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.5QFStXksgYlqHowtAeNSnLIe0oc-KqEhomz5acQWUD4",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/office-services/masterlist"
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Evaluation Masterlist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE4NzI1NDg5LCJleHAiOjE3MTg4MTE4ODgsIm5iZiI6MTcxODcyNTQ4OSwianRpIjoibGU4cFJOYmlKRkZMaXVYTiIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3IiwiaWQiOjIsImZpcnN0X25hbWUiOiJBZG1pbiIsImxhc3RfbmFtZSI6IlVzZXIiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJlbWFpbCI6InN1cGVyYWRtaW5AZXhhbXBsZS5jb20iLCJzZXNzaW9uX2lkIjoxLCJzY2hvb2xfeWVhciI6IjIwMjQtMjAyNSIsInJvbGUiOiJTdXBlckFkbWluIiwidGVhY2hlcl9ldmFsdWF0ZWQiOiJub3QgZXZhbHVhdGVkIiwibGFzdF9ldmFsdWF0ZWQiOm51bGx9.5QFStXksgYlqHowtAeNSnLIe0oc-KqEhomz5acQWUD4",
+								"type": "text"
+							}
+						],
+						"url": "http://127.0.0.1:8000/api/admin-evaluation/masterlist"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
