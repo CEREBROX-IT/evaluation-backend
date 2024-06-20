@@ -53,3 +53,21 @@ php artisan serve
 <a href="http://127.0.0.1:8000/api/">http://127.0.0.1:8000/api/</a>
 
 php artisan migrate:refresh --seed
+
+stop docker
+sudo docker stop $(sudo docker ps -q)
+
+
+remove
+sudo docker rm $(sudo docker ps -aq)
+
+start it
+docker-compose up -d
+
+to go inside the containter
+sudo docker exec -it evaluation_db /bin/sh
+
+
+to copy .env to docker containe
+sudo docker cp .env evaluation_db:/var/www/.env
+
