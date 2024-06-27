@@ -356,14 +356,14 @@ public function getEvaluationMasterList(Request $request)
         return $user;
     }
 
-    $types = ['VALUATION OF TEACHERS PERFORMANCE', 'STUDENT EVALUATION OF TEACHING'];
+    $types = ['EVALUATION OF TEACHERS PERFORMANCE', 'STUDENT EVALUATION OF TEACHING'];
 
     // Fetch the ratings with roles and group by evaluated_id and evaluator_role
     $evaluations = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')
         ->join('users as evaluators', 'evaluation.user_id', '=', 'evaluators.id')
         ->join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')
         ->whereIn('evaluation_result.type', $types)
-        ->where('evaluation.approve_status', "Approved")
+        ->where('evaluation.approve_status', 'Approved')
         ->where('evaluation_result.status', true)
         ->groupBy('evaluation.evaluated_id', 'evaluation_result.question_id', 'evaluation_result.question_description', 'evaluation_result.type', 'evaluators.role', 'evaluated.role')
         ->select('evaluation.evaluated_id', \DB::raw('CONCAT(evaluated.first_name, " ", evaluated.last_name) as evaluated_name'), 'evaluation_result.question_id', 'evaluation_result.question_description', 'evaluation_result.type', 'evaluators.role as evaluator_role', 'evaluated.role as evaluated_role')
@@ -374,8 +374,8 @@ public function getEvaluationMasterList(Request $request)
         ->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')
         ->get();
 
-    if (count($evaluations) === 0) {
-        return response()->json(['message' => 'No one evaluated yet'], 200);
+    if ($evaluations->isEmpty()) {
+        return response()->json(['message' => 'No evaluations found'], 404);
     }
 
     $adminRoles = ['Principal', 'Treasurer', 'Registrar', 'Coordinator'];
@@ -396,7 +396,8 @@ public function getEvaluationMasterList(Request $request)
             $masterlist[$evaluatedId] = [
                 'evaluated_id' => $evaluatedId,
                 'evaluated_name' => $result->evaluated_name,
-                'results' => []
+                'average_overall_rating_score' => 0, // Placeholder for average score
+                'results' => [],
             ];
         }
 
@@ -438,7 +439,7 @@ public function getEvaluationMasterList(Request $request)
             ],
             'overall_rating_score' => $result->overall_rating_score,
             'evaluator_role' => $result->evaluator_role,
-            'evaluated_role' => $result->evaluated_role
+            'evaluated_role' => $result->evaluated_role,
         ];
     }
 
@@ -447,10 +448,123 @@ public function getEvaluationMasterList(Request $request)
         ? array_sum($overallRatingScores) / count($overallRatingScores)
         : 0;
 
+    // Update each entry in $masterlist with average overall rating score
+    foreach ($masterlist as &$item) {
+        $item['average_overall_rating_score'] = number_format($averageOverallRatingScore, 2);
+    }
+
     return response()->json([
         'message' => 'Masterlist Average rating',
-        'data' => $masterlist,
-        'average_overall_rating_score' => number_format($averageOverallRatingScore, 2)
+        'data' => array_values($masterlist), // Convert associative array to indexed array
+    ], 200);
+}
+
+
+public function getMasterlistAverageRating(Request $request)
+{
+    $user = $this->authorizeRequest($request);
+    if (!$user instanceof User) {
+        return $user;
+    }
+
+    $types = ['EVALUATION OF TEACHERS PERFORMANCE', 'STUDENT EVALUATION OF TEACHING'];
+
+    // Fetch the ratings with roles and group by evaluated_id and evaluator_role
+    $evaluations = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')
+        ->join('users as evaluators', 'evaluation.user_id', '=', 'evaluators.id')
+        ->join('users as evaluated', 'evaluation.evaluated_id', '=', 'evaluated.id')
+        ->whereIn('evaluation_result.type', $types)
+        ->where('evaluation.approve_status', "Approved")
+        ->where('evaluation_result.status', true)
+        ->groupBy('evaluation.evaluated_id', 'evaluated.name', 'evaluation_result.question_id', 'evaluation_result.question_description', 'evaluation_result.type', 'evaluators.role', 'evaluated.role')
+        ->select('evaluation.evaluated_id', 'evaluated.name as evaluated_name', 'evaluation_result.question_id', 'evaluation_result.question_description', 'evaluation_result.type', 'evaluators.role as evaluator_role', 'evaluated.role as evaluated_role')
+        ->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')
+        ->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')
+        ->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')
+        ->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')
+        ->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')
+        ->get();
+
+    if (count($evaluations) === 0) {
+        return response()->json(['message' => 'No one evaluated yet'], 200);
+    }
+
+    $rolePercentages = [
+        'Principal' => 0.50,
+        'Student' => 0.30,
+        'Teacher' => 0.20,
+    ];
+
+    $masterlist = [];
+    $totalOverallRatingScore = 0;
+    $totalResultsCount = 0;
+
+    foreach ($evaluations as $result) {
+        $evaluatedId = $result->evaluated_id;
+        $questionId = $result->question_id;
+
+        if (!isset($masterlist[$evaluatedId])) {
+            $masterlist[$evaluatedId] = [
+                'evaluated_id' => $evaluatedId,
+                'evaluated_name' => $result->evaluated_name,
+                'results' => [],
+            ];
+        }
+
+        $ratings = [
+            1 => $result->{'1'},
+            2 => $result->{'2'},
+            3 => $result->{'3'},
+            4 => $result->{'4'},
+            5 => $result->{'5'},
+        ];
+
+        $role = $result->evaluator_role;
+        $weight = isset($rolePercentages[$role]) ? $rolePercentages[$role] : 0;
+
+        $overallRatingScore = 0;
+        $totalWeight = 0;
+
+        foreach ($ratings as $rating => $count) {
+            $overallRatingScore += $rating * $count * $weight;
+            $totalWeight += $count * $weight;
+        }
+
+        $overallRatingScore = $totalWeight > 0 ? $overallRatingScore / $totalWeight : 0;
+        $result->overall_rating_score = number_format($overallRatingScore, 2);
+
+        $masterlist[$evaluatedId]['results'][] = [
+            'id' => $questionId,
+            'type' => $result->type,
+            'question_description' => $result->question_description,
+            'ratings' => [
+                '1' => $result->{'1'},
+                '2' => $result->{'2'},
+                '3' => $result->{'3'},
+                '4' => $result->{'4'},
+                '5' => $result->{'5'},
+            ],
+            'overall_rating_score' => $result->overall_rating_score,
+            'evaluator_role' => $result->evaluator_role,
+            'evaluated_role' => $result->evaluated_role,
+        ];
+
+        // Calculate total overall rating score for averaging
+        $totalOverallRatingScore += $overallRatingScore;
+        $totalResultsCount++;
+    }
+
+    // Calculate average overall rating score
+    $averageOverallRatingScore = $totalResultsCount > 0 ? $totalOverallRatingScore / $totalResultsCount : 0;
+
+    // Add average overall rating score to each evaluated user in masterlist
+    foreach ($masterlist as &$item) {
+        $item['average_overall_rating_score'] = number_format($averageOverallRatingScore, 2);
+    }
+
+    return response()->json([
+        'message' => 'Masterlist Average rating',
+        'data' => array_values($masterlist), // Convert associative array to indexed array
     ], 201);
 }
 
@@ -939,7 +1053,7 @@ public function TeachergetQuestionRating(Request $request)
         return $user;
     }
 
-    $types = ['VALUATION OF TEACHERS PERFORMANCE', 'STUDENT EVALUATION OF TEACHING'];
+    $types = ['EVALUATION OF TEACHERS PERFORMANCE', 'STUDENT EVALUATION OF TEACHING'];
 
     // Fetch the ratings with roles
     $questionRatings = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')

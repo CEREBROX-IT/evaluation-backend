@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class UserSeeder extends Seeder
 {
@@ -13,119 +14,68 @@ class UserSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+     public function run()
     {
-        // Create an admin user
-        User::create([
-            'first_name' => 'Special Admin',
-            'last_name' => 'Special',
-            'email' => 'specialAdmin@example.com',
-            'email_status' => 1,
-            'username' => 'specialAdmin',
-            'password' => Hash::make('qwerty'),
-            'role' => 'SpecialAdmin',
-            'status' => 1,
-        ]);
+        // Path to the JSON file
+        $path1 = database_path('seeders/student_list.json');
 
-        User::create([
-            'first_name' => 'Admin',
-            'last_name' => 'User',
-            'email' => 'superadmin@example.com',
-            'email_status' => 1,
-            'username' => 'superadmin',
-            'password' => Hash::make('superadmin'),
-            'role' => 'SuperAdmin',
-            'status' => 1,
-        ]);
 
-        // Create a student user
-        User::create([
-            'first_name' => 'Student',
-            'last_name' => 'User',
-            'email' => 'student@example.com',
-            'email_status' => 1,
-            'username' => 'student',
-            'password' => Hash::make('qwerty'),
-            'role' => 'Student',
-            'status' => 1,
-        ]);
+        $json1 = File::get($path1);
+        $data1 = json_decode($json1, true);
 
-        // Create a principal user
-        User::create([
-            'first_name' => 'Principal',
-            'last_name' => 'User',
-            'email' => 'principal@example.com',
-            'email_status' => 1,
-            'username' => 'principal',
-            'password' => Hash::make('qwerty'), // You may want to change this
-            'role' => 'Principal',
-            'status' => 1,
-        ]);
+        // For Student mapping
+        foreach ($data1 as $student) {
+            // Convert first name and last name to have only the first letter capitalized
+            $firstName = ucfirst(strtolower($student['first_name']));
+            $lastName = ucfirst(strtolower($student['last_name']));
 
-        // Create a treasurer user
-        User::create([
-            'first_name' => 'Treasurer',
-            'last_name' => 'User',
-            'email' => 'treasurer@example.com',
-            'email_status' => 1,
-            'username' => 'treasurer',
-            'password' => Hash::make('qwerty'), // You may want to change this
-            'role' => 'Treasurer',
-            'status' => 1,
-        ]);
+            // Generate username with lowercase names and underscores for spaces
+            $username = strtolower(str_replace(' ', '_', $lastName . '@' . $firstName));
 
-        // Create a registrar user
-        User::create([
-            'first_name' => 'Registrar',
-            'last_name' => 'User',
-            'email' => 'registrar@example.com',
-            'email_status' => 1,
-            'username' => 'registrar',
-            'password' => Hash::make('qwerty'), // You may want to change this
-            'role' => 'Registrar',
-            'status' => 1,
-        ]);
-
-        // Create a coordinator user
-        User::create([
-            'first_name' => 'Coordinator',
-            'last_name' => 'User',
-            'email' => 'coordinator@example.com',
-            'email_status' => 1,
-            'username' => 'coordinator',
-            'password' => Hash::make('qwerty'), // You may want to change this
-            'role' => 'Coordinator',
-            'status' => 1,
-        ]);
-
-        // Create a teacher user
-        for ($i = 0; $i < 10; $i++) {
             User::create([
-                'first_name' => 'Teacher' . $i,
-                'last_name' => 'User' . $i,
-                'email' => 'teacher' . $i . '@example.com', // Using $i to make each email unique
-                'email_status' => 1,
-                'username' => 'teacher' . $i,
-                'password' => Hash::make('qwerty'), // You may want to change this
-                'role' => 'Teacher',
-                'status' => 1,
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'email' => null,
+                'email_status' => $student['email_status'],
+                'username' => $username,
+                'password' => Hash::make($username),
+                'role' => $student['role'],
+                'status' => $student['status'],
             ]);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+
+        // Path to the JSON file
+        $path2 = database_path('seeders/teacher_list.json');
+
+        $json2 = File::get($path2);
+        $data2 = json_decode($json2, true);
+
+        // For teacher mapping
+        foreach ($data2 as $teacher) {
+            // Convert first name and last name to have only the first letter capitalized
+            $firstName = ucfirst(strtolower($teacher['first_name']));
+            $lastName = ucfirst(strtolower($teacher['last_name']));
+
+            // Generate username with lowercase names and underscores for spaces
+            $username = strtolower(str_replace(' ', '_', $lastName . '@' . $firstName));
+
+            // Create user
             User::create([
-                'first_name' => 'None Teaching' . $i,
-                'last_name' => 'User' . $i,
-                'email' => 'NonTeaching' . $i . '@example.com', // Using $i to make each email unique
-                'email_status' => 1,
-                'username' => 'nonteaching' . $i,
-                'password' => Hash::make('qwerty'), // You may want to change this
-                'role' => 'Non-Teaching',
-                'status' => 1,
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'email' => null,
+                'email_status' => $teacher['email_status'],
+                'username' => $username,
+                'password' => Hash::make($username),
+                'role' => $teacher['role'],
+                'status' => $teacher['status'],
             ]);
         }
     }
 }
+
+
 
 // Principal
 // Treasurer
