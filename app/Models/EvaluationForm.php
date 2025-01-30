@@ -26,10 +26,17 @@ class EvaluationForm extends Model
         return $this->belongsTo(User::class, 'evaluated_id');
     }
 
-    public function evaluationResult()
-    {
-        return $this->hasOne(EvaluationResult::class, 'evaluation_id');
-    }
+    public function evaluator()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
+
+    public function evaluationResults()
+{
+    return $this->hasMany(EvaluationResult::class, 'evaluation_id'); // Ensure foreign key is correct
+}
+
 
     public function session()
     {

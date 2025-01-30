@@ -77,6 +77,14 @@ class AuthController extends Controller
                 ]);
             }
             $user = Auth::user();
+
+            // Check if the user's status is not 1 (active)
+            if ($user->status != 1) {
+                throw ValidationException::withMessages([
+                    'username' => ['Your account is inactive. Please contact the administrator.'],
+                ]);
+            }
+
             // Define the session school year
             $sessionSchoolYear = null;
             $sessionId = null;
@@ -119,6 +127,40 @@ class AuthController extends Controller
         }
     }
 
+    // ======== admin update user password =======================
+
+    public function updatePassword(Request $request, $user_id)
+    {
+        // Validate the request
+        $request->validate([
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        try {
+            // Find the user by ID
+            $user = User::findOrFail($user_id);
+
+            // Update the password
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            return response()->json(
+                [
+                    'message' => 'Password updated successfully.',
+                ],
+                200,
+            );
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'message' => 'An error occurred while updating the password.',
+                    'error' => $e->getMessage(),
+                ],
+                500,
+            );
+        }
+    }
+
     // ================= Update user profile =================
     public function updateUserDetails(Request $request, $id)
     {
@@ -147,23 +189,20 @@ class AuthController extends Controller
     }
 
     // ================= Update user password =================
-    public function updatePassword(Request $request, $id)
+    public function updateUserPassword(Request $request, $id)
     {
-        $user = $this->authorizeRequest($request);
-        if (!$user instanceof User) {
-            return $user;
-        }
-        $user = User::find($id);
-        if (!$user) {
+        $userToUpdate = User::find($id);
+
+        if (!$userToUpdate) {
             return response()->json(['error' => 'User not found'], 404);
         }
-        if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['error' => 'Current password is incorrect'], 401);
-        }
-        $user->update([
+
+        // Update password without checking the current password (since admin is updating it)
+        $userToUpdate->update([
             'password' => Hash::make($request->new_password),
         ]);
-        return response()->json(['message' => 'Password updated successfully'], 201);
+
+        return response()->json(['message' => 'Password updated successfully'], 200);
     }
 
     // ================= Update user email address =================
@@ -249,14 +288,16 @@ class AuthController extends Controller
         } else {
             $roles = [$role];
         }
-        $usersQuery = User::whereIn('role', $roles)->select('id', 'first_name', 'last_name', 'role');
+        $usersQuery = User::whereIn('role', $roles)
+            ->where('status', true) // Only include users with status = true
+            ->select('id', 'first_name', 'last_name', 'role');
+
         // Exclude users who have already been evaluated by the authenticated user
-        $evaluatedIds = EvaluationForm::where('user_id', $user->id)
-            ->where('status', true)
-            ->pluck('evaluated_id');
+        $evaluatedIds = EvaluationForm::where('user_id', $user->id)->where('status', true)->pluck('evaluated_id');
 
         $usersQuery->whereNotIn('id', $evaluatedIds);
-        // Sort users by created_at in descending order
+
+        // Sort users by updated_at in descending order
         $users = $usersQuery->orderBy('updated_at', 'desc')->get();
 
         // Transform each user object to include a "full name" field
@@ -393,9 +434,7 @@ class AuthController extends Controller
         $office_services = ['Business Office', 'Receiving Cashier', 'Store', 'Cafeteria', 'School Nurse', 'Home Deans', 'Security Guard', 'Guidance Counselor', 'Librarian', 'Registrar'];
 
         // Retrieve the office services evaluated by the user
-        $evaluatedServices = EvaluationForm::where('user_id', $user->id)
-            ->pluck('office_services')
-            ->toArray();
+        $evaluatedServices = EvaluationForm::where('user_id', $user->id)->pluck('office_services')->toArray();
 
         // Filter out the evaluated office services
         $office_services = array_diff($office_services, $evaluatedServices);

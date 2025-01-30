@@ -37,6 +37,9 @@ Route::get('/office-services/masterlist', [ResultController::class, 'OSAverageRa
 Route::get('/get/office-services/comment-suggestion', [EvaluationController::class, 'officeServiceComments']);
 Route::get('/admin-evaluation/masterlist', [ResultController::class, 'AdminEvalAverageRatingMasterlist']);
 Route::get('/get/admin-evaluation/comment-suggestion', [EvaluationController::class, 'AdministratorEvalComments']);
+Route::get('evaluations/user/{session_id}/{user_id}', [EvaluationController::class, 'getEvaluatedUserRatings']);
+Route::get('/hello', [EvaluationController::class, 'sayHello']);
+
 
 // ============== Evaluation Question Endpoints ==============
 Route::get('/question/get/All', [QuestionController::class, 'getAllQuestions']);
@@ -53,6 +56,7 @@ Route::get('/user/profile/userId={userId}', [AuthController::class, 'getUserProf
 Route::post('/user/updateprofile/{id}', [AuthController::class, 'updateProfile']);
 Route::post('/super-admin/update-details/userid={id}', [AuthController::class, 'updateUserDetails']);
 Route::post('/user/update-password/{id}', [AuthController::class, 'updatePassword']);
+Route::post('/user/update-user-password/{id}', [AuthController::class, 'updateUserPassword']);
 Route::post('/users/update-email/{id}', [AuthController::class, 'updateEmail']);
 Route::post('/user/reset-password', [AuthController::class, 'resetPassword']);
 Route::get('/get-user/role={role}', [AuthController::class, 'getUsersRole']);

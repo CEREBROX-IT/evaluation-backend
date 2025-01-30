@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Evaluation;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\EvaluationForm;
+use App\Models\Session;
+use App\Models\EvaluationResult;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,27 +36,50 @@ class EvaluationController extends Controller
 
     // ================= Function to get Users who have already been Evaluated =================
     public function getUserEvaluated(Request $request)
-    {
-        $user = $this->authorizeRequest($request);
-        if (!$user instanceof User) {
-            return $user;
-        }
-
-        // Retrieve the total count of users who have already been evaluated
-        $adminsEvaluated = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])
-            ->whereHas('evaluationForms')
-            ->count();
-        $studentsEvaluated = User::where('role', 'Student')->whereHas('evaluationForms')->count();
-        $teachersEvaluated = User::where('role', 'Teacher')->whereHas('evaluationForms')->count();
-        $nonTeachingEvaluated = User::where('role', 'Non-Teaching')->whereHas('evaluationForms')->count();
-
-        // Combine the count of admin roles into a single category called "Admins"
-        $totalAdmins = $adminsEvaluated;
-
-        // Return the response
-        return response()->json(['message' => 'Total Users Evaluated', 'admins' => $totalAdmins, 'students' => $studentsEvaluated,
-        'teachers' => $teachersEvaluated, 'non_teaching' => $nonTeachingEvaluated], 201);
+{
+    $user = $this->authorizeRequest($request);
+    if (!$user instanceof User) {
+        return $user;
     }
+
+    // Retrieve the total count of users who have already been evaluated and whose evaluationForms have status = 1
+    $adminsEvaluated = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])
+        ->whereHas('evaluationForms', function ($query) {
+            $query->where('status', 1);
+        })
+        ->count();
+
+    $studentsEvaluated = User::where('role', 'Student')
+        ->whereHas('evaluationForms', function ($query) {
+            $query->where('status', 1);
+        })
+        ->count();
+
+    $teachersEvaluated = User::where('role', 'Teacher')
+        ->whereHas('evaluationForms', function ($query) {
+            $query->where('status', 1);
+        })
+        ->count();
+
+    $nonTeachingEvaluated = User::where('role', 'Non-Teaching')
+        ->whereHas('evaluationForms', function ($query) {
+            $query->where('status', 1);
+        })
+        ->count();
+
+    // Combine the count of admin roles into a single category called "Admins"
+    $totalAdmins = $adminsEvaluated;
+
+    // Return the response
+    return response()->json([
+        'message' => 'Total Users Evaluated',
+        'admins' => $totalAdmins,
+        'students' => $studentsEvaluated,
+        'teachers' => $teachersEvaluated,
+        'non_teaching' => $nonTeachingEvaluated,
+    ], 201);
+}
+
 
     // ================= Function to get user that does not have evaluated =================
     public function getUsersNotEvaluated(Request $request, $status)
@@ -193,5 +218,67 @@ class EvaluationController extends Controller
             'approve_status' => 'Approved',
         ]);
         return response()->json(['message' => 'Evaluation approved successfully', 'evaluation' => $evaluation], 201);
+    }
+
+
+// ================= Method to fetch ratings, comments, and suggestions for the evaluated user =================
+public function getEvaluatedUserRatings(Request $request, $session_id, $user_id)
+{
+    // Authorize the request first
+    $user = $this->authorizeRequest($request);
+    if (!$user instanceof User) {
+        return $user;
+    }
+
+    // Fetch the session to check its status (optional: handle session status if needed)
+    $session = Session::findOrFail($session_id);
+    if ($session->session_status != 1) {
+        return response()->json(['message' => 'Session is not active'], 400);
+    }
+
+    // Fetch evaluations for the evaluated user
+    $evaluations = EvaluationForm::where('session_id', $session_id)
+        ->where('evaluated_id', $user_id)
+        ->with([
+            'evaluationResults',
+            'evaluationResults.question',
+            'evaluator' // Assuming you have a relationship `evaluator` in the EvaluationForm model
+        ])
+        ->get();
+
+    // Check if evaluations are found for the user
+    if ($evaluations->isEmpty()) {
+        return response()->json(['message' => 'No evaluations found for this user'], 404);
+    }
+
+    // Format the response with the required data
+    $response = $evaluations->map(function ($evaluation) {
+        return [
+            'evaluated_full_name' => $evaluation->evaluated_full_name,
+            'evaluator_full_name' => $evaluation->evaluator ? $evaluation->evaluator->first_name . ' ' . $evaluation->evaluator->last_name : 'N/A',
+            'category' => $evaluation->category,
+            'office_services' => $evaluation->office_services,
+            'length_of_service' => $evaluation->length_of_service,
+            'subject_name' => $evaluation->subject_name,
+            'semester' => $evaluation->semester,
+            'comment' => $evaluation->comment,
+            'suggestion' => $evaluation->suggestion,
+            'ratings' => $evaluation->evaluationResults->map(function ($result) {
+                return [
+                    'question_description' => $result->question->question_description,
+                    'rating' => $result->rating,
+                ];
+            }),
+        ];
+    });
+
+    return response()->json(['data' => $response], 200);
+}
+
+
+
+    public function sayHello()
+    {
+        return response()->json(['message' => 'Hello, World!']);
     }
 }
