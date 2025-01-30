@@ -247,7 +247,7 @@ class AuthController extends Controller
         // Update the user's password reset token
         $user->update(['password_reset_token' => $token]);
         // Define the reset URL
-        $resetUrl = 'http://127.0.0.1:8000/reset-password?token=' . $token;
+        $resetUrl = 'http://128.199.66.214:8000/reset-password?token=' . $token;
         // Send the password reset email
         Mail::to($user->email)->send(new ResetPasswordMail($user, $resetUrl));
         return response()->json(['message' => 'Password reset email sent successfully'], 201);
