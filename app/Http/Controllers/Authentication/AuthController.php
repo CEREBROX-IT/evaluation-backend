@@ -184,6 +184,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'email_status' => $request->email_status,
             'role' => $request->role,
+            'status' => $request->status,
         ]);
         return response()->json(['message' => 'User details updated successfully', 'user' => $user], 201);
     }
