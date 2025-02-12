@@ -317,7 +317,7 @@ class AuthController extends Controller
         if (!$user instanceof User) {
             return $user;
         }
-        $users = User::where('status', true)->get();
+        $users = User::all();
         return response()->json(['data' => $users], 201);
     }
 
