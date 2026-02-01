@@ -467,7 +467,10 @@ public function getEvaluationMasterList(Request $request)
         return $user;
     }
 
-    $types = ['EVALUATION OF TEACHERS PERFORMANCE', 'STUDENT EVALUATION OF TEACHING'];
+    $types = [
+        'EVALUATION OF TEACHERS PERFORMANCE',
+        'STUDENT EVALUATION OF TEACHING'
+    ];
 
     $evaluations = EvaluationResult::join('evaluation', 'evaluation_result.evaluation_id', '=', 'evaluation.id')
         ->join('users as evaluators', 'evaluation.user_id', '=', 'evaluators.id')
@@ -477,6 +480,8 @@ public function getEvaluationMasterList(Request $request)
         ->where('evaluation_result.status', true)
         ->groupBy(
             'evaluation.evaluated_id',
+            'evaluated.first_name',
+            'evaluated.last_name',
             'evaluation_result.question_id',
             'evaluation_result.question_description',
             'evaluation_result.type',
@@ -492,11 +497,11 @@ public function getEvaluationMasterList(Request $request)
             'evaluators.role as evaluator_role',
             'evaluated.role as evaluated_role'
         )
-        ->selectRaw('sum(case when rating = 1 then 1 else 0 end) as "1"')
-        ->selectRaw('sum(case when rating = 2 then 1 else 0 end) as "2"')
-        ->selectRaw('sum(case when rating = 3 then 1 else 0 end) as "3"')
-        ->selectRaw('sum(case when rating = 4 then 1 else 0 end) as "4"')
-        ->selectRaw('sum(case when rating = 5 then 1 else 0 end) as "5"')
+        ->selectRaw('SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS `1`')
+        ->selectRaw('SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS `2`')
+        ->selectRaw('SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS `3`')
+        ->selectRaw('SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS `4`')
+        ->selectRaw('SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS `5`')
         ->get();
 
     if ($evaluations->isEmpty()) {
@@ -504,8 +509,9 @@ public function getEvaluationMasterList(Request $request)
     }
 
     $adminRoles = ['Principal', 'Treasurer', 'Registrar', 'Coordinator'];
+
     $rolePercentages = [
-        'Admin' => 0.50,
+        'Admin'   => 0.50,
         'Student' => 0.30,
         'Teacher' => 0.20,
     ];
@@ -514,7 +520,7 @@ public function getEvaluationMasterList(Request $request)
 
     foreach ($evaluations as $result) {
         $evaluatedId = $result->evaluated_id;
-        $questionId = $result->question_id;
+        $questionId  = $result->question_id;
 
         if (!isset($masterlist[$evaluatedId])) {
             $masterlist[$evaluatedId] = [
@@ -522,7 +528,7 @@ public function getEvaluationMasterList(Request $request)
                 'evaluated_name' => $result->evaluated_name,
                 'average_overall_rating_score' => 0,
                 'results' => [],
-                '_rating_scores' => [], // Temp storage for scores
+                '_rating_scores' => [], // temporary
             ];
         }
 
@@ -534,7 +540,10 @@ public function getEvaluationMasterList(Request $request)
             5 => $result->{'5'},
         ];
 
-        $role = in_array($result->evaluator_role, $adminRoles) ? 'Admin' : $result->evaluator_role;
+        $role = in_array($result->evaluator_role, $adminRoles)
+            ? 'Admin'
+            : $result->evaluator_role;
+
         $weight = $rolePercentages[$role] ?? 0;
 
         $overallRatingScore = 0;
@@ -545,7 +554,10 @@ public function getEvaluationMasterList(Request $request)
             $totalWeight += $count * $weight;
         }
 
-        $overallRatingScore = $totalWeight > 0 ? $overallRatingScore / $totalWeight : 0;
+        $overallRatingScore = $totalWeight > 0
+            ? $overallRatingScore / $totalWeight
+            : 0;
+
         $formattedScore = number_format($overallRatingScore, 2);
 
         $masterlist[$evaluatedId]['_rating_scores'][] = $overallRatingScore;
@@ -561,19 +573,20 @@ public function getEvaluationMasterList(Request $request)
         ];
     }
 
-    // Calculate average overall rating score per evaluated user
+    // Compute average overall rating per evaluated user
     foreach ($masterlist as &$item) {
         $scores = $item['_rating_scores'];
+
         $item['average_overall_rating_score'] = count($scores) > 0
             ? number_format(array_sum($scores) / count($scores), 2)
             : 0;
 
-        unset($item['_rating_scores']); // Remove temporary score field
+        unset($item['_rating_scores']);
     }
 
     return response()->json([
         'message' => 'Masterlist Average rating',
-        'data' => array_values($masterlist), // Convert associative to indexed array
+        'data' => array_values($masterlist),
     ], 200);
 }
 
