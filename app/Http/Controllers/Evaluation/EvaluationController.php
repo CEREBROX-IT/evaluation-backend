@@ -232,9 +232,9 @@ public function getEvaluatedUserRatings(Request $request, $session_id, $user_id)
 
     // Fetch the session to check its status (optional: handle session status if needed)
     $session = Session::findOrFail($session_id);
-    if ($session->session_status != 1) {
-        return response()->json(['message' => 'Session is not active'], 400);
-    }
+    // if ($session->session_status != 1) {
+    //     return response()->json(['message' => 'Session is not active'], 400);
+    // }
 
     // Fetch evaluations for the evaluated user
     $evaluations = EvaluationForm::where('session_id', $session_id)
@@ -277,8 +277,261 @@ public function getEvaluatedUserRatings(Request $request, $session_id, $user_id)
 
 
 
-    public function sayHello()
-    {
-        return response()->json(['message' => 'Hello, World!']);
+    // public function sayHello()
+    // {
+    //     return response()->json(['message' => 'Hello, World!']);
+    // }
+    public function sayHello(Request $request){
+        // Authorize the request first
+        // $user = $this->authorizeRequest($request);
+        // if (!$user instanceof User) {
+        //     return $user;
+        // }
+
+        $sessionSchoolYear = null;
+
+        // Retrieve the session school year if status is true
+        $session = Session::where('session_status', true)->first();
+        if ($session) {
+            $sessionSchoolYear = $session->school_year;
+        }
+        // teachers
+        $activeTeachers = User::where('role', "Teacher")
+            ->where("status", true)
+            ->count(); // total active teachers
+
+        $teachers = User::where('role', "Teacher")->where("status", true)
+            ->with(['evaluations' => function ($query) use ($sessionSchoolYear) {
+                $query->where('school_year', $sessionSchoolYear);
+            }])
+            ->get();
+        $teachers = $teachers->map(function ($teacher) use ($activeTeachers) {
+
+            $evaluationCount = $teacher->evaluations->count();
+
+            if ($evaluationCount === 0) {
+                $status = "Not Yet";
+            } elseif ($evaluationCount < $activeTeachers) {
+                $status = "Incomplete";
+            } elseif ($evaluationCount >= $activeTeachers) {
+                $status = "Complete";
+            }
+
+            return [
+                'id' => $teacher->id,
+                'first_name' => $teacher->first_name,
+                'last_name' => $teacher->last_name,
+                'evaluation_count' => $evaluationCount,
+                'to_be_evaluated_count' => $activeTeachers,
+                'status' => $status,
+            ];
+        });
+
+        // non working
+        $activeNonTeaching = User::where('role', "Non-Teaching")
+            ->where("status", true)
+            ->count(); // total active non teaching
+
+        $nonTeaching = User::where('role', 'Non-Teaching')
+            ->with(['evaluations' => function ($query) use ($sessionSchoolYear) {
+                $query->where('school_year', $sessionSchoolYear);
+            }])
+            ->get();
+
+        $nonTeaching = $nonTeaching->map(function ($nonTeach) use ($activeNonTeaching) {
+
+            $evaluationCount = $nonTeach->evaluations->count();
+
+            if ($evaluationCount === 0) {
+                $status = "Not Yet";
+            } elseif ($evaluationCount < $activeNonTeaching) {
+                $status = "Incomplete";
+            } elseif ($evaluationCount >= $activeNonTeaching) {
+                $status = "Complete";
+            }
+
+            return [
+                'id' => $nonTeach->id,
+                'first_name' => $nonTeach->first_name,
+                'last_name' => $nonTeach->last_name,
+                'evaluation_count' => $evaluationCount,
+                'to_be_evaluated_count' => $activeNonTeaching,
+                'status' => $status,
+            ];
+        });
+
+        // admin counts
+        $activeAdmins = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])
+            ->where("status", true)
+            ->count();
+
+        // admins to teachers
+        $adminsToTeacher = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])->where("status", true)
+            ->with(['evaluations' => function ($query) use ($sessionSchoolYear) {
+                $query->where('school_year', $sessionSchoolYear);
+            }])
+            ->get();
+        $adminsToTeacher = $adminsToTeacher->map(function ($adminTeacher) use ($activeTeachers) {
+
+            $evaluationCount = $adminTeacher->evaluations->count();
+
+            if ($evaluationCount === 0) {
+                $status = "Not Yet";
+            } elseif ($evaluationCount < $activeTeachers) {
+                $status = "Incomplete";
+            } elseif ($evaluationCount >= $activeTeachers) {
+                $status = "Complete";
+            }
+
+            return [
+                'id' => $adminTeacher->id,
+                'first_name' => $adminTeacher->first_name,
+                'last_name' => $adminTeacher->last_name,
+                'evaluation_count' => $evaluationCount,
+                'to_be_evaluated_count' => $activeTeachers,
+                'status' => $status,
+            ];
+        });
+
+        // admin to admin
+
+
+
+
+        $flat = [
+            "AdminToTeacher" => $adminsToTeacher
+        ];
+
+
+
+        return response()->json(['teachers' => $teachers, "Non-Teaching" => $nonTeaching, "Admins" => $flat], 200);
+
+    }
+
+    public function userNotYetEvaluated(Request $request){
+        // Authorize the request first
+        // $user = $this->authorizeRequest($request);
+        // if (!$user instanceof User) {
+        //     return $user;
+        // }
+
+        $sessionSchoolYear = null;
+
+        // Retrieve the session school year if status is true
+        $session = Session::where('session_status', true)->first();
+        if ($session) {
+            $sessionSchoolYear = $session->school_year;
+        }
+        // teachers
+        $activeTeachers = User::where('role', "Teacher")
+            ->where("status", true)
+            ->count(); // total active teachers
+
+        $teachers = User::where('role', "Teacher")->where("status", true)
+            ->with(['evaluations' => function ($query) use ($sessionSchoolYear) {
+                $query->where('school_year', $sessionSchoolYear);
+            }])
+            ->get();
+        $teachers = $teachers->map(function ($teacher) use ($activeTeachers) {
+
+            $evaluationCount = $teacher->evaluations->count();
+
+            if ($evaluationCount === 0) {
+                $status = "Not Yet";
+            } elseif ($evaluationCount < $activeTeachers) {
+                $status = "Incomplete";
+            } elseif ($evaluationCount >= $activeTeachers) {
+                $status = "Complete";
+            }
+
+            return [
+                'id' => $teacher->id,
+                'first_name' => $teacher->first_name,
+                'last_name' => $teacher->last_name,
+                'evaluation_count' => $evaluationCount,
+                'to_be_evaluated_count' => $activeTeachers,
+                'status' => $status,
+            ];
+        });
+
+        // non working
+        $activeNonTeaching = User::where('role', "Non-Teaching")
+            ->where("status", true)
+            ->count(); // total active non teaching
+
+        $nonTeaching = User::where('role', 'Non-Teaching')->where("status", true)
+            ->with(['evaluations' => function ($query) use ($sessionSchoolYear) {
+                $query->where('school_year', $sessionSchoolYear);
+            }])
+            ->get();
+
+        $nonTeaching = $nonTeaching->map(function ($nonTeach) use ($activeNonTeaching) {
+
+            $evaluationCount = $nonTeach->evaluations->count();
+
+            if ($evaluationCount === 0) {
+                $status = "Not Yet";
+            } elseif ($evaluationCount < $activeNonTeaching) {
+                $status = "Incomplete";
+            } elseif ($evaluationCount >= $activeNonTeaching) {
+                $status = "Complete";
+            }
+
+            return [
+                'id' => $nonTeach->id,
+                'first_name' => $nonTeach->first_name,
+                'last_name' => $nonTeach->last_name,
+                'evaluation_count' => $evaluationCount,
+                'to_be_evaluated_count' => $activeNonTeaching,
+                'status' => $status,
+            ];
+        });
+
+        // admin counts
+        $activeAdmins = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])
+            ->where("status", true)
+            ->count();
+
+        // admins to teachers
+        $adminsToTeacher = User::whereIn('role', ['Principal', 'Treasurer', 'Registrar', 'Coordinator'])->where("status", true)
+            ->with(['evaluations' => function ($query) use ($sessionSchoolYear) {
+                $query->where('school_year', $sessionSchoolYear);
+            }])
+            ->get();
+        $adminsToTeacher = $adminsToTeacher->map(function ($adminTeacher) use ($activeTeachers) {
+
+            $evaluationCount = $adminTeacher->evaluations->count();
+
+            if ($evaluationCount === 0) {
+                $status = "Not Yet";
+            } elseif ($evaluationCount < $activeTeachers) {
+                $status = "Incomplete";
+            } elseif ($evaluationCount >= $activeTeachers) {
+                $status = "Complete";
+            }
+
+            return [
+                'id' => $adminTeacher->id,
+                'first_name' => $adminTeacher->first_name,
+                'last_name' => $adminTeacher->last_name,
+                'evaluation_count' => $evaluationCount,
+                'to_be_evaluated_count' => $activeTeachers,
+                'status' => $status,
+            ];
+        });
+
+        // admin to admin
+
+
+
+
+        $flat = [
+            "AdminToTeacher" => $adminsToTeacher
+        ];
+
+
+
+        return response()->json(['teachers' => $teachers, "Non-Teaching" => $nonTeaching, "Admins" => $flat], 200);
+
     }
 }
