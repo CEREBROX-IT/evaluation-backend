@@ -39,6 +39,7 @@ Route::get('/admin-evaluation/masterlist', [ResultController::class, 'AdminEvalA
 Route::get('/get/admin-evaluation/comment-suggestion', [EvaluationController::class, 'AdministratorEvalComments']);
 Route::get('evaluations/user/{session_id}/{user_id}', [EvaluationController::class, 'getEvaluatedUserRatings']);
 Route::get('/hello', [EvaluationController::class, 'sayHello']);
+Route::get('/not-yet-evaluate', [EvaluationController::class, 'userNotYetEvaluated']);
 
 
 // ============== Evaluation Question Endpoints ==============
