@@ -59,4 +59,17 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->hasMany(EvaluationForm::class);
     }
+
+    public function evaluations() {
+        return $this->hasMany(EvaluationForm::class, 'user_id'); // assuming 'user_id' in EvaluationForm
+    }
+
+    // The user evaluating others
+    public function evaluationsGiven() {
+        return $this->hasMany(EvaluationForm::class, 'evaluated_id');
+    }
+
+    public function evaluator() {
+        return $this->belongsTo(User::class, 'id');
+    }
 }
